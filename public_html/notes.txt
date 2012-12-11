@@ -1,0 +1,242 @@
+-----------------------------------------------------------------------
+		     BIG IDEAS
+-----------------------------------------------------------------------
+
+1a. Test data database - hosted by me. This could be in the form of a
+   PACS.  Users can submit data securely which will be anonymized. Can
+   I run open ports (either low or high numbered) on an ISP?  If not I
+   may have to lease a co-host machine with open ports.
+1b. Test data database - those hosted on sites.  Rated by download
+   speed, availability.  Classified by image format, format details
+   (endian, version), species, anatomy, image dimension.  Store
+   identifiers (size, name, md5) to eliminate duplicates.
+1c. Add program link: Recommended test data for this program.
+
+2. Re-implement site in the form of static pages generated daily, for
+   the benefit of search engines.  Currently all pages have the same
+   page title.
+
+3. Cache distributions under existing license.  If the license is
+   changed and the product made commercial, it is still legal to
+   distribute the old program under its existing license.
+
+4. Blog.  I Blog Imaging.  Get these thoughts down!  Communicate with
+   your users! 
+
+5. PACS feature: Training.  Make it easy for people (med students etc)
+   to install a PACS client and practice diagnoses.  I could code a
+   program that allows an expert to record, movie-like, comments and
+   cursor movements.
+
+6 How-tos and quick starts.  FAQs (IAQs? FUQs?).  I Learn Imaging.
+  School of Imaging.  How to view/convert an image.  How to identify
+  an image.  How to do a cool 3D rendering.  How to anonymize or edit
+  various well known formats.  How to identify an unknown file (eg
+  size, magic numbers, endian).  Just Enough CS (number systems,
+  scaling, memory allocation, file sizes, endian-ness).  Four
+  categories: (1) Patient seeking to view own scans; (2) Developer;
+  (3) Clinical user; (4) Research user.  FAQs for authors - how to
+  make project trackable, what makes a project popular, etc.
+
+7. File identification service (this ties in with medimageworks).
+   What's my image.  Stump the chump.
+
+8. Multi-level menus.  Might need Flash.  IE: Nobody uses the Finder.
+   Make it more prominent.
+
+9. Video tutorial showing intro features etc.
+
+10. Inactive programs are listed as such - 'Missing in Action' -
+    together with dates last heard from.  Needs a database flag.
+
+11. Need an automated way of downloading and archiving model data
+    sets.
+
+12. Offer hosting for projects.  This would be as a subdomain:
+    readpet.idoimaging.com.  Check with Pair plans to see how many of
+    these domains I can host, also how I can control disk usage and
+    bandwidth usage.  Projects would be "readPET: An independent
+    project by Andrew Crabb, hosted by idoimaging.com".
+
+13. Apply for an equipment grant: Apple (stress application of Apple
+    hardware), Sun (stress Java projects).
+
+14. Incorporate your company!  Register as Medical Image Works.
+    www.medimageworks.com 
+
+-----------------------------------------------------------------------
+		     THINGS TO DO AND FIX
+-----------------------------------------------------------------------
+
+9/22/06  Bug fixes and additions.
+
+1. programs.pl not sorting by page after search.  Variable scoping
+   problem fixed.
+
+2. programs.pl - Added sort order indication.
+
+3. Get the sort-order column headings from listversions, add it to the
+   library, and use it in the other listings.
+
+4. File formats to add: FreeSurfer
+
+-----------------------------------------------------------------------
+		     ADDITIONAL FEATURES
+-----------------------------------------------------------------------
+
+1. Rating: Weighted formula.
+
+1. Web ranking (Google page rank).	10
+2. Click-to ranking on IDI		10
+3. Tracking ranking on IDI		10
+4. Ease of download/access		10
+5. Project activity count		10
+6. Andyrank: Overall quality		20
+7. Andyrank: Ease of installation	 5
+8. Andyrank: Documentation/website	10
+9. Andyrank: Usefulness/Applicability	10
+10.Andyrank: Project activity		 5
+
+1a. Rating metric: Ease of access.
+   1 = Go ahead and download it.
+   2 = Fill in form, no verification, then download.
+   3 = Fill in form, wait for human verification.
+1b. Rating metric: Procect Activity.
+   This could be 50% updates and 50% my opinion (some projects release
+   trivial updates).
+1c. Rating metric: Andy's Rating.
+1d. Rating metric: Documentation.
+1e. Indicate those projects with a good/entertaining website.
+1f. Ease of installation/use: Beginner, Intermediate, Expert.
+
+4. Quick Links - make it easy for people to find the 20% of programs
+   that form 80% of the search requests.  IE: DICOM viewer in PC (3),
+   Mac (2), Unix (2).  PACS server & client in 3 platforms.
+
+5. Add 'View Full List' to 'quick links' on front page - links to
+   Finder with platform, function, input format etc defined.
+
+6. Need to be able to express the concept of a suite of software, but
+   give it extra emphasis so it comes to the top of searches.  Many
+   programs that are too small to be listed on their own
+   (dicomdirexplorer, opendicom.net, LONI, UNC etc).
+
+7. New category: distribution format (ie include RPMs for different
+   Unixes, Debian, source, Win executables, Mac dmg etc).
+
+8. New functionality: Anonymizer.
+
+9. Administrative features.  1. Delete program altogether, or flag it
+   so it does not appear.  Remove all trackers of this program.
+   2. Merge a program into another program, and edit its trackers so
+   they now track the new program.  Add a note to it that this was
+   done. 
+
+10. New category for 'quick favorites': header dump / meta-info view.
+
+11. New relationship between programs: 'formerly'.  This is how you
+    can establish a program's lineage.  Relationship is many to many:
+    A and B can become C, or D can become E and F.  This also allows
+    you to redirect trackers, and produce a subtitle.  It can be
+    chained - c, formerly B, itself formerly A - by following a chain
+    of links.
+
+12. Subcategorization of viewing - single frame, multi frame,
+    lightbox, orthogonal, volume, surface, crop.
+
+13. Statistically analyze search.log to see what it is that people are
+    looking for.  This is a case for longer descriptions!  Improved
+    search abilities are important.  Google business search is
+    available for $100 for 5,000 pages, and is customizable and ad
+    free, but my content is all on a searchable database!  I should be
+    able to find a php application that does a good search.  MySQL has
+    'full text search' ability - is there a Perl module for this?
+
+-----------------------------------------------------------------------
+MISCELLANEOUS
+-----------------------------------------------------------------------
+
+HTML <head> Title
+
+This is defined in 3 places:
+
+1. index.html which immediately redirects to index.shtml.  However it
+   may be picked up as a key file by a crawler and as such is
+   important. 
+
+2. head.shtml is included from index.shtml.  Ths is the only static
+   HTML that defines the HTML <title> attribute.
+
+3. radutils::printStartHTML() is called by each program that generates
+   a page of HTML.
+
+-----------------------------------------------------------------------
+
+Static HTML files require index_head.shtml to be included.  These are
+about.shtml, admin.shtml, index.shtml, programs.shtml.
+
+-----------------------------------------------------------------------
+		     UP TO HERE
+-----------------------------------------------------------------------
+
+The problem you're having with nav.shtml is that you are not including
+this as an SSI, rather you are reading it in using printTitle() and
+doing a little processing to handle the includes.  Will have to
+rewrite this - possibly changing everything so that the scripts write
+a series of html files daily.
+What's different now is that you have to have conditional includes in
+the included file, to handle the cgiwrap requirements of the pair
+host.  The href line is different depending on development or online.
+Perhaps (HACK ALERT) you could do a Perl s/ substitution for href
+lines found in the included file.
+So keep the hacked code to do the included-includes in printTitle(),
+and do the conditional substitution of hrefs in code with s//.
+
+-----------------------------------------------------------------------
+			 Check these programs
+-----------------------------------------------------------------------
+
+SimpleDICOM has been taken off - see if you can get a distribution.
+
+Remove all vestiges of AccuLite.
+
+Rearrange Julius.
+
+Merge BrainVisa and Anatomist.
+
+-----------------------------------------------------------------------
+			 Coding Snippets
+-----------------------------------------------------------------------
+
+MySQL: You can use 'AS' to shorten table names:
+mysql> SELECT E.entryID, E.title, C.name
+    -> FROM blog_entries AS E, blog_categories AS C
+    -> WHERE E.categoryID=C.categoryID AND
+    ->       MATCH (E.title, E.entry) AGAINST ('michigan') AND
+    ->       E.categoryID=1;
+
+
+-----------------------------------------------------------------------
+			 Add to wiki
+-----------------------------------------------------------------------
+1.
+doimaging.com has successfully been added to your pair Networks Web hosting account. 
+Your name servers are: 
+ns5.ns0.com  (IP Address: 216.92.61.30) 
+ns451.pair.com	  (IP Address: 209.68.4.242) 
+The domain is mapped to /usr/www/users/acrabb/
+
+2.
+pair IP       64.130.49.6
+dotservant IP 63.247.133.2
+
+3.
+dotservant mysql ident: "DBI:mysql:acrabb_imaging:localhost","acrabb_acrabbloc","new2this"
+
+4.
+Use mod_rewrite to:
+(1) Redirect cgi-bin requests to cgi-sys/cgiwrap
+(2) Hide all the cgiwrap stuff to ie programs/252
+
+
+monitor IATR: http://www.cma.mgh.harvard.edu/iatr/index.php

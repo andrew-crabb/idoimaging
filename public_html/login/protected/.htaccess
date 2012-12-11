@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# If you DON'T want to password-protect the image files, css files, etc, in
+# this directory, you can uncomment the following line, which will speed up
+# page loads:
+#
+#RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|gif|css|js)$ [NC]
+RewriteRule (.*) /cgi-bin/userbase.cgi?pdir=01&ppge=$1 [L]

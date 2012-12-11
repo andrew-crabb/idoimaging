@@ -1,0 +1,95 @@
+Options +FollowSymLinks
+# This prevents 'foo' target finding 'foo.php' file.
+Options -MultiViews
+RewriteEngine on
+
+ErrorDocument 400 /error_handler.php
+ErrorDocument 401 /error_handler.php
+ErrorDocument 403 /error_handler.php
+ErrorDocument 404 /error_handler.php
+ErrorDocument 500 /error_handler.php
+
+Options -Indexes
+
+# ------------------------------------------------------------
+# New php-based rules
+# Redirect targets that need a header get redirect_header.php
+# ------------------------------------------------------------
+
+RewriteRule ^home/?                  index.php                    [L]
+RewriteRule index.shtml              index.php                    [L]
+RewriteRule ^admin/?$		     admin.php                    [L]
+RewriteRule ^about/?$                redirect_header.php          [L]
+RewriteRule ^finder/?$               redirect_header.php          [L]
+RewriteRule ^formats/([0-9]+)$       redirect_header.php?ident=$1 [L]
+RewriteRule ^formats/?$              redirect_header.php          [L]
+RewriteRule ^list_versions/?         redirect_header.php          [L]
+RewriteRule ^people/([0-9]{1,3})$    redirect_header.php?ident=$1 [L]
+RewriteRule ^program/([0-9]{3})$     redirect_header.php?ident=$1 [L]
+RewriteRule ^programs/?$             redirect_header.php          [L]
+RewriteRule ^resources/([0-9]{1,3})$ redirect_header.php?ident=$1 [L]
+RewriteRule ^resources/?$            redirect_header.php          [L]
+RewriteRule ^resources/?$            redirect_header.php          [L]
+RewriteRule ^search/?$               redirect_header.php          [L]
+RewriteRule ^user_home/?$            redirect_header.php          [L]
+RewriteRule ^static_cont/(.+)$       redirect_header.php?ident=$1 [L]
+# RewriteRule ^blog/(.*)             /blogb.php?$1                [L]
+# RewriteRule ^bloga/?$              redirect_header.php          [L]
+
+# add_monitor issues a redirect, so don't redirect with HTTP header.
+
+# RewriteRule add_monitor[/]*         redirect_noheader.php          [L]
+RewriteRule add_monitor/?$        /cgi-bin/addmonitor\.pl [L]
+
+
+# ------------------------------------------------------------
+# Old cgi-based rules
+# Redirect targets needing no header go straight to the executable
+# ------------------------------------------------------------
+
+RewriteRule redirect/?$           /cgi-bin/redirect\.pl [L]
+RewriteRule redirect_cgibin/?$    /cgi-bin/redirect_cgibin\.pl [L]
+
+# RewriteRule add_monitor[/]*$        /cgi-bin/addmonitor\.pl        [L]  ** come back to this **
+# RewriteRule formats/([0-9]{1,3})$   /cgi-bin/formats.pl?ident=$1   [L]
+# RewriteRule formats[/]*$            /cgi-bin/formats\.pl           [L]
+# RewriteRule list_versions[/]*       /cgi-bin/listVersions\.pl      [L]
+# RewriteRule login[/]*$              /cgi-bin/login\.pl             [L]
+# RewriteRule most_linked[/]*$        /cgi-bin/mostLinked\.pl        [L]
+# RewriteRule most_ranked[/]*$        /cgi-bin/mostRanked\.pl        [L]
+# RewriteRule most_watched[/]*$       /cgi-bin/mostWatched\.pl       [L]
+# RewriteRule newreleases[/]*$        /cgi-bin/newreleases\.pl       [L]
+# RewriteRule pageintro[/]*$          /cgi-bin/pageintro\.pl         [L]
+# RewriteRule people[/]*$             /cgi-bin/people\.pl            [L]
+# RewriteRule program/([0-9]{3})$     /cgi-bin/program.pl?ident=$1   [L]
+# RewriteRule quicklinks[/]*$         /cgi-bin/quicklinks\.pl        [L]
+# RewriteRule resources/([0-9]{1,3})$ /cgi-bin/resources.pl?ident=$1 [L]
+# RewriteRule resources[/]*$          /cgi-bin/resources\.pl         [L]
+# RewriteRule search[/]*$             /cgi-bin/search\.pl            [L]
+# RewriteRule status[/]*$             /cgi-bin/status_new\.pl        [L]
+# RewriteRule tester[/]*$             /cgi-bin/tester\.pl            [L]
+
+
+# ------------------------------------------------------------
+#                     Admin Tools
+# Targets must match with radutils.pm
+# POST data cannot be used with mod_rewrite, so 'do_edit' actions go straight to program.
+# ------------------------------------------------------------
+
+RewriteRule ^edit_program[/]*$    redirect_header.php [L]
+RewriteRule ^edit_resource[/]*$   redirect_header.php [L]
+RewriteRule ^edit_author[/]*$     redirect_header.php [L]
+RewriteRule ^synchronize_DB[/]*$  redirect_header.php [L]
+RewriteRule ^compare_db[/]*$      redirect_header.php [L]
+
+RewriteRule ^do_edit_program[/]*$   /cgi-bin/doeditprogram\.pl [L]
+RewriteRule ^do_edit_resource[/]*$  /cgi-bin/editresource\.pl [L]
+RewriteRule ^do_edit_author[/]*$    /cgi-bin/doeditauthor\.pl [L]
+
+RewriteRule doadmin[/]*$  do_admin.php [L]
+RewriteRule edit_author[/]*$  editauthor\.pl [L]
+RewriteRule edit_data[/]*$  editdata\.pl [L]
+RewriteRule edit_resource[/]*$  editresource\.pl [L]
+RewriteRule edit_relationship[/]*$  editrelationship\.pl [L]
+RewriteRule rm_program[/]*$  rmprogram\.pl [L]
+RewriteRule edit_relationship[/]*$  editrelationship\.pl [L]

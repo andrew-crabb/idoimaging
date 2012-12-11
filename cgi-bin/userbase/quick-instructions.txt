@@ -1,0 +1,77 @@
+==============================================================================
+
+See below for installation instructions.  Or, let us install UserBase for you:
+
+	www.encodable.com/buy/ENCINSUB2
+
+==============================================================================
+
+Quick Instructions for Most Servers (Apache on Linux, Mac OS X, BSD):
+
+If your server doesn't already have MySQL installed, download and install the
+free MySQL Community Server from www.mysql.com.  Once it's installed, create
+a database and a MySQL user account: www.encodable.com/database_setup
+
+Upload the contents of the www.example.com folder onto your website.  Then
+visit the following address, replacing example.com with your own domain name:
+
+	www.example.com/cgi-bin/userbase.cgi
+
+If you see a message about adjusting database prefs, then UserBase is working
+properly.  You should now read the FAQ:	www.encodable.com/userbase/faq
+
+If nothing works, read the full instructions:
+
+	www.encodable.com/userbase/#insapache
+
+==============================================================================
+
+Quick Instructions for Apache-on-Windows Servers:
+
+If your server doesn't already have Perl installed, download and install the
+free ActivePerl from www.activestate.com.  You may need to reboot after
+installing it.  Open a command prompt and type   perl -v   and if you get some
+output about Perl and its version info, you should be all set.
+
+If you had to install Perl, you'll also need to install the DBD::MySQL Perl
+module (and probably the MIME::Lite module) by opening the Run dialog or a
+command prompt and then typing   ppm install DBD-mysql   (and then
+ppm install MIME-Lite).  Or you can run just the ppm command by itself to
+use the graphical installer. 
+
+Now follow the regular Apache instructions above.
+
+==============================================================================
+
+Quick Instructions for IIS-on-Windows Servers:
+
+If your server doesn't already have Perl installed, download and install the
+free ActivePerl from www.activestate.com.  You may need to reboot after
+installing it.  Open a command prompt and type   perl -v   and if you get some
+output about Perl and its version info, you should be all set.
+
+If you had to install Perl, you'll also need to install the DBD::MySQL Perl
+module (and probably the MIME::Lite module) by opening the Run dialog or a
+command prompt and then typing   ppm install DBD-mysql   (and then
+ppm install MIME-Lite).  Or you can run just the ppm command by itself to
+use the graphical installer. 
+
+If your server doesn't already have MySQL installed, download and install the
+free MySQL Community Server from www.mysql.com.  Once it's installed, create
+a database and a MySQL user account: www.encodable.com/database_setup
+
+Open the www.example.com folder and move the contents of the cgi-bin folder
+into the login folder.  Then delete the cgi-bin folder.  Then visit the
+following address, replacing example.com with your own domain name:
+
+	www.example.com/login/userbase.cgi
+
+If you see a message about adjusting database prefs, then UserBase is working
+properly.  You should now read the FAQ:	www.encodable.com/userbase/faq
+
+If nothing works, read the full instructions:
+
+	www.encodable.com/userbase/#insiis
+
+==============================================================================
+
