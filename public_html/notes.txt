@@ -176,23 +176,6 @@ Static HTML files require index_head.shtml to be included.  These are
 about.shtml, admin.shtml, index.shtml, programs.shtml.
 
 -----------------------------------------------------------------------
-		     UP TO HERE
------------------------------------------------------------------------
-
-The problem you're having with nav.shtml is that you are not including
-this as an SSI, rather you are reading it in using printTitle() and
-doing a little processing to handle the includes.  Will have to
-rewrite this - possibly changing everything so that the scripts write
-a series of html files daily.
-What's different now is that you have to have conditional includes in
-the included file, to handle the cgiwrap requirements of the pair
-host.  The href line is different depending on development or online.
-Perhaps (HACK ALERT) you could do a Perl s/ substitution for href
-lines found in the included file.
-So keep the hacked code to do the included-includes in printTitle(),
-and do the conditional substitution of hrefs in code with s//.
-
------------------------------------------------------------------------
 			 Check these programs
 -----------------------------------------------------------------------
 
