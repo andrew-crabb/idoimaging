@@ -35,7 +35,7 @@ $PREF{fixed_groups_field_for_CSV_import}           = 'groups';
 # The database user you specify must have these MySQL privileges:
 # Select, Insert, Update, Delete, Create.
 #
-$PREF{database_hostname}				= 'localhost';
+$PREF{database_hostname}				= 'idoimaging.com';
 $PREF{database_name}					= 'userbase';
 $PREF{database_username}				= '_www';
 $PREF{database_password}				= 'PETimage';
@@ -128,8 +128,8 @@ $PREF{datadir_is_in_docroot}				= 'no';
 #	$PREF{login_url}		= '/login/';
 #
 # ahc
-$PREF{login_url}					= $ENV{SCRIPT_NAME};
-# $PREF{login_url}					= '/index.php';
+# $PREF{login_url}					= $ENV{SCRIPT_NAME};
+$PREF{login_url}					= '/index.php';
 $PREF{here}						= $PREF{login_url}; # don't change this.
 
 

@@ -37,9 +37,7 @@ RewriteRule ^static_cont/(.+)$       redirect_header.php?ident=$1 [L]
 # RewriteRule ^bloga/?$              redirect_header.php          [L]
 
 # add_monitor issues a redirect, so don't redirect with HTTP header.
-
-# RewriteRule add_monitor[/]*         redirect_noheader.php          [L]
-RewriteRule add_monitor/?$        /cgi-bin/addmonitor\.pl [L]
+RewriteRule add_monitor/?$           /cgi-bin/addmonitor\.pl [L]
 
 
 # ------------------------------------------------------------
@@ -47,8 +45,8 @@ RewriteRule add_monitor/?$        /cgi-bin/addmonitor\.pl [L]
 # Redirect targets needing no header go straight to the executable
 # ------------------------------------------------------------
 
-RewriteRule redirect/?$           /cgi-bin/redirect\.pl [L]
-RewriteRule redirect_cgibin/?$    /cgi-bin/redirect_cgibin\.pl [L]
+RewriteRule redirect/?$               /cgi-bin/redirect\.pl [L]
+RewriteRule redirect_cgibin/?$        /cgi-bin/redirect_cgibin\.pl [L]
 
 # RewriteRule add_monitor[/]*$        /cgi-bin/addmonitor\.pl        [L]  ** come back to this **
 # RewriteRule formats/([0-9]{1,3})$   /cgi-bin/formats.pl?ident=$1   [L]
