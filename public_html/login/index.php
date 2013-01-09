@@ -4,7 +4,7 @@
 
 if(function_exists('virtual'))
 {
-  virtual("/cgi-bin/imaging/userbase/userbase.cgi?" . $_SERVER['QUERY_STRING']);
+  virtual("/cgi-bin/userbase/userbase.cgi?" . $_SERVER['QUERY_STRING']);
 }
 else
 {

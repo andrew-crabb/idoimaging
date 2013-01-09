@@ -9,7 +9,6 @@ use radutils;
 use Utilities_new;
 
 my $cgi = new CGI;
-my $BIN = "/cgi-bin/imaging";
 
 my $url = "";
 my %acts = (

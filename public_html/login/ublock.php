@@ -38,8 +38,8 @@ $DOCROOT = isset($DOCUMENT_ROOT) ? $DOCUMENT_ROOT : $_SERVER['DOCUMENT_ROOT'];
 
 # Method 3:
 # Change only these first 2 lines, to match the path & name of your CGI script:
-$cgi_script_full  = "$DOCROOT/../cgi-bin/imaging/userbase/userbase.cgi";
-$cgi_script_local = "/cgi-bin/imaging/userbase/userbase.cgi";
+$cgi_script_full  = "$DOCROOT/../cgi-bin/userbase/userbase.cgi";
+$cgi_script_local = "/cgi-bin/userbase/userbase.cgi";
 
 if(!(file_exists($cgi_script_full)))
   {

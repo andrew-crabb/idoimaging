@@ -171,7 +171,7 @@ $PREF{protected_pages_directory}			= '%PREF{DOCROOT}/protected-pages-go-here';
 #
 $PREF{protected_directory_01}				= '%PREF{DOCROOT}/protected';
 $PREF{protected_directory_01_ignore_file_extensions}	= 'yes';
-$PREF{groups_allowed_to_access_protected_directory_01}	= 'member'; # comma-separated list of groups.
+$PREF{groups_allowed_to_access_protected_directory_01}	= 'admin'; # comma-separated list of groups.
 
 
 

@@ -42,7 +42,7 @@ $site_session = isset($_COOKIE['site_session']) ? $_COOKIE['site_session'] : '';
 #
 // ahc note: This requires allow_url_include to be On in php.ini which is a security risk.
 ob_start();
-$login_check = "http://" . $_SERVER['HTTP_HOST'] . "/cgi-bin/imaging/userbase/userbase.cgi?action=chklogin&ubsessioncode=$site_session";
+$login_check = "http://" . $_SERVER['HTTP_HOST'] . "/cgi-bin/userbase/userbase.cgi?action=chklogin&ubsessioncode=$site_session";
 include($login_check);
 $login_status = ob_get_contents();
 ob_end_clean();

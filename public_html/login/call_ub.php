@@ -13,8 +13,8 @@ $DOCROOT = preg_replace("/(.+)\/$/", '$1', $DOCROOT); # remove any trailing slas
 # need to adjust $cgi_script_full, you should usually still leave $cgi_script_local
 # set to the default value.
 #
-$cgi_script_full  = "$DOCROOT/cgi-bin/imaging/userbase/userbase.cgi";
-$cgi_script_local = "/cgi-bin/imaging/userbase/userbase.cgi";
+$cgi_script_full  = "$DOCROOT/cgi-bin/userbase/userbase.cgi";
+$cgi_script_local = "/cgi-bin/userbase/userbase.cgi";
   
 if(!(file_exists($cgi_script_full)))
   {
