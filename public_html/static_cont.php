@@ -1,6 +1,8 @@
 <?php
 if (isset($_GET['ident'])) {
   $content = $_GET['ident'];
-  require("static/${content}.php");
+  if (file_exits($content)) {
+    require("static/${content}.php");
+  }
 }
 ?>
