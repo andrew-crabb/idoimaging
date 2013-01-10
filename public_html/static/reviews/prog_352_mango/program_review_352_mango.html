@@ -1,0 +1,370 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="Content-Type">
+  <title>Program Review - Mango</title>
+  <link rel="stylesheet" type="text/css" href="../../idoimaging.css"
+ media="screen">
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+</head>
+<body>
+<h1 style="text-align: center;">Program Review: Mango</h1>
+<br>
+<table
+ style="text-align: left; width: 60%; background-color: rgb(255, 255, 255);"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Jump to: </td>
+      <td style="vertical-align: top;"><a href="#Introduction">Introduction</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#website">Website</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#getting">Getting The
+Software</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#installation">Installation</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#input">Input Data</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#viewing">Viewing and
+Rendering</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#extensibility">Extensibility</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#performance">Performance</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#analysis">Analysis</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a href="#summary">Summary</a><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2><a name="Introduction"></a>Introduction</h2>
+<p>
+<img style="width: 41px; height: 41px;" alt="Mango Icon"
+ src="resources/app_icon.png" align="right" hspace="5" vspace="5">Mango
+is a stable and highly capable Java-based medical image viewer
+developed at the University of Texas Health Science Center in San
+Antonio.&nbsp;
+It is easy to use for small jobs but has a feature list
+that includes surface and volume rendering, command-line mode for power
+users and scripting, ROI editing and analysis, and sophisticated image
+processing and filtering.&nbsp; For the programmer, a plugin API is
+available to extend the program's capabilities.&nbsp;&nbsp;&nbsp; Most
+users will use it as a DICOM viewer though it also supports NIFTI, NEMA
+and Analyze file formats, and a flexible raw data input mode which
+allows complete low-level control of the image data being read
+in.&nbsp; It's available on all platforms and has a full installer to
+get you started quickly.<br>
+</p>
+<h2><a name="website"></a>Website</h2>
+<p>
+Mango have a comprehensive and well designed web site.&nbsp; Some of
+the downloads available include:<br>
+</p>
+<ul>
+  <li>Plugin extensions for the program</li>
+  <li>Sample test data.</li>
+  <li>API for developing plugins to extend the program.</li>
+  <li>Applet for displaying images on a web page.<br>
+  </li>
+</ul>
+The site has a very comprehensive revision history describing the
+changes at each new version.<br>
+<h2><a name="getting"></a>Getting The Software</h2>
+<p>
+Link to the program site through the <a
+ href="http://www.idoimaging.com/cgi-sys/cgiwrap/acrabb/imaging/program.pl?ident=352">I
+Do
+Imaging</a> page for the program, as the links are regularly tested
+and updated if necessary.&nbsp; This program is available for direct
+download from UTHSC - there's nothing to fill out or wait for approval,
+though there's an option to add your email for notification of
+updates.&nbsp; Of course, you can also add this program to those you're
+monitoring on I Do Imaging, so you'll receive emails when this or any
+other of your tracked programs have been updated.<br>
+</p>
+<h2><a name="installation"></a>Installation</h2>
+<p>
+The program downloaded quickly and is available in three standard
+installation formats: a Windows Installer Package, Macintosh disk image
+(DMG), and a Linux zip file.&nbsp; As the program is supplied as a Java
+Archive (JAR) file, the installer only needs to copy this file to a
+supplied location, and add a small script or program to start Java
+running on the JAR file.&nbsp; On the Mac and Linux platforms, this is
+a very short shell script, whereas on Windows it is a short compiled
+file.&nbsp; Still, having the installer do this step for you is a nice
+touch.&nbsp; <br>
+</p>
+<p>Standard locations are suggested as an installation
+location; I override these as I like to keep all my imaging programs
+separate from other programs on my machines.&nbsp; On Windows I install
+most imaging programs to <span
+ style="font-family: Courier New,Courier,monospace;">C:\imaging</span>;
+on the Linux and Mac platforms I install to <span
+ style="font-family: Courier New,Courier,monospace;">/usr/local</span>
+or to a directory <span
+ style="font-family: Courier New,Courier,monospace;">imaging</span> in
+my home directory.&nbsp; This caused a small problem with the Mac
+installer, since the startup script was hard coded to expect the
+application directory to be called Mango and be in my home
+directory.&nbsp; I edited the startup script to reflect the location of
+the Mango directory, and all was well.&nbsp; A nice addition to the
+installer script would be to accommodate changing the name and location
+of the application directory.<br>
+</p>
+<h2><a name="input"></a>Input Data</h2>
+Mango can read data in <a
+ href="http://www.idoimaging.com/cgi-sys/cgiwrap/acrabb/imaging/formats.pl?ident=2">DICOM</a>
+format, also <a
+ href="http://www.idoimaging.com/cgi-sys/cgiwrap/acrabb/imaging/formats.pl?ident=17179869184">NIFTI</a>,
+<a
+ href="http://www.idoimaging.com/cgi-sys/cgiwrap/acrabb/imaging/formats.pl?ident=8">Analyze</a>,
+and
+<a
+ href="http://www.idoimaging.com/cgi-sys/cgiwrap/acrabb/imaging/formats.pl?ident=4">NEMA</a>.&nbsp;
+If
+you
+recognize
+the
+last three, you probably know what they are and
+whether you need these file formats.&nbsp; We'll concentrate on the
+DICOM format files.&nbsp; Mango also has the ability to have new file
+formats added to its core functionality through the use of add-on
+plugin modules.&nbsp; This is an extremely useful feature for the
+advanced user working with uncommon file formats.<br>
+<br>
+If you open a DICOM file, Mango will scan through the directory that
+file is in, and open the whole volume.&nbsp; There is a list of
+recently-opened files in the File menu, though it lists only the name
+of the opened file or directory.<br>
+<br>
+<div style="text-align: center;"><span
+ style="text-decoration: underline;"><a href="resources/capture5.png"><img
+ alt="Image Browser" title="Image Browser" src="resources/capture5.png"
+ style="border: 0px solid ; width: 364px; height: 300px;" hspace="3"
+ vspace="3"></a></span><br>
+</div>
+Mango has several very useful advanced DICOM
+file-level features.&nbsp; The
+Image Browser opens a file browser window that shows a summary of the
+name of each data series, along with its major dimensions and
+orientation, and a more detailed summary and preview image of the
+currently selected series.<span style="font-family: sans-serif;">&nbsp;
+You can open multiple tabs in the browser, each of which shows the
+studies in a particular location.&nbsp; These settings are preserved
+between sessions, making it a useful place to bookmark favorite
+directories.<br>
+<br>
+</span>
+<div style="text-align: center;"><a href="resources/capture1.png"><img
+ alt="DICOM folder" title="DICOM folder" src="resources/capture1.png"
+ style="border: 0px solid ; width: 505px; height: 200px;" hspace="3"
+ vspace="3"></a><br>
+</div>
+<span style="font-family: sans-serif;"></span>When you open a DICOM
+directory, Mango scans through its subdirectories
+and determines which series are contained within it.&nbsp; The list of
+series is then presented so one may be opened.<br>
+<br>
+<div style="text-align: center;"><a href="resources/capture0.png"><img
+ alt="Raw data" title="Raw data" src="resources/capture0.png"
+ style="border: 0px solid ; width: 300px; height: 377px;" hspace="3"
+ vspace="3"></a><br>
+</div>
+Mango also has the very useful ability to read in data as a raw stream
+of bytes, and allows you to specify the full range of parameters for
+loading these volumes.&nbsp; These include the voxel counts and
+dimensions, also datatype sizing (8 through 32 bit), parity, ordering,
+and encoding.&nbsp; This ability is invaluable when trying to read a
+file in an unknown format, or raw binary voxel data from an image
+file.&nbsp; This feature alone makes the program worth using, if you
+work with files at the byte level.<br>
+<h2><a name="viewing"></a>Viewing and Rendering</h2>
+Image volumes once loaded, are displayed in a standard orthoganal
+view in a window which cannot be dragged to resize, but can be zoomed
+using a zoom in/out option in the 'Window' menu.&nbsp; There are a wide
+range of controls for adjusting the image
+levels and colors.&nbsp; Multiple volumes may be opened at the same
+time and there is an option to sync navigation between the
+volumes.&nbsp; However when I tested this using different MRI series
+from the same scanning session, although the navigation in each volume
+was simultaneous, the navigation point was different in the two
+volumes. <br>
+<br>
+<h4>Advanced Viewing Functions</h4>
+Transformations (scaling, rotations, translations) can be entered
+manually or loaded from a file.&nbsp; This is particularly useful when
+co-registering several different scans in the same or different
+modalities.&nbsp; A stored transformation matrix file could be applied,
+for instance, to several physically co-registered image volumes to
+bring them into the same orientation.&nbsp; The orientation can be
+reversed along all three axes, and the image origin can be manually
+redefined.<br>
+<br>
+Overlays are supported: applying one image on top of, or in the same
+space as another.&nbsp; When I tested this feature I could get two
+identical image volumes (such as two PET scans taken several minutes
+apart) to overlay, but two volumes in different resolutions (such as a
+CT in 512x512 and a PET in 128x128 resolution) did not appear in
+co-registration although their image coordinate space was in
+registration.&nbsp; <br>
+<br>
+<br>
+<h2><a name="extensibility"></a>Extensibility</h2>
+One of Mango's great strengths is its plugin architecture.&nbsp; This
+allows software developers to write modules to add functionality to the
+program.&nbsp; A number of plugins are supplied on the web site, and a
+programmer's API is available for developing further modules.&nbsp;
+Examples of plugin modules include adding the ability to run the
+program from the command line to convert images between various
+formats, or to rescale or concatenate images.&nbsp; Other available
+plugins add advanced features such as an anatomical atlas and surface
+rendering.&nbsp; Plugins can also be developed to allow the import of
+file formats not currently supported by the program.&nbsp; The
+extensible plugin architecture is a major feature of Mango and will
+increase its usefulness, particularly if the developer community
+continue to contribute new plugins.<br>
+<br>
+<h2><a name="analysis"></a>Analysis</h2>
+<div style="text-align: center;"><a style="font-style: italic;"
+ href="resources/capture6.png"><img alt="ROI" title="ROI"
+ src="resources/capture6.png"
+ style="border: 0px solid ; width: 180px; height: 290px;" hspace="3"
+ vspace="3"></a>&nbsp; <a href="resources/capture7a.png"><img
+ alt="ROI Menu" title="ROI Menu" src="resources/capture7a.png"
+ style="border: 0px solid ; width: 344px; height: 290px;" hspace="3"
+ vspace="3"></a><a href="resources/capture8.png"><img alt="Calculator"
+ title="Calculator" src="resources/capture8.png"
+ style="border: 0px solid ; width: 210px; height: 290px;" hspace="3"
+ vspace="3"></a><br>
+</div>
+Mango has a very extensive set of ROI and VOI tools including the
+ability to import and export ROIs, perform logical operations on ROIs,
+gather statistics, and numerous other tools.&nbsp; ROIs and VOIs can be
+defined through drawing directly using graphics primitives, tracing, or
+thresholding.&nbsp; Wand tools allow regions to be defined
+semi-automatically using seed points in 2D and 3D, and once defined can
+be edited by hand or by tools such as dilation/erosion.&nbsp; This is a
+highly advanced feature that has much more capability than I have
+described here.<br>
+<br>
+Another very powerful tool is the Image Calculator.&nbsp; This tool
+performs arbitrary calculations between any open volume, slice, or
+ROI.&nbsp; Images may have arithmetic operations performed on them -
+for example, subtracting one similar image from another, then dividing
+by the first image, will give an image denoting the difference betwen
+the two images, expressed as a percentage.&nbsp; <br>
+<br>
+<div style="text-align: center;"><a href="resources/capture9.png"><img
+ alt="Rotations" title="Rotations" src="resources/capture9.png"
+ style="border: 0px solid ; width: 402px; height: 200px;" hspace="3"
+ vspace="3"></a><br>
+</div>
+Transformations can be edited using the Transform tool.&nbsp; The
+example above shows a rotation about the Z axis, and the resulting
+transformation matrix which may subsequently be saved and applied to
+another volume.&nbsp; Saved transformations can also be edited using
+this tool.<br>
+<br>
+<a href="resources/capture10.png"><img alt="Registration"
+ title="Registration" src="resources/capture10.png"
+ style="border: 0px solid ; width: 525px; height: 250px;" hspace="3"
+ vspace="3"></a><br>
+Registration between two image volumes can also be achieved using the
+Transform tool.&nbsp; The example above shows point-matching
+coregistration, where a coregistration matrix has been calculated from
+identical landmark points placed by the user in two image
+volumes.&nbsp; The transform can be defined as rigid, using 3 rotation
+and 3 translation parameters, or as a 9- or 12-parameter nonrigid
+transformation.<br>
+<br>
+<h2><a name="performance"></a>Performance</h2>
+<br>
+<h2><a name="summary"></a>Summary</h2>
+<p>
+Mango is an exceptional program, well suited for a wide range of
+applications.&nbsp; For the casual user it is a small, fast program
+that can be used to view individual image files, or image volumes
+stored in directories.&nbsp; More advanced users can use the volume and
+surface rendering tools, <br>
+</p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>
