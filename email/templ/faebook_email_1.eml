@@ -1,0 +1,231 @@
+Return-path: <notification+5_w-vu3_@facebookmail.com>
+Received: from smtpin127.mac.com ([10.150.68.127])
+ by ms281.mac.com (Oracle Communications Messaging Exchange Server 7u4-22.01
+ 64bit (built Apr 21 2011)) with ESMTP id <0LP9006WJF80XF00@ms281.mac.com> for
+ ahc@me.com; Mon, 01 Aug 2011 10:28:48 -0700 (PDT)
+Original-recipient: rfc822;ahc@me.com
+Received: from mx-out.facebook.com ([66.220.144.146])
+ by smtpin127.mac.com (Sun Java(tm) System Messaging Server 7u3-16.01 64bit
+ (built May 20 2010)) with ESMTP id <0LP9002IZF7F6420@smtpin127.mac.com> for
+ ahc@me.com (ORCPT ahc@me.com); Mon, 01 Aug 2011 10:28:42 -0700 (PDT)
+X-Proofpoint-Virus-Version: vendor=fsecure
+ engine=2.50.10432:5.4.6813,1.0.211,0.0.0000
+ definitions=2011-08-01_05:2011-08-01,2011-08-01,1970-01-01 signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ ipscore=0 suspectscore=13 phishscore=0 bulkscore=96 adultscore=0
+ classifier=spam adjust=0 reason=mlx engine=6.0.2-1012030000
+ definitions=main-1108010156
+Return-path: <notification+5_w-vu3_@facebookmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; d=facebookmail.com; s=s1024-2011-q2;
+ c=relaxed/simple;	q=dns/txt; i=@facebookmail.com; t=1312219722;
+	h=From:Subject:Date:To:MIME-Version:Content-Type;
+	bh=8AtgGpjfJ+xe9KeaxFDkhOYxaWtFWg4VhQmo7YZKsZk=;
+	b=uOVRbkVab+sxfMnxH8xzFB3qOEKJGSrsr6At8w0zM8JoXiMOwK0QEjhMqgPRu696
+	FbaDKGBdE77zl80AZ1SWSV4sZ7tHF2Io31bLt4VhLcW/wEKCxTvtayR7pjHQTD1K
+	SVo+bf8y2zN3CYs5NQsQtwf5T5qW7IiKkrNHGaCzCXY=;
+Received: from [10.30.52.199] ([10.30.52.199:61537])
+	by smout028.snc4.facebook.com
+ (envelope-from <notification+5_w-vu3_@facebookmail.com>)
+	(ecelerity 2.2.2.45 r(34222M)) with ECSTREAM	id 0E/78-17387-A42E63E4; Mon,
+ 01 Aug 2011 10:28:42 -0700
+X-Facebook: from zuckmail ([MTI3LjAuMC4x])	by async.facebook.com with HTTP
+ (ZuckMail);
+Date: Mon, 01 Aug 2011 10:28:42 -0700
+To: Andy Crabb <ahc@me.com>
+From: Facebook <notification+5_w-vu3_@facebookmail.com>
+Reply-to: noreply <noreply@facebookmail.com>
+Subject: Your Weekly Facebook Page Update
+Message-id: <7aa825e08aaea2b2607ef195ffc7edf4@async.facebook.com>
+X-Priority: 3
+X-Mailer: ZuckMail [version 1.00]
+X-Facebook-Notify: fbpage_insights; mailid=4a0df78G527c43G267fa11G66
+Errors-to: notification+5_w-vu3_@facebookmail.com
+X-FACEBOOK-PRIORITY: 0
+MIME-version: 1.0
+Content-type: multipart/alternative;
+ boundary=b1_7aa825e08aaea2b2607ef195ffc7edf4
+
+
+--b1_7aa825e08aaea2b2607ef195ffc7edf4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Andy,
+
+Here is this week's summary for your Facebook Page:
+
+------
+
+I Do Imaging
+
+12 monthly active users (+ 1 since last week)
+43 people like this (- 1 since last week)
+0 wall posts or comments this week (+ 0 since last week)
+16 visits this week (+ 5 since last week)
+
+Send an update to people who like this
+http://www.facebook.com/n/?campaign%2Flanding.php&url=3Dhttp%3A%2F%2Fwww.f=
+acebook.com%2Fpages%2FI-Do-Imaging%2F170395076320501%3Fv%3Dwall%26ref%3Dpd=
+em&campaign_id=3D162865293754232&extra_1=3DsendUpdate&fwd=3D0&mid=3D4a0df7=
+8G527c43G267fa11G66&bcode=3DHuMkryqr&n_m=3Dahc%40me.com
+Visit your Insights Page
+http://www.facebook.com/n/?campaign%2Flanding.php&url=3Dhttp%3A%2F%2Fwww.f=
+acebook.com%2Finsights%2F%3Fsk%3Dpo_170395076320501%26ref%3Dpdem&campaign_=
+id=3D162865293754232&extra_1=3DvisitInsights&fwd=3D0&mid=3D4a0df78G527c43G=
+267fa11G66&bcode=3DHuMkryqr&n_m=3Dahc%40me.com
+Promote with Facebook Ads
+http://www.facebook.com/n/?campaign%2Flanding.php&url=3Dhttp%3A%2F%2Fwww.f=
+acebook.com%2Fads%2Fcreate%2F%3Ffbid%3D170395076320501%26src%3Dpdem&campai=
+gn_id=3D162865293754232&extra_1=3DpromoteFBAds&fwd=3D0&mid=3D4a0df78G527c4=
+3G267fa11G66&bcode=3DHuMkryqr&n_m=3Dahc%40me.com
+
+------
+
+Learn more about how to update via mobile
+http://m.facebook.com/upload.php?ref=3Dpdem
+
+Thanks,
+The Facebook Team
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+The message was sent to ahc@me.com. If you don't want to receive these =
+emails from Facebook in the future, please follow the link below to =
+unsubscribe.
+http://www.facebook.com/o.php?k=3Dcc00f5&u=3D5405763&mid=3D4a0df78G527c43G=
+267fa11G66
+Facebook, Inc. P.O. Box 10005, Palo Alto, CA 94303
+
+
+--b1_7aa825e08aaea2b2607ef195ffc7edf4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional //EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=3Dutf-8"><title>Facebook</title>
+</head>
+<body style="margin: 0; padding: 0;" dir="ltr">
+<bgsound =src="email_open_log_pic.php?mid=3D4a0df78G527c43G267fa11G66&s=3Da" volume="-10000"/>
+<table width="98%" border="0" cellspacing="0" cellpadding="40">
+<tr>
+<td bgcolor="#f7f7f7" width="100%" style="font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;">
+<table cellpadding="0" cellspacing="0" border="0" width="620">
+<tr>
+<td style="background: #3b5998; color: #FFFFFF; font-weight: bold; font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; vertical-align: middle;padding: 4px 8px; font-size: 16px; letter-spacing: -0.03em; text-align: left;">
+facebook
+</td>
+<td style="background: #3b5998; color: #FFFFFF; font-weight: bold; font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; vertical-align: middle;padding: 4px 8px;font-size: 11px; text-align: right;">
+</td>
+</tr>
+<tr>
+<td colspan="2" style="background-color: #FFFFFF; border-bottom: 1px solid #3b5998; border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; padding: 15px;" valign="top">
+<table width="100%">
+<tr>
+<td width="100%" style="font-size: 12px;" valign="top" align="left">
+<div style="margin-bottom: 15px; font-size: 12px;">
+Hi Andy,
+</div>
+<div style="margin-bottom: 15px;">
+Here is this week&#039;s summary for your Facebook Page:
+<br />
+<br />
+<table rules="rows" frame="hsides" style="border-color:#cccccc">
+<tr>
+<td>
+<table cellpadding="2">
+<tr>
+<td>
+<table cellpadding="2">
+<tr><td valign="top">
+<img src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/50=
+500_170395076320501_6752765_q.jpg" />
+</td>
+<td>
+<table cellpadding="2"><tr><td><span style="font-size: 14px; font-weight: =
+bold;">I Do Imaging</span></td></tr><tr><td><span style="font-size: =
+24px; font-family: arial; padding:0 5px 0 0;">12</span> monthly active =
+users<img src="http://www.facebook.com/images/insights/green-up.gif" =
+style="padding: 0 0 0 5px;" /><span style="font-size: 18px; =
+font-family: arial;
+                         padding-right: 2px">1</span> since last =
+week</td></tr><tr><td><span style="font-size: 24px; font-family: arial; =
+padding:0 5px 0 0;">43</span> people like this<img =
+src="http://www.facebook.com/images/insights/red-down.gif" =
+style="padding: 0 0 0 5px;" /><span style="font-size: 18px; =
+font-family: arial;
+                         padding-right: 2px">1</span> since last =
+week</td></tr><tr><td>
+<span style="font-size: 24px; font-family: arial; padding:0 5px 0 0;">
+0
+</span>
+wall posts or comments this week
+<img src="http://www.facebook.com/images/insights/green-up.gif" style="padding: 0 0 0 5px;" />
+<span style="font-size: 18px; font-family: arial; padding-right: 2px">
+0
+</span>
+since last week
+</td>
+</tr>
+<tr>
+<td>
+<span style="font-size: 24px; font-family: arial; padding:0 5px 0 0;">
+16
+</span>
+visits this week<img src="http://www.facebook.com/images/insights/green-up.gif" style="padding: 0 0 0 5px;" />
+<span style="font-size: 18px; font-family: arial; padding-right: 2px">
+5
+</span>
+since last week
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td><ul style="color: #999999; padding-left: 5px"><li><a href="http://www.face=
+book.com/n/?campaign%2Flanding.php&amp;url=3Dhttp%3A%2F%2Fwww.facebook.com=
+%2Fpages%2FI-Do-Imaging%2F170395076320501%3Fv%3Dwall%26ref%3Dpdem&amp;camp=
+aign_id=3D162865293754232&amp;extra_1=3DsendUpdate&amp;fwd=3D0&amp;mid=3D4=
+a0df78G527c43G267fa11G66&amp;bcode=3DHuMkryqr&amp;n_m=3Dahc%40me.com" =
+style="color:#3b5998;text-decoration:none;">Send an update to people who =
+like this</a></li><li><a href="http://www.facebook.com/n/?campaign%2Flan=
+ding.php&amp;url=3Dhttp%3A%2F%2Fwww.facebook.com%2Finsights%2F%3Fsk%3Dpo_1=
+70395076320501%26ref%3Dpdem&amp;campaign_id=3D162865293754232&amp;extra_1=
+=3DvisitInsights&amp;fwd=3D0&amp;mid=3D4a0df78G527c43G267fa11G66&amp;bcode=
+=3DHuMkryqr&amp;n_m=3Dahc%40me.com" =
+style="color:#3b5998;text-decoration:none;">Visit your Insights =
+Page</a></li><li><a href="http://www.facebook.com/n/?campaign%2Flanding.=
+php&amp;url=3Dhttp%3A%2F%2Fwww.facebook.com%2Fads%2Fcreate%2F%3Ffbid%3D170=
+395076320501%26src%3Dpdem&amp;campaign_id=3D162865293754232&amp;extra_1=3D=
+promoteFBAds&amp;fwd=3D0&amp;mid=3D4a0df78G527c43G267fa11G66&amp;bcode=3DH=
+uMkryqr&amp;n_m=3Dahc%40me.com" =
+style="color:#3b5998;text-decoration:none;">Promote with Facebook =
+Ads</a></li></ul></td></tr></table></td></tr></table><br /><a =
+href="http://m.facebook.com/upload.php?ref=3Dpdem" =
+style="color:#3b5998;text-decoration:none;">Learn more about how to =
+update via mobile</a><br /><br /></div><div style="margin-bottom: 15px; =
+margin: 0;">Thanks,<br />
+The Facebook Team</div></td></tr></table><span style=""><img =
+src="http://www.facebook.com/email_open_log_pic.php?mid=3D4a0df78G527c43=
+G267fa11G66" style="border:0;width:1px;height:1px;" /><bgsound =
+src="http://www.facebook.com/email_open_log_pic.php?mid=3D4a0df78G527c43=
+G267fa11G66&s=3Da" volume="-10000"/></span></td></tr><tr><td =
+colspan="2" style="color: #999999; padding: 10px; font-size: 12px; =
+font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;">The =
+message was sent to ahc&#64;me.com. If you don't want to receive these =
+emails from Facebook in the future or have your email address used for =
+friend suggestions, you can <a href="http://www.facebook.com/o.php?k=3Dc=
+c00f5&amp;u=3D5405763&amp;mid=3D4a0df78G527c43G267fa11G66" =
+style="color:#3b5998;text-decoration:none;">unsubscribe</a>. Facebook, =
+Inc. P.O. Box 10005, Palo Alto, CA =
+94303</td></tr></table></td></tr></table></body></html>
+
+
+
+--b1_7aa825e08aaea2b2607ef195ffc7edf4--
+

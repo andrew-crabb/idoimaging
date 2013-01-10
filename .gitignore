@@ -2,7 +2,6 @@
 cgi-bin/tmp
 cgi-bin/userbase/encdata
 cgi-bin/userbase/orig
-email
 php/notused
 public_html/blog
 public_html/img
