@@ -1,6 +1,1 @@
-<<<<<<< HEAD
 Added on andymac in branch master.
-=======
-Added on andymac in branch devel.
-Added on andymac in branch devel.
->>>>>>> devel
