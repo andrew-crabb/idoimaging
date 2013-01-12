@@ -52,9 +52,9 @@ my ($userid, $is_logged_in) = (undef, 0);
 if (defined($userid = $ENV{'logged_in_user'})) {
   delete $ENV{'logged_in_user'};
   $is_logged_in = 1;
-  print "<tt>you are user $userid</tt><br>\n";
+  # print "<tt>you are user $userid</tt><br>\n";
 } else {
-  print "<tt>you are not logged in.</tt><br>\n";
+  # print "<tt>you are not logged in.</tt><br>\n";
 }
 
 my @monitored = monitoredPrograms($dbh, $userid);
