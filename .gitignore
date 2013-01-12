@@ -5,13 +5,18 @@
 /php/notused/
 /public_html/blog/
 /public_html/img/
-/public_html/login/appdata/
 /public_html/login/images/
 /public_html/programs_src/
 /public_html/wiki_120/
 /public_html/bugzilla-4.2.4/
 /test/
 /unused/
+
+# Don't track files in these directories
+/public_html/login/appdata/*
+
+# Do track these exceptions
+!/public_html/login/appdata/.gitignore
 
 # Don't track these files
 *~
