@@ -1835,9 +1835,11 @@ sub makeProgramLink {
     # Get info for small screen cap image.
     my $smstr = "select * from image";
     $smstr   .= " where rsrcid = '$ident'";
+    $smstr   .= " and rsrcfld = 'prog'";
     $smstr   .= " and path = '$IMG_SMALLDIR'";
     $smstr   .= " and scale = '$IMG_SMALLDIM'";
     $smstr   .= " order by ordinal";
+    # print STDERR "$smstr\n";
     my $smsh = dbQuery($dbh, $smstr);
     my @smptrs = ();
     while (my $smptr = $smsh->fetchrow_hashref()) {
