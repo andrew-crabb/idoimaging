@@ -3,7 +3,7 @@
 package radutils;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(authName sortHashVal truncateHashVals selectedVals listPrereq hostConnect formatList nextIdent comment dbRecord daysAgo linkCountIcon fmtAuthorName dbQuery nextIndex addVersionRecord loggedInIdent monitoredPrograms validDate relatedPrograms truncateString whichHost getEnv listHashMembers makeDir dumpParams printTitle printStartHTML urlIcon listParts relatedProgramsTable programsHavingSpeciality sortedcomb makeTableBinary makeemailicon valToSQL valToTDedit valToTDsumm sortedHeadingRow getParams definedVal isNonZero makeProgramLink getSecondaryScreenCaptures printRowWhite printRowWhiteCtr createAdvertTable printPageIntro makeIfaceCell printToolTips addCvars make_cvars_text conditionString getCaptureImages randomSubset allProgNames makeRsrcIcon write_file timeNowHash make_monitor_details is_admin_or_cli);
+@EXPORT = qw(authName sortHashVal truncateHashVals selectedVals listPrereq hostConnect formatList nextIdent comment dbRecord daysAgo linkCountIcon fmtAuthorName dbQuery nextIndex addVersionRecord loggedInIdent monitoredPrograms validDate relatedPrograms truncateString getEnv listHashMembers makeDir dumpParams printTitle printStartHTML urlIcon listParts relatedProgramsTable programsHavingSpeciality sortedcomb makeTableBinary makeemailicon valToSQL valToTDedit valToTDsumm sortedHeadingRow getParams definedVal isNonZero makeProgramLink getSecondaryScreenCaptures printRowWhite printRowWhiteCtr createAdvertTable printPageIntro makeIfaceCell printToolTips addCvars make_cvars_text conditionString getCaptureImages randomSubset allProgNames makeRsrcIcon write_file timeNowHash make_monitor_details is_admin_or_cli);
 @EXPORT = (@EXPORT, (qw(%resourcetype %formats %db_program_fields %relationships)));
 @EXPORT = (@EXPORT, (qw($DB_INT $DB_CHR $DB_BEN $DB_DAT $DB_FLT)));
 @EXPORT = (@EXPORT, (qw($KEY_CGI $KEY_CGI $KEY_IDENT $KEY_URLSTAT $KEY_TABLE $KEY_FIELD $KEY_URL $KEY_TIP0 $KEY_TIP1 $KEY_TIPNA)));
@@ -91,9 +91,6 @@ our $FLD_LEN = 4;	# Element is max length (0 for CHR = limitless).
 our $FLD_SLN = 5;	# Element is short summary length for display.
 our $FLD_DSC = 6;	# Element is a textual description.
 
-our $SITE_DEVEL = 'site_devel';
-our $SITE_ONLINE = 'site_online';
-
 # ------------------------------------------------------------
 # Hash keys for parameters.
 # ------------------------------------------------------------
@@ -118,8 +115,8 @@ our (%db_program, @db_program_index, %db_data, @db_data_index);
   'summ'          => ['Summary'      , $DB_CHR,   0],
   'descr'         => ['Description'  , $DB_CHR,   0],
   'rev'           => ['Revision'     , $DB_CHR,  10],
-  'rdate'         => ['Rev Date'     , $DB_DAT,   0], 
-  'auth'          => ['Author'       , $DB_ORD,   0], 
+  'rdate'         => ['Rev Date'     , $DB_DAT,   0],
+  'auth'          => ['Author'       , $DB_ORD,   0],
   'plat'          => ['Platform'     , $DB_BEN,   0],
   'lang'          => ['Language'     , $DB_BEN,   0],
   'func'          => ['Function'     , $DB_BEN,   0],
@@ -856,27 +853,11 @@ sub hostConnect {
 
   # Database init.
   my %attr = (RaiseError => 1);
-  # my $dsn = "DBI:mysql:$db_name:idoimaging.com";
-  my $dsn = "DBI:mysql:$db_name";
+  my $dsn = "DBI:mysql:$db_name:localhost";
   my $dbh = DBI->connect($dsn,'_www','PETimage', \%attr);
   (hasLen($dbh)) or die "Can't get database connection";
 
   return $dbh;
-}
-
-sub whichHost {
-    my $whichHost;
-    my ($server) = getEnv(qw(SERVER_NAME));
-
-    if ($server =~ /^idoimaging$/) {
-      $whichHost = 'widget';
-    } elsif ($server =~ /idoimaging.com/) {
-      $whichHost = 'online';
-    } else {
-      $whichHost = 'unknown';
-    }
-    my $host = 'host';
-    return "$whichHost $host";
 }
 
 sub getEnv {
@@ -2041,7 +2022,7 @@ sub printPageIntro {
   my $adfile = "advertising.html";
   my @adcontents = fileContents($adfile);
   # Suppress advertising on local computer...
-  my $adcontents = (whichHost() =~ /$SITE_DEVEL/) ? "Advertising Goes Here;" : join("\n", @adcontents);
+  my $adcontents = join("\n", @adcontents);
   printRowWhiteCtr($adcontents, $tablewidth);
   print comment(" End of table row for page-top advertising");
 }
