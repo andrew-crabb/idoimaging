@@ -58,8 +58,6 @@ if (defined($userid = $ENV{'logged_in_user'})) {
 }
 
 my @monitored = monitoredPrograms($dbh, $userid);
-# Only allow edits from development machine.
-my $isdevel = (whichHost() =~ /$radutils::SITE_DEVEL/);;
 
 # print "<tr><td>\n";
 # dumpParams($cgi);
