@@ -785,6 +785,9 @@ sub selectedVals {
 #     print "*** key $key, sumval $sumval, keyistrue $keyistrue, icons_wide $icons_wide, icons_narr $icons_narr\n";
   }
 
+  # HACK
+  $valstr_n = '___' if ($valstr_n eq '');
+
   # Hashname may come in as 'radutils::cat_plat', or 'cat_plat', or 'plat'.
   my $valstr = join(" ", @sortedvals);
   my $val_str = join("_", @sortedvals);
@@ -798,14 +801,15 @@ sub selectedVals {
   # Add tip text if required.
   $field = '' unless (hasLen($field));
   my $tipclass = "tip_${field}_${val_str}";
-  my $icons_wide_t = "<img class='showTip $tipclass' src='${iconpath}/${cat}${valstr_w}.png' title='' alt='$val_str' />";
-  my $icons_narr_t = "<img class='showTip $tipclass' src='${iconpath}/${cat}${valstr_n}.png' title='' alt='$val_str' />";
+# print STDERR "radutils::selectedVals($cat): valstr_w '$valstr_w', valstr_n '$valstr_n'\n";
+  my $icons_wide_t = "<img class='showTip $tipclass' src='${iconpath}/${cat}${valstr_w}.png' title='' alt='$val_str w' />";
+  my $icons_narr_t = "<img class='showTip $tipclass' src='${iconpath}/${cat}${valstr_n}.png' title='' alt='$val_str n' />";
   my %field_names = (
-    'plat' => 'Platform',
+    'plat'      => 'Platform',
     'interface' => 'Interface',
       );
   my $tiptext = (exists $field_names{$field}) ? $field_names{$field} : $field;
-#   my $f_name = $field_names{$field};
+
   $tiptext .= ": " . join(", ", @sortedvals);
   my %tip_cvars = (
     'class'       => $tipclass,
@@ -2093,7 +2097,7 @@ sub makeIfaceCell {
     }
   }
   $imgname .= ".png";
-  
+  # print STDERR "radutils::makeIfaceCell(): imgname $imgname\n";
   my $valstr = join(", ", @tips);
   my $val_str = join("_", @tips);
   $val_str =~ s/\ /_/g;
