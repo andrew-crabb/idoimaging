@@ -1,0 +1,16 @@
+# Don't track these directories
+/cgi-bin/tmp/
+/cgi-bin/userbase/encdata/
+/cgi-bin/userbase/orig/
+/php/notused/
+/public_html/blog/
+/public_html/img/
+/public_html/programs_src/
+/public_html/wiki_120/
+/public_html/bugzilla-4.2.4/
+/test/
+/unused/
+
+# Don't track these files
+*~
+.*~

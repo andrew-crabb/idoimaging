@@ -1,0 +1,221 @@
+body {
+    font-family	    : sans-serif;
+    background-color : #ddd;
+    }
+
+.red {
+    color : #A00;
+    }
+
+.bg_grey {
+    background-color : #e8e8e8;
+}
+
+.page_header {
+    background-color : #fff; 
+    margin-top : 5px;
+    margin-bottom : 5px;
+    padding: 5px 5px 5px 5px;
+    height : 90px;
+/*    border : 1px solid black;; */
+/*    background-color : #fef; */
+    }
+    
+#page_header_title {
+    display  : block; 
+    padding  : 2px 2px;
+/*    float : top; */
+/*    position: absolute; */
+/*    left : 10; */
+/*    top : 10; */
+/*    border   : 1px solid black; */
+}
+
+#page_header_login {
+    background-color	: #e8e8e8;
+    border		: 1px solid #888;
+    display		: block;
+    float		: right;
+    font-size		: 10pt;
+    line-height		: 1.0;
+    max-width		: 300px;
+    padding		: 3px 3px;
+    position		: absolute;
+    right		: 10px;
+    top			: 10px;
+    z-index		: 1;
+}
+
+#page_header_login A {
+    color: #444444;
+    }
+
+.primary #page_header_login td, #page_header_login input {
+
+}
+
+/* Message about leaving password blank */
+
+#login_message {
+    padding  : 0px 2px 5px 2px;
+    font-size: 10pt;
+    color    : #448;
+    max-width : 300px;
+    z-index : 1;
+    margin-left: 30px;
+
+}
+
+.static_content {
+    max-width : 400px;
+}
+
+.container {
+    width     : 100%
+    background-color : #eee;
+    }
+
+.nav_menu {
+    color: #008;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    background-color : #dfd;
+    font-size : 10pt;
+}
+
+.frame-me {
+    border   : 2px solid #888;
+    padding  : 5px 5px;
+    float    : left;
+}
+
+.white-box {
+    border   : 2px solid #888;
+    padding  : 5px 5px;
+    background-color : #fff;
+}
+
+.white {
+    background-color : #fff;
+#     text-align : center;
+}
+
+.space_right {
+    padding : 0px 30px 0px 0px;
+}
+
+.space5pix {
+    padding : 5px 5px 5px 5px;
+}
+
+/* ------------------------------------------------------------ */
+/*                 <ul> CSS3 menu from westciv.com              */
+/* ------------------------------------------------------------ */
+
+.navcontainer {clear:both; float:left; width:100%; overflow:hidden;}
+
+ul.step1 {
+    padding:0;
+    margin:0 auto;
+    list-style-type:none;
+    float:left;
+    position:relative;
+    left:50%;
+}
+ 
+ul.step1 li {
+    list-style-type: none;
+    display: block;
+    width: 7em;
+    float: left;
+    text-align: center;
+    font-family: "Lucida Grande", sans-serif;
+    height: 2em;
+    margin-bottom: 1em;
+
+    position:relative; right:50%;
+  
+
+}
+
+ul.step1 li a {
+    display: block;
+    padding: .4em .5em .5em .5em;
+    text-decoration: none;
+
+}
+	
+ul.step2 li:first-child {
+    -webkit-border-top-left-radius: .5em;
+    -moz-border-radius-topleft: .5em;
+    border-top-left-radius: .5em;
+    -webkit-border-bottom-left-radius: .5em;
+    -moz-border-radius-bottomleft: .5em;
+    border-bottom-left-radius: .5em; 
+}
+
+ul.step2 li:last-child {
+    -webkit-border-top-right-radius: .5em;
+    -moz-border-radius-topright: .5em;
+    border-top-right-radius: .5em;
+    -webkit-border-bottom-right-radius: .5em;
+    -moz-border-radius-bottomright: .5em;
+    border-bottom-right-radius: .5em; 
+}
+
+ul.step3 li {
+    list-style-type: none;
+    display: block;
+    width: 7em;
+    float: left;
+    text-align: center;
+    font-family: "Lucida Grande", sans-serif;
+    /*	height: 3em; */
+    height: 2em;
+    border-right: 1px #818181 solid;
+/*    -webkit-box-shadow: 1px 1px 1px #bbb;  */
+/*    -moz-box-shadow: 1px 1px 1px #bbb; */
+/*    box-shadow: 1px 1px 1px #bbb; */
+}
+
+ul.step3 li:last-child {
+    border-right: 0px #000 solid;
+}
+
+ul.step3 li a {
+    display: block;
+    padding: .4em .5em .5em .5em;
+    text-decoration: none;
+    color: #292929; 
+}
+
+ul.step3 li a:hover {
+    color: #fff;
+}
+ul.step3 li.active a {
+    display: block;
+    padding: .4em .5em .5em .5em;
+    text-decoration: none;
+    color: #fff;
+}
+
+ul.step4 li {
+    background-color: #ccc;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ddd), to(#999));
+}
+
+ul.step4 li.active {
+    background-color: #666;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#888), to(#444));
+}
+
+ul.step4 li:hover {
+    background-color: #888;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#aaa), to(#666));
+}
+
+/* ------------------------------------------------------------ */
+/*            End of <ul> CSS3 menu from westciv.com            */
+/* ------------------------------------------------------------ */

@@ -1,0 +1,234 @@
+<tr id='finder_content_tr'>
+<td id='finder_content_td' class='white'>
+<table id='search' width='920' cellpadding='0' cellspacing='0' border='1'>
+
+<!-- Search table: Row 0: Cols 0-1: 'Search Software Classifications' table -->
+<tr id='search_r0' valign='top'>
+<td id='search_r0c0' width='920' colspan='2' class='white' align='center'>
+<form method="get" action="/programs" enctype="application/x-www-form-urlencoded" id="program_form"><!-- Table for row 0: Software Classification. -->
+<table id='search_clas' width='920' cellpadding='5' cellspacing='0' border='0'>
+<tr id='search_clas_r0' >
+<td align='center' class='white' colspan='6'>
+<h3 class='title'>Search Software Classifications</h3>
+</td>
+</tr>  <!-- search_clas_r0 -->
+
+<!-- Search table: Row 1: Col 0-5: Classification titles -->
+<tr><th align="left" width="121">Function</th> <th align="left" width="121">Speciality</th> <th align="left" width="121">Input Format</th> <th align="left" width="121">Output Format</th> <th align="left" width="121">Platform</th> <th align="left" width="121">Language</th></tr>
+
+<!-- Search table: Row 2: Col 0-5: Classification popup inputs -->
+<tr>
+<td width="121"><select name="func" >
+<option value="">All/Any</option>
+<option value="16">Convert</option>
+<option value="4">Display</option>
+<option value="128">Lang</option>
+<option value="512">Library</option>
+<option value="1024">Model</option>
+<option value="32">PACS Client</option>
+<option value="64">Register</option>
+<option value="256">Server</option>
+<option value="2">Utility</option>
+<option value="8">Write</option>
+</select></td>
+<td width="121"><select name="category" >
+<option value="">All/Any</option>
+<option value="8">CT</option>
+<option value="256">Cardiac</option>
+<option value="65536">DTI</option>
+<option value="4">FMRI</option>
+<option value="16384">MEG</option>
+<option value="2">MRI</option>
+<option value="512">Model</option>
+<option value="128">Neuro</option>
+<option value="32768">PACS</option>
+<option value="32">PET</option>
+<option value="4096">Param</option>
+<option value="1024">Reg.</option>
+<option value="64">SPECT</option>
+<option value="2048">Seg.</option>
+<option value="8192">Surf/Vol</option>
+<option value="16">USound</option>
+</select></td>
+<td width="121"><select name="readfmt" >
+<option value="">All/Any</option>
+<option value="33554432">ADVANCE</option>
+<option value="2147483648">AFNI</option>
+<option value="8">Analyze</option>
+<option value="524288">BMP</option>
+<option value="134217728">Bruker</option>
+<option value="2">DICOM</option>
+<option value="512">ECAT 6</option>
+<option value="1024">ECAT 7</option>
+<option value="32">GE MRI-4</option>
+<option value="64">GE MRI-5</option>
+<option value="128">GE MRI-LX</option>
+<option value="16">GE Scand</option>
+<option value="68719476736">GIPL</option>
+<option value="32768">Gif</option>
+<option value="256">Interfile</option>
+<option value="65536">JPEG</option>
+<option value="8589934592">LONI</option>
+<option value="2097152">Matlab</option>
+<option value="8192">Minc</option>
+<option value="4">NEMA</option>
+<option value="17179869184">NIfTI</option>
+<option value="34359738368">NetCDF</option>
+<option value="4294967296">Own/Unique</option>
+<option value="8388608">PGM</option>
+<option value="536870912">PICT</option>
+<option value="262144">PNG</option>
+<option value="4194304">PPM</option>
+<option value="16777216">Papyrus</option>
+<option value="2048">Picker CT</option>
+<option value="268435456">QuickTime</option>
+<option value="16384">Raw</option>
+<option value="67108864">SPM</option>
+<option value="4096">Siemens</option>
+<option value="131072">TIFF</option>
+<option value="1073741824">VTK</option>
+</select></td>
+<td width="121"><select name="writfmt" >
+<option value="">All/Any</option>
+<option value="33554432">ADVANCE</option>
+<option value="2147483648">AFNI</option>
+<option value="8">Analyze</option>
+<option value="524288">BMP</option>
+<option value="134217728">Bruker</option>
+<option value="2">DICOM</option>
+<option value="512">ECAT 6</option>
+<option value="1024">ECAT 7</option>
+<option value="32">GE MRI-4</option>
+<option value="64">GE MRI-5</option>
+<option value="128">GE MRI-LX</option>
+<option value="16">GE Scand</option>
+<option value="68719476736">GIPL</option>
+<option value="32768">Gif</option>
+<option value="256">Interfile</option>
+<option value="65536">JPEG</option>
+<option value="8589934592">LONI</option>
+<option value="2097152">Matlab</option>
+<option value="8192">Minc</option>
+<option value="4">NEMA</option>
+<option value="17179869184">NIfTI</option>
+<option value="34359738368">NetCDF</option>
+<option value="4294967296">Own/Unique</option>
+<option value="8388608">PGM</option>
+<option value="536870912">PICT</option>
+<option value="262144">PNG</option>
+<option value="4194304">PPM</option>
+<option value="16777216">Papyrus</option>
+<option value="2048">Picker CT</option>
+<option value="268435456">QuickTime</option>
+<option value="16384">Raw</option>
+<option value="67108864">SPM</option>
+<option value="4096">Siemens</option>
+<option value="131072">TIFF</option>
+<option value="1073741824">VTK</option>
+</select></td>
+<td width="121"><select name="plat" >
+<option value="">All/Any</option>
+<option value="1">Windows</option>
+<option value="2">Macintosh</option>
+<option value="4">Linux</option>
+</select></td>
+<td width="121"><select name="lang" >
+<option value="">All/Any</option>
+<option value="2">C</option>
+<option value="1024">C#</option>
+<option value="4">C++</option>
+<option value="256">Delphi</option>
+<option value="512">IDL</option>
+<option value="32">Java</option>
+<option value="128">Matlab</option>
+<option value="8192">PHP</option>
+<option value="8">Perl</option>
+<option value="2048">Python</option>
+<option value="4096">Ruby</option>
+<option value="64">Shell</option>
+<option value="16">Tcl</option>
+</select></td>
+</tr>
+
+<!-- Search table: Row 3: Col 0-5: Classification submit buttons -->
+<tr>
+<td width='121'>&nbsp;</td><td width='121'>&nbsp;</td>
+<td align="center" width="121"><input type="submit" name="Search Classifications" value="Search Classifications" onclick="submitSearchForm()" /></td>
+<td align="center" width="121"><input type="reset"  name=".reset" /></td>
+<td width='121'>&nbsp;</td><td width='121'>&nbsp;</td>
+</tr>
+<!-- End of table 'Software Classification'. -->
+</table>
+</form>
+</td>  <!-- search_r0c0 -->
+</tr>  <!-- search_r0 -->
+<tr id='search_r1'>
+<!-- Row 1 Col 0: Search site descriptions -->
+<td id='search_r1c0' valign='top' class='white'>
+<table id='search_desc' width='460' cellpadding='5' cellspacing='0' border='0'>
+
+<!-- Table 'Software Description': Row 0: Title image. -->
+<tr>
+<td class='light_bg' width='460' align='center'>
+<h3 class='title'>Search Software Descriptions</h3>
+</td>
+</tr>
+
+<!-- Table 'Software Description': Row 1: Text. -->
+<tr>
+<td height='30' valign='top' class='light_bg'>
+Search the program names and descriptions stored in the database.
+</td>
+</tr>
+
+<!-- Table 'Software Description': Row 2: Search box. -->
+<tr>
+<td height='30' valign='top' align='center' ><form method="get" action="/search" enctype="application/x-www-form-urlencoded"><input class='blue' type='text' name='search' size='22' maxlength='100' />
+&nbsp;&nbsp;<input type="submit" name="Search" value="Search" />
+</form>
+</td>
+</tr>
+</table>  <!-- search_desc -->
+</td>  <!-- search_r1c0 -->
+<!-- Row 4 Col 1: Google search -->
+<td id='search_r1c1' valign='top' class='white'>
+<!-- Table to contain Google search components -->
+<table id='search_sites' width='460' cellpadding='5' cellspacing='0' border='0'>
+
+<!-- Table 'Google Search': Row 0: Title image. -->
+<tr>
+<td class='light_bg' align='center' width='460'>
+<h3 class='title'>Search Project Web Sites</h3>
+</td>
+</tr>
+
+<!-- Table 'Google Search': Row 0: Description. -->
+
+<tr>
+<td height='30' valign='top' class='light_bg'>
+Search the contents of all web sites indexed by I Do Imaging.  
+Searching for common terms may produce many unsorted results. 
+</td>
+</tr>
+
+<!-- Table 'Google Search': Row 2: Search box -->
+<tr>
+<td height='30' valign='middle' align='center'>
+<form action="http://www.idoimaging.com/search_results.php" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="015375320376295324229:-syh5thp9gc" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="22" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+</td>
+</tr>
+</table>  <!-- search_sites -->
+</td>  <!-- search_r1c1 -->
+</tr>  <!-- search_r1 -->
+</table>  <!-- search -->
+</td>  <!-- finder_content_td -->
+</tr>  <!-- finder_content_tr -->

@@ -1,0 +1,65 @@
+/* ------------------------------------------------------------ */
+/*                 UserBase              */
+/* ------------------------------------------------------------ */
+
+/* My additions ahc */
+#ub_remember_me {
+    font-size: 9pt;
+}
+
+.ub_cust_msg {
+    font-size : 11pt;
+    background-color : #BEB;
+    padding : 3px 3px;
+}
+
+#ubbody h2 {
+    font: bold 12pt sans-serif;
+    margin: 5px;
+}
+
+.page_header_login input{
+    background-color : #EEE;
+    color : #000;
+    }
+    
+/* End my additions ahc */
+
+/* Account Management - Admins only */
+.encmenu { border: 1px solid #777; margin: 5px auto 20px auto; max-width: 400px; text-align: center; }
+.encmenu a, .encmenu div.text { display: block; padding: 5px; border: 0; color: #000 !important; border-top: 1px solid #fff; }
+.encmenu a.odd,  .encmenu div.odd  { background: #efefef; }
+.encmenu a.even, .encmenu div.even { background: #e9e9e9; }
+.encmenu a:visited { border: 0; border-top: 1px solid #fff; }
+.encmenu a.first, .encmenu a.first:visited { border: 0; }
+.encmenu a:hover { background: #d5d9d3; text-decoration: none; }
+.encmenu .header { background: #507090; color: #fff; font: bold 8pt sans-serif; padding: 12px; }
+.encmenu div.text { font-weight: bold; }
+
+#ubbody, #ubbody table { font: 8pt sans-serif; color: #575757; text-align: center; }
+
+/* Fix any stupid overly-broad CSS from site-wide stylesheets: */
+#ubbody table td { font: 8pt sans-serif; color: #575757; }
+#ubbody p { margin: 10px auto; width: auto; }
+
+#ubbody a { color: #507090; text-decoration: none; }
+#ubbody a:hover { color: #a0a0a0; text-decoration: underline; }
+#container { margin-left: auto; margin-right: auto; text-align: center; }
+#ublinkbar_bottom { width: 100%; text-align: center; }
+.ublinkbar_links { margin-top: 5px; padding-top: 5px; }
+.ublinkbar_status { text-align: center; margin: 5px auto 0px auto; }
+#epb { margin-top: 15px; font-size: 90%; }
+.userinfoleft { width: 48%; float: left; text-align: left; }
+.userinforight { width: 48%; float: right; text-align: right; }
+.label { 
+    font-weight: bold !important; 
+    /* My change ahc */
+    /* background-color : #e8e8e8; */
+}
+.label p { max-width: 200px; }
+#ubbody input.default		{ margin: 4px; border: 1px solid #777; padding: 3px; }
+#ubbody textarea.default	{ margin: 4px; border: 1px solid #777; padding: 3px; }
+#ubbody select.default		{ margin: 4px; border: 1px solid #777; padding: 1px; }
+#ubbody input.text { width: 120px; }
+#ubbody textarea.default { width: 300px; height: 150px; }
+

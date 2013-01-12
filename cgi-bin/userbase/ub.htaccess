@@ -1,0 +1,15 @@
+# If your site already has a top-level .htaccess file, then copy the lines
+# below into it.  Otherwise just rename this file from ub.htaccess to
+# .htacess.
+
+
+# Automatically redirect example.com to www.example.com (or vice-versa): this
+# is necessary for web applications like UserBase which use cookies, because
+# technically "example.com" is a different domain than "www.example.com".
+# Replace example.com in the lines below with your own domain name, and on the
+# RewriteCond line, be sure to "escape" the dots by putting a backslash in
+# front of them.
+#
+RewriteEngine On
+RewriteCond %{HTTP_HOST}   ^example\.com [NC]
+RewriteRule (.*)           http://www.example.com/$1 [L,R]
