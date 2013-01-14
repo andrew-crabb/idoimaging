@@ -2,11 +2,16 @@
 /cgi-bin/tmp/
 /cgi-bin/userbase/encdata/
 /cgi-bin/userbase/orig/
+/cgi-bin/redirect_log.txt
 /php/notused/
 /public_html/blog/
 /public_html/img/
 /public_html/login/images/
 /public_html/programs_src/
+/public_html/static/mostRanked.html
+/public_html/static/mostWatched.html
+/public_html/static/newreleases.html
+/public_html/static/quicklinks.html
 /public_html/wiki_120/
 /public_html/bugzilla-4.2.4/
 /test/
