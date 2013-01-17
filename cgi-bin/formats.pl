@@ -10,7 +10,6 @@ use CGI;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 
 # ------------------------------------------------------------
 # Constants

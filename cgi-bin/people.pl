@@ -9,7 +9,6 @@ use CGI;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 use bigint;
 
 my $TIP_AUTHURL_1  = "Visit website for this author";

@@ -6,7 +6,6 @@ use Getopt::Std;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 
 my %opts;
 getopts('fh', \%opts);

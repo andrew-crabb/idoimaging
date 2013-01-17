@@ -18,8 +18,6 @@ no strict 'refs';
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use lib '/home/ahc/BIN/perl';
-use Utilities_new;
 use FileUtilities;
 
 use Image::Magick;

@@ -4,7 +4,6 @@ use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 use bigint;
 use strict;
 no strict 'refs';

@@ -12,9 +12,6 @@ no strict 'refs';
 use CGI::Cookie;
 use LWP::Simple;
 
-use lib "/home/ahc/BIN/perl";
-use Utilities_new;
-
 # Constants.
 our $UB_IS_ADMIN          = 'ub_is_admin';
 our $UB_IS_MEMBER         = 'ub_is_member';

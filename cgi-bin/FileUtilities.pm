@@ -21,9 +21,6 @@ use File::Basename;
 use File::Spec;
 use File::Spec::Unix;
 
-use lib "/home/ahc/BIN/perl";
-use Utilities_new;
-
 # ============================================================
 # Option hash key values
 # ============================================================

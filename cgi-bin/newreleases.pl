@@ -9,8 +9,6 @@ use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
-use Utilities_new;
 use Getopt::Std;
 
 # Options: (V)erbose.

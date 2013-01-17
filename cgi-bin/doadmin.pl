@@ -6,7 +6,6 @@ use CGI::Carp 'fatalsToBrowser';
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 
 my $cgi = new CGI;
 

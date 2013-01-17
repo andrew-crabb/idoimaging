@@ -9,7 +9,6 @@ use strict;
 no strict 'refs';
 use lib $Bin;
 use radutils;
-use Utilities_new;
 use bigint;
 
 my $TIP_RSRCURL_1 = "Visit website for this resource";

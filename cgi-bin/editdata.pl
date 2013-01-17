@@ -7,7 +7,6 @@ use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
 use radutils qw($DB_INT $DB_CHR $DB_BEN $DB_DAT $DB_FLT);
-use Utilities_new;
 use strict;
 no strict 'refs';
 

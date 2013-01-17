@@ -10,10 +10,8 @@ no strict 'refs';
 use FindBin qw($Bin);
 use lib $FindBin::Bin;
 use CGI;
-use lib '/Users/ahc/BIN/perl';
 
 use radutils;
-use Utilities_new;
 use Percona;
 
 my $DB_IMAGING = 'db_imaging';

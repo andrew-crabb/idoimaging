@@ -11,7 +11,6 @@ use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 
 my @cgi_progs = qw(finder newreleases quicklinks mostWatched mostLinked mostRanked);
 foreach my $progname (@cgi_progs) {

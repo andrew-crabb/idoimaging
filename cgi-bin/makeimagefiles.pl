@@ -17,7 +17,6 @@ no strict 'refs';
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Utilities_new;
 
 use Image::Magick;
 use Getopt::Std;

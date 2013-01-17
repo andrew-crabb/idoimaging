@@ -7,7 +7,6 @@ use Getopt::Std;
 
 use FindBin qw($Bin);
 use radutils;
-use Utilities_new;
 
 # Global constants.
 my $SITEPERL = '/opt/local/siteperl/bin';
