@@ -4,12 +4,15 @@
 # Write table with new programs and versions.
 
 use CGI;
-use CGI::Carp 'fatalsToBrowser';
+# use CGI::Carp 'fatalsToBrowser';
+use CGI::Carp;
 use DBI;
+use Getopt::Std;
+
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
-use Getopt::Std;
+use Utility;
 
 # Options: (V)erbose.
 my %opts;
@@ -36,23 +39,10 @@ our %col_width = (
   'adddate'     => 50,
 );
 
-# ------------------------------------------------------------
-# Get list of all blog and review resources.
-# ------------------------------------------------------------
-
-my $rstr  = "select * from resource";
-$rstr .= " where ((type = $RES_BLO)";
-$rstr .= " or (type = $RES_REV))";
-my $rsh = dbQuery($dbh, $rstr);
-# Create hash by date of resource pointers.
-my %prog_res = ();
-while (my $resp = $rsh->fetchrow_hashref) {
-  $prog_res{$resp->{'program'}}{$resp->{'date'}} = $resp;
-}
-
 my $str = "select version.progid, version.version, version.reldate, ";
 $str .= "program.name, program.summ, ";
-$str .= "version.adddate as version_add, program.adddate as prog_add ";
+$str .= "version.adddate as version_add, ";
+$str .= "datediff(curdate(), program.adddate) as days_ago ";
 $str .= "from version, program ";
 $str .= "where version.progid = program.ident ";
 $str .= "and ((length(version) > 0) ";
@@ -84,22 +74,12 @@ our %g_tipstrs = ();
 while (my $ver = $sh->fetchrow_hashref()) {
   $tstr .= "<tr>\n";
   my $ident = $ver->{'progid'};
-  
-  # Parameter 'isnew' tells makeProgramLink that program is newly added.
-  my $padd = $ver->{'prog_add'};
-  my $isnew = 0;
-  if (hasLen($padd) and ($padd !~ /0000/)) {
-    # New program is one added within the last month.
-    my $daysAgo = daysAgo($padd);
-    $isnew = ($daysAgo < 90) ? 1 : 0;
-    # print STDERR "xxx ident $ident, padd $padd, daysAgo $daysAgo\n";
-  }
 
   my %popts = (
     'ident'  => $ident,
     'dbh'    => $dbh,
     'maxlen' => '',
-    'isnew'  => $isnew,
+    'isnew'  => (has_len($ver->{'days_ago'}) and ($ver->{'days_ago'} < 90)) ? 1 : 0,
   );
   my $proglink = makeProgramLink(\%popts);
 
@@ -110,7 +90,6 @@ while (my $ver = $sh->fetchrow_hashref()) {
   addCvars($proglink, \%g_tipstrs);
 
   foreach my $elem (qw(name icons summ version reldate version_add)) {
-#     my $value = $ver->{$elem};
     my $value = '';
     my $classstr = "";
     # Add href to program name
@@ -118,19 +97,21 @@ while (my $ver = $sh->fetchrow_hashref()) {
       $value = $progstr;
       $classstr = "class='noborderright'";
     } elsif ($elem =~ /date$|version_add/) {
-      $value = convertDates($ver->{$elem})->{'MM/DD/YY'};
+      if (my $dt = parse_sql_date($ver->{$elem})) {
+	$value = $dt->mdy('/');
+      }
     } elsif ($elem =~ /icons/) {
       $value = "${capstr}&nbsp;${platstr}";
     } else {
       # Default: Value comes directly from DB record.
       $value = $ver->{$elem};
     }
-    $value = "&nbsp;" unless (hasLen($value));
+    $value = "&nbsp;" unless (has_len($value));
 
     # Program summary gets icon for resource, if there are any.
-    if (($elem =~ /summ/) and defined($prog_res{$ident})) {
-      my $rsrcicon = makeRsrcIcon(\%prog_res, $ident);
-      if (hasLen($rsrcicon)) {
+    if ($elem =~ /summ/) {
+      my $rsrcicon = makeRsrcIcon($dbh, $ident);
+      if (has_len($rsrcicon)) {
         $value .= "&nbsp;&nbsp;$rsrcicon->{'iconstr'}";
         addCvars($rsrcicon, \%g_tipstrs);
       }
@@ -199,18 +180,20 @@ while (my $ver = $sh->fetchrow_hashref()) {
       $value = $progstr;
       $classstr = "class='noborderright'";
     } elsif ($elem =~ /date$|version_add/) {
-      $value = convertDates($$elem)->{'MM/DD/YY'};
+      if (my $dt = parse_sql_date($$elem)) {
+	$value = $dt->mdy('/');
+      }
     } elsif ($elem =~ /icons/) {
       $value = "${capstr}&nbsp;${platstr}";
     } else {
       $value = $$elem;
     }
-    $value = "&nbsp;" unless (hasLen($value));
+    $value = "&nbsp;" unless (has_len($value));
 
     # Program summary gets icon for resource, if there are any.
-    if (($elem =~ /summ/) and defined($prog_res{$ident})) {
-      my $rsrcicon = makeRsrcIcon(\%prog_res, $ident);
-      if (hasLen($rsrcicon)) {
+    if ($elem =~ /summ/) {
+      my $rsrcicon = makeRsrcIcon($dbh, $ident);
+      if (has_len($rsrcicon)) {
         $value .= "&nbsp;&nbsp;$rsrcicon->{'iconstr'}";
         addCvars($rsrcicon, \%g_tipstrs);
       }

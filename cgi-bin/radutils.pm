@@ -48,13 +48,13 @@ use POSIX qw(log10);
 use strict;
 no strict 'refs';
 
+use Carp;
 use FindBin qw($Bin);
 use lib $Bin;
 
 use FileUtilities;
-use Utilities;
+use Utility;
 use Userbase;
-
 use constants;
 
 # ============================================================
@@ -611,8 +611,8 @@ sub authName {
   }
 
   my $aname = (length($afirst)) ? "$afirst $alast" : $alast;
-  $aname = truncateString($aname, $maxlen) if (hasLen($maxlen));
-  $aname = "&nbsp;" unless (hasLen($aname));
+  $aname = truncateString($aname, $maxlen) if (has_len($maxlen));
+  $aname = "&nbsp;" unless (has_len($aname));
   # Add flag if required.
   my ($flagstr, $fptr) = ("", "");
   if ($flag) {
@@ -637,7 +637,7 @@ sub makeFlagIcon {
   my ($country) = @_;
 
   my $ret = undef;
-  if (hasLen($country)) {
+  if (has_len($country)) {
     my $tipclass = "tip_flag_$country";
     my %tip_cvars = (
       'class'       => $tipclass,
@@ -661,29 +661,35 @@ sub makeFlagIcon {
 # Return pointer to hash for resource icon.
 
 sub makeRsrcIcon {
-  my ($progs_res, $ident) = @_;
-  my %progs_res = %$progs_res;
+  my ($dbh, $ident) = @_;
   my ($ret, $tipstr, $idstr, $iddiv, $tipdiv) = ('', '', '', '', '');
 
-  # Extract hash by date of details of resources for this program.
-  my $prog_res = $progs_res{$ident};
-  unless (hasLen($prog_res)) {
-    return '';
-  }
-  my %prog_res = %{$prog_res};
-  
-  foreach my $prog_res_key (sort(keys(%prog_res))) {
-    my $resp = $prog_res{$prog_res_key};
-    my $resdate = convertDates($resp->{'date'})->{'MM/DD/YY'};
-    my $url = $resp->{'url'};
-    $idstr = $idstr . $iddiv . $resp->{'ident'};
-    $iddiv = '_';
-    my $urlstr = "<a target='new' href='http://${url}'>$resourcetype{$resp->{'type'}}</a>";
-    $tipstr .= "${tipdiv}$urlstr, dated $resdate";
-    $tipdiv = "<br />";
+  # ------------------------------------------------------------
+  # Get blog and review resources for this program ident.
+  # ------------------------------------------------------------
+
+  my $rstr  = "select * from resource";
+  $rstr .= " where ((type = $RES_BLO)";
+  $rstr .= " or (type = $RES_REV))";
+  $rstr .= " and program = '$ident'";
+  $rstr .= " order by date desc";
+  my $rsh = dbQuery($dbh, $rstr);
+
+  # Create hash by date of resource pointers.
+  my %prog_res = ();
+  while (my $resp = $rsh->fetchrow_hashref) {
+    if (my $dt = parse_sql_date($resp->{'date'})) {
+      my $resdate = $dt->mdy('/');
+      my $url = $resp->{'url'};
+      $idstr = $idstr . $iddiv . $resp->{'ident'};
+      $iddiv = '_';
+      my $urlstr = "<a target='new' href='http://${url}'>$resourcetype{$resp->{'type'}}</a>";
+      $tipstr .= "${tipdiv}$urlstr, dated $resdate";
+      $tipdiv = "<br />";
+    }
   }
 
-  if (hasLen($tipstr)) {
+  if (has_len($tipstr)) {
     $tipstr = "Resources for this program:<br />" . $tipstr;
     my $tipclass = "tip_rsrc_${idstr}";
     my %tip_cvars = (
@@ -710,7 +716,7 @@ sub sortHashVal {
   my ($hash, $index) = @_;
   
   my @retvals = ();
-  if (hasLen($index)) {
+  if (has_len($index)) {
     @retvals = sort {$hash->{$a}->[$index] cmp $hash->{$b}->[$index]} keys %$hash;
   } else {
     @retvals = sort {$hash->{$a} cmp $hash->{$b}} keys %$hash;
@@ -737,8 +743,8 @@ sub selectedVals {
   my %args = %$args;
 
   my ($hashname, $sumval, $vallen, $sortarr, $field) = @args{qw(hashname sumval vallen sortarr field)};
-  $sumval = 0 unless (hasLen($sumval));
-  $vallen = '' unless (hasLen($vallen) and $vallen);
+  $sumval = 0 unless (has_len($sumval));
+  $vallen = '' unless (has_len($vallen) and $vallen);
 
   my %hash = %$hashname;
   unless (scalar(keys(%hash))) {
@@ -751,7 +757,7 @@ sub selectedVals {
 
   # Iterate over hash in order, as icon string is order-dependent.
   my @sortkeys = ();
-  if (hasLen($sortarr)) {
+  if (has_len($sortarr)) {
     # Use predefined sort keys - remember to test for their existence later.
     @sortkeys = @$sortarr;
   } else {
@@ -799,7 +805,7 @@ sub selectedVals {
   my $icons_narr = "<img src='${iconpath}/${cat}${valstr_n}.png' title='' alt='$val_str' />";
 
   # Add tip text if required.
-  $field = '' unless (hasLen($field));
+  $field = '' unless (has_len($field));
   my $tipclass = "tip_${field}_${val_str}";
 # print STDERR "radutils::selectedVals($cat): valstr_w '$valstr_w', valstr_n '$valstr_n'\n";
   my $icons_wide_t = "<img class='showTip $tipclass' src='${iconpath}/${cat}${valstr_w}.png' title='' alt='$val_str w' />";
@@ -839,7 +845,7 @@ sub listPrereq {
   my ($dbh, $prer) = @_;
   my ($name, $ident, @ret);
 
-  return () unless (hasLen($prer));
+  return () unless (has_len($prer));
   my $sh = dbQuery($dbh, "select ident, name from program where ident < 100");
   while (($ident, $name) = $sh->fetchrow_array()) {
     if ((2 ** $ident) & ($prer * 1)) {
@@ -853,13 +859,13 @@ sub listPrereq {
 
 sub hostConnect {
   my ($db_name) = @_;
-  $db_name = "imaging" unless (hasLen($db_name));
+  $db_name = "imaging" unless (has_len($db_name));
 
   # Database init.
   my %attr = (RaiseError => 1);
   my $dsn = "DBI:mysql:$db_name:localhost";
   my $dbh = DBI->connect($dsn,'_www','PETimage', \%attr);
-  (hasLen($dbh)) or die "Can't get database connection";
+  (has_len($dbh)) or die "Can't get database connection";
 
   return $dbh;
 }
@@ -882,7 +888,7 @@ sub getEnv {
 sub formatList {
   my ($encval) = @_;
 
-  return("") unless (hasLen($encval));
+  return("") unless (has_len($encval));
   my $fmt = $encval;
   my $str = "";
   my @formats;
@@ -911,7 +917,7 @@ sub nextIdent {
   my ($dbh, $table) = @_;
   my $newident = '';
 
-  $table = "program" unless (hasLen($table));
+  $table = "program" unless (has_len($table));
   my $sh = dbQuery($dbh, "select max(ident) from $table");
   ($newident) = $sh->fetchrow_array();
   $newident += 1;
@@ -920,7 +926,7 @@ sub nextIdent {
 
 sub comment {
   my ($str, $blankline) = @_;
-  $blankline = (hasLen($blankline) and $blankline) ? 1 : 0;
+  $blankline = (has_len($blankline) and $blankline) ? 1 : 0;
 
   my $nstr = $blankline ? "\n" : "";
   return "${nstr}<!-- $str -->\n";
@@ -939,12 +945,12 @@ sub dbRecord {
 
 # sub printHashAsTable {
 #   my ($ptr, $brief) = @_;
-#   $brief = 0 unless (hasLen($brief) and ($brief > 0));
+#   $brief = 0 unless (has_len($brief) and ($brief > 0));
 #   my %hash = %$ptr;
 #   print "<table>\n";
 #   foreach my $key (sort keys %hash) {
 #     my $val = $hash{$key};
-#     next if ($brief and not (hasLen($val)));
+#     next if ($brief and not (has_len($val)));
 #     print "<tr><th align='left' valign='top'>$key</th><td>$hash{$key}</td></tr>\n";
 #   }
 #   print "</table>\n";
@@ -1028,9 +1034,9 @@ sub fmtAuthorName {
 # Return the $sh for given query on given dbh
 sub dbQuery {
   my ($dbh, $str, $verbose, $dummy) = @_;
-  $verbose = 0 unless (hasLen($verbose) and $verbose);
-  $dummy = 0 unless (hasLen($dummy) and $dummy);
-  tt("radutils::dbQuery($str)") if ($verbose);
+  $verbose = 0 unless (has_len($verbose) and $verbose);
+  $dummy = 0 unless (has_len($dummy) and $dummy);
+  warn("radutils::dbQuery($str)") if ($verbose);
   return "" if ($dummy);
   
   my ($sh, $errstr);
@@ -1066,7 +1072,7 @@ sub nextIndex {
   my $sql_str = "select max($field) from $table";
   my $sh = dbQuery($dbh, $sql_str);
   my ($nextIndex) = $sh->fetchrow_array();
-  $nextIndex = (hasLen($nextIndex)) ? $nextIndex + 1 : 0;
+  $nextIndex = (has_len($nextIndex)) ? $nextIndex + 1 : 0;
 
   return $nextIndex;
 }
@@ -1086,10 +1092,10 @@ sub addVersionRecord {
   $sh = dbQuery($dbh, $sql_str);
   my ($old_rev, $old_rdate) = $sh->fetchrow_array();
   $old_rdate = convertDates($old_rdate)->{'MM/DD/YY'};
-  $new_rev = "" unless (hasLen($new_rev));
-  $old_rev = "" unless (hasLen($old_rev));
-  $new_rdate = "" unless (hasLen($new_rdate));
-  $old_rdate = "" unless (hasLen($old_rdate));
+  $new_rev = "" unless (has_len($new_rev));
+  $old_rev = "" unless (has_len($old_rev));
+  $new_rdate = "" unless (has_len($new_rdate));
+  $old_rdate = "" unless (has_len($old_rdate));
 
   # Insert a 'version' record if data added or date changed.
 
@@ -1116,7 +1122,7 @@ sub monitoredPrograms {
   my ($dbh, $userid) = @_;
   my @progids = ();
 
-  return () unless (hasLen($userid));
+  return () unless (has_len($userid));
   my $str = "select progid from monitor where userid = '$userid' order by progid";
 
   my $sh = dbQuery($dbh, $str);
@@ -1165,6 +1171,9 @@ sub truncateString {
 sub daysAgo {
   my ($indate) = @_;
 
+  confess "XXXXXXXX  radutils::daysAgo()";
+
+
   my $indays = convertDates($indate)->{'DDDD'};
   # print STDERR "xxx radutils::daysAgo($indate): $indays\n";
   my $time_now = convertDates(time());
@@ -1196,7 +1205,7 @@ sub makeDir {
   my ($dir, $mode) = @_;
   my ($wd) = ($dir =~ /\//) ? "" : cwd();
   
-  $mode = 0755 unless (hasLen($mode));
+  $mode = 0755 unless (has_len($mode));
   my (@bits) = split(/\//, $dir);
   my $levels = scalar(@bits);
   my $path = $wd;
@@ -1224,7 +1233,7 @@ sub dumpParams {
       my $val = '';
       my (@vals) = $cgi->param($param);
       $val = join(" ", @vals) if (scalar(@vals));
-      if (hasLen($val)) {
+      if (has_len($val)) {
 	$nhasval++;
       } else {
 	$val = "&nbsp;";
@@ -1243,7 +1252,7 @@ sub dumpParams {
 
 sub printTitle {
   my ($cgi, $wide, $currpage) = @_;
-  $wide = 0 unless (hasLen($wide) and $wide);
+  $wide = 0 unless (has_len($wide) and $wide);
 
   printPageIntro($wide, $currpage);
   print comment("radutils.pm::printTitle(): End");
@@ -1266,7 +1275,7 @@ sub urlIcon {
       );
 
   # If url is supplied, test if it is empty or not defined.
-  if (exists($opts{'url'}) and not (hasLen($url))) {
+  if (exists($opts{'url'}) and not (has_len($url))) {
     # URL string provided, but empty.
     my $tipid = "tip_${table}_${ident}_na";
     $html = "<img  class='showTip $tipid' border='0' src='${iconpath}/cross.png' title='' alt='Go' />";
@@ -1325,7 +1334,7 @@ sub listParts {
   my $npage = int(($nitems - 1)/$nperpage) + 1;
 
   # Separators depend on whether there is a condition string.
-  my $linkcode = (hasLen($condstr)) ? "${url}\?$condstr\&" : "${url}\?";
+  my $linkcode = (has_len($condstr)) ? "${url}\?$condstr\&" : "${url}\?";
   
   # Previous page.
   my ($prevurl, $nexturl) = ("Previous", "Next");
@@ -1417,7 +1426,7 @@ sub relatedProgramsTable {
 
     my $relsumm = truncateString($relhash->{'summ'}, 80);
     $relrows .= "<tr>\n";
-    if (hasLen($leadspace) and $leadspace) {
+    if (has_len($leadspace) and $leadspace) {
       $relrows .= "<td width='$leadspace'>&nbsp;</td>\n";
     }
     $relrows .= "<td width='180'>$progstr</td>\n";
@@ -1604,7 +1613,7 @@ sub valToTDedit {
         );
   } elsif ($f_type == $DB_ORD) {
     # Ordinal values index into hash %tbl_{$fkey}
-    $val = 0 unless (hasLen($val) and $val);
+    $val = 0 unless (has_len($val) and $val);
     my %dtbl = createOrdinalHash($f_key);
     # Add null case.
     %dtbl = (0 => '', %dtbl);
@@ -1653,7 +1662,7 @@ sub valToTDsumm {
     # Binary encoded: For now, just display the encoding value.
     $ret = $val;
   } elsif ($f_type == $DB_ORD) {
-    $val = 0 unless (hasLen($val) and $val);
+    $val = 0 unless (has_len($val) and $val);
     my %dtbl = createOrdinalHash($f_key);
     $ret = $dtbl{$val};
   } elsif ($f_type == $DB_DAT) {
@@ -1661,7 +1670,7 @@ sub valToTDsumm {
   } else {
     $ret = $val;
   }
-  $ret = "&nbsp;" unless (hasLen($ret));
+  $ret = "&nbsp;" unless (has_len($ret));
 #   tt("radutils::valToTDsum($val): ($f_index, $f_key, $f_name, $f_type, $f_size, $f_ssize) returning $ret");
   return $ret;
 }
@@ -1718,7 +1727,7 @@ sub sortedHeadingRow {
     # - Sort order.
     my $currentorder;	# That will be used if this col heading selected.
     if ($isSortKey) {
-      if (hasLen($order[1])) {
+      if (has_len($order[1])) {
 	$currentorder = ($order[1] eq "desc") ? $AS : $DE;
       } else {
 	$currentorder = ($sortorder == $DE) ? $AS : $DE;
@@ -1736,7 +1745,7 @@ sub sortedHeadingRow {
     }
     my $a_str = '';
     my $priord = "${key}&nbsp;$hdgorder{$currentorder}";
-    my $secord = hasLen($secondary) ? ",${secondary}&nbsp;$hdgorder{$secorder}" : "";
+    my $secord = has_len($secondary) ? ",${secondary}&nbsp;$hdgorder{$secorder}" : "";
     my $tkey =  "${priord}&nbsp;${secord}";
     if ($sortorder) {
       $a_str = "class='orange_u' href='${url}?order=$tkey'";
@@ -1766,7 +1775,7 @@ sub getParams {
 
 sub definedVal {
   my ($val) = @_;
-  $val = '' unless (hasLen($val));
+  $val = '' unless (has_len($val));
   return $val;
 }
 
@@ -1774,7 +1783,7 @@ sub isNonZero {
   my ($val) = @_;
 
   my $isnz = 0;
-  if (hasLen($val)) {
+  if (has_len($val)) {
     $isnz = 1 if ($val);
   }
   return $isnz;
@@ -1828,7 +1837,7 @@ sub makeProgramLink {
   my $nsmimg = 0;
   if (scalar(keys(%prog))) {
     ($name, $ident, $capture, $plat, $interface) = @prog{qw(name ident capture plat interface)};
-    my $tname = (hasLen($maxlen)) ? truncateString($name, $maxlen) : $name;
+    my $tname = (has_len($maxlen)) ? truncateString($name, $maxlen) : $name;
 
      $tname .= " <b>(New)</b>" if ($isNew);
     
@@ -1939,14 +1948,14 @@ sub getSecondaryScreenCaptures {
 sub printRowWhite {
   my ($txt, $width) = @_;
 
-  my $widthstr = hasLen($width) ? "width='${width}'" : "";
+  my $widthstr = has_len($width) ? "width='${width}'" : "";
   print "<tr>\n<td $widthstr class='white'>\n$txt</td>\n</tr>\n";
 }
 
 sub printRowWhiteCtr {
   my ($txt, $width, $class) = @_;
 
-  my $widthstr = hasLen($width) ? "width='${width}'" : "";
+  my $widthstr = has_len($width) ? "width='${width}'" : "";
   $class = $class || "white";
   print "<tr>\n<td $widthstr class='$class' align='center'>\n$txt\n</td>\n</tr>\n";
 }
@@ -1955,7 +1964,7 @@ sub printRowWhiteCtr {
 
 sub createAdvertTable {
   my ($dbh, $num_ads) = @_;
-  $num_ads = 0 unless (hasLen($num_ads));
+  $num_ads = 0 unless (has_len($num_ads));
 
   # Fetch all adverts into an array.
   my $str = "select * from advertising";
@@ -2051,7 +2060,7 @@ sub makeNavCode {
 
     (my $idstr = $navtext) =~ s/\s/_/g;
     my $classstr = '';
-    if (hasLen($currpage)) {
+    if (has_len($currpage)) {
       $classstr = ($page == $currpage) ? " class='active'" : "";
     }
     my $astr = "<a href='$navaction'>$navtext</a>";
@@ -2070,13 +2079,13 @@ sub makeNavCode {
 
 sub truncateHashVals {
   my ($hptr, $vallen, $index) = @_;
-  $vallen = '' unless (hasLen($vallen) and $vallen);
+  $vallen = '' unless (has_len($vallen) and $vallen);
 
   croak("Not a hash ref: $hptr") unless (ref($hptr));
   my %inhash = %{$hptr};
   my %outhash = ();
   foreach my $key (keys %inhash) {
-    my $val = hasLen($index) ? ${$inhash{$key}}->[$index] : $inhash{$key};
+    my $val = has_len($index) ? ${$inhash{$key}}->[$index] : $inhash{$key};
     $val = ($vallen) ? substr($val, 0, $vallen) : $val;
     $outhash{$key} = $val;
   }
@@ -2122,7 +2131,7 @@ sub makeIfaceCell {
 sub printToolTips {
   my ($tipstrs, $doAdd) = @_;
   my %tipstrs = %$tipstrs;
-  $doAdd = 0 unless (hasLen($doAdd) and $doAdd);
+  $doAdd = 0 unless (has_len($doAdd) and $doAdd);
 
   print comment("============================================================");
   print comment("javascript for tooltip content_vars");
@@ -2171,7 +2180,7 @@ sub addCvars {
   my @hashkeys = sort keys %hash;
   foreach my $key (grep(/cvars/, @hashkeys)) {
     my $tipobj = $hash{$key};
-    if (hasLen($tipobj)) {
+    if (has_len($tipobj)) {
       my $tipclass = $tipobj->{'class'};
 
       if ($key =~ /auth_cvars/) {
@@ -2211,10 +2220,10 @@ sub conditionString {
 
   my $str = "";
   my $separator = "";
-  my @indices = (hasLen($indexptr) ? @{$indexptr} : sort keys %$dptr);
+  my @indices = (has_len($indexptr) ? @{$indexptr} : sort keys %$dptr);
   foreach my $key (@indices) {
     next if ($key =~ /^_/);
-    my $val = (hasLen($dptr->{$key}) ? $dptr->{$key} : '');
+    my $val = (has_len($dptr->{$key}) ? $dptr->{$key} : '');
     $str .= " ${separator} $key = '$val'";
     $separator = $sepstr;
   }
@@ -2327,10 +2336,10 @@ sub make_monitor_details {
   }
 
   my $addurlstr = '';
-  if (hasLen($url)) {
+  if (has_len($url)) {
     $addurlstr = "/$url";
     my @params = ();
-    push(@params, "progid=$progid") if (hasLen($progid));
+    push(@params, "progid=$progid") if (has_len($progid));
     push(@params, $userstr) if ($is_logged_in);
     foreach my $param (@params) {
       my $sep = ($addurlstr =~ /\?/) ? '&amp;' : '?';

@@ -11,12 +11,13 @@ use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
 use radutils;
+use FileUtilities;
 
 my @cgi_progs = qw(finder newreleases quicklinks mostWatched mostLinked mostRanked);
 foreach my $progname (@cgi_progs) {
   my $fullprog = "~/idoimaging/cgi-bin/${progname}.pl";
-  my $outfile = "/Users/ahc/idoimaging/public_html/static/${progname}.html";
-print "$fullprog $outfile\n";
+  my $outfile = "${Bin}/../public_html/static/${progname}.html";
+  print "$fullprog $outfile\n";
   my $outlines = `$fullprog -n`;
-  fileWrite($outfile, $outlines);
+  writeFile($outfile, $outlines);
 }
