@@ -76,22 +76,24 @@ sub convert_date {
 
   # Hack to avoid bad dates (and keep long cluck out of server error log).
   my $outdate = ($indate or '');
-  $indate =~ /(....)-(..)-(..)/;
-  if (!has_len($2) or ($2 < 1) or ($2 > 12)) {
-    # print STDERR "ERROR: Utility::convert_date($indate): bad indate\n";
-    $outdate = '';
-  } else {
-    my $dt = undef;
-    eval { $dt = parse_sql_date($indate); };
-    if ($@) {
-      print STDERR "ERROR: Utility::convert_date()\n";
-      cluck($@);
-    }
-    if ($dt) {
-      if ($format eq $DATE_MDY) {
-	$outdate = $dt->mdy('/');
-      } elsif ($format eq $DATE_SQL) {
-	$outdate = DateTime::Format::MySQL->format_date($dt);
+  if (has_len($indate)) {
+    $indate =~ /(....)-(..)-(..)/;
+    if (!has_len($2) or ($2 < 1) or ($2 > 12)) {
+      # print STDERR "ERROR: Utility::convert_date($indate): bad indate\n";
+      $outdate = '';
+    } else {
+      my $dt = undef;
+      eval { $dt = parse_sql_date($indate); };
+      if ($@) {
+	print STDERR "ERROR: Utility::convert_date()\n";
+	cluck($@);
+      }
+      if ($dt) {
+	if ($format eq $DATE_MDY) {
+	  $outdate = $dt->mdy('/');
+	} elsif ($format eq $DATE_SQL) {
+	  $outdate = DateTime::Format::MySQL->format_date($dt);
+	}
       }
     }
   }
