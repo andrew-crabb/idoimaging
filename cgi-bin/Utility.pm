@@ -73,7 +73,7 @@ sub parse_sql_date {
 sub convert_date {
   my ($indate, $format) = @_;
 
-  my $outdate = $indate;
+  my $outdate = ($indate or '');
   if (my $dt = parse_sql_date($indate)) {
     if ($format eq $DATE_MDY) {
       $outdate = $dt->mdy('/');
