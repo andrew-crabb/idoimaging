@@ -5,8 +5,8 @@ use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use bigint;
 use strict;
 no strict 'refs';
@@ -76,7 +76,7 @@ foreach my $relid (sort {$a <=> $b} keys %relparams) {
     $qstr   .= " where ident = $relid";
     tt($qstr);
     $dbh->do($qstr);
-  } elsif (hasLen($changestr)) {
+  } elsif (has_len($changestr)) {
     my $qstr = "update relationship";
     $qstr   .= " set $changestr";
     $qstr   .= " where ident = '$relid'";
@@ -87,10 +87,10 @@ foreach my $relid (sort {$a <=> $b} keys %relparams) {
 
 # Check for new relationship.
 my $add_prog1 = $cgi->param('add_prog1');
-if (hasLen($add_prog1)) {
+if (has_len($add_prog1)) {
   my $add_prog2 = $cgi->param('add_prog2');
   my $add_type  = $cgi->param('add_type');
-  if (hasLen($add_prog2) and hasLen($add_type)) {
+  if (has_len($add_prog2) and has_len($add_type)) {
     my $astr = "insert into relationship";
     $astr   .= " set prog1 = '$add_prog1'";
     $astr   .= ", prog2 = '$add_prog2'";
@@ -131,7 +131,7 @@ my @progkeys = sort {definedVal($progs{$a}) cmp definedVal($progs{$b})} keys %pr
 @progkeys = ("", @progkeys);
 # Add the program idents (have to do this now else wouldn't sort alphabetically).
 foreach my $progkey (keys %progs) {
-  my $parenval = (hasLen($progkey)) ? "($progkey)" : "";
+  my $parenval = (has_len($progkey)) ? "($progkey)" : "";
   $progs{$progkey} = "$parenval $progs{$progkey}";
 }
 

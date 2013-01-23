@@ -5,8 +5,8 @@ use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use Userbase;
 use bigint;
 use strict;
@@ -35,9 +35,8 @@ function today(element) {
 </script>
 EOJS
 
-my ($ident, $addprog, $localdb) = getParams($cgi, (qw(ident add localdb)));
-$addprog = (hasLen($addprog)) ? $addprog : 0;
-$localdb = (hasLen($localdb) and $localdb) ? 1 : 0;
+my ($ident, $addprog) = getParams($cgi, (qw(ident add)));
+$addprog = (has_len($addprog)) ? $addprog : 0;
 
 # If adding program, ensure logged-in user is admin.
 my $det = get_user_details();
@@ -46,7 +45,7 @@ unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
   exit;
 }
 
-my $dbh = hostConnect('', $localdb);
+my $dbh = hostConnect('');
 my $title = "Edit Program";
 $title .= "\n<br />Note: Local Database" if ($localdb);
 
@@ -88,7 +87,7 @@ while (my @list = $sh->fetchrow_array()) {
   my $preid = $list[0];
   $prereqs{$list[0]} = $list[1];
   my $prer = $prog->{'prer'};
-  push(@prereqs, $list[0]) if (hasLen($prer) and ((2 ** $preid) & $prer));
+  push(@prereqs, $list[0]) if (has_len($prer) and ((2 ** $preid) & $prer));
 
 }
 my @prekeys = sort {"\U$prereqs{$a}" cmp "\U$prereqs{$b}"} keys %prereqs;
@@ -131,7 +130,7 @@ my @seccaps = getSecondaryScreenCaptures($dbh, $ident);
 # HTML code.
 #------------------------------------------------------------
 my $name = $prog->{'name'};
-$name = '' unless (hasLen($name));
+$name = '' unless (has_len($name));
 $title = '';
 
 my $sstr = "select count(*) from monitor where progid = '$ident'";
@@ -144,14 +143,14 @@ $sh = dbQuery($dbh, $istr);
 my ($nimg) = $sh->fetchrow_array();
 $sh->finish();
 
-$ntrk = 0 unless (hasLen($ntrk) and $ntrk);
+$ntrk = 0 unless (has_len($ntrk) and $ntrk);
 $title = "Editing: $name ($ntrk monitors, $nimg images)";
 $title .= "\n<br />Note: Local Database" if ($localdb);
 printRowWhiteCtr($cgi->h1($title));
 
 my $remdate = $prog->{'remdate'};
 if (defined($remdate) and ($remdate !~ /^0000/)) {
-  $remdate = convertDates($remdate)->{'MM/DD/YY'};
+  $remdate = convert_date($remdate, $DATE_MDY);
   printRowWhiteCtr "<h3>Note: This program was removed on $remdate and is not being tracked</h3>";
 }
 
@@ -188,9 +187,12 @@ foreach my $varname (qw(ident name summ descr adddate visdate rev rdate homeurl 
 
   my ($identline, $buttline) = ('', '');
   if ($varname =~ /adddate/) {
-    $val = timeNow()->{'M/D/Y'} if ($addprog and not hasLen($val));
+    $val = timeNow()->{'M/D/Y'} if ($addprog and not has_len($val));
   }
-  $val = convertDates($val)->{'MM/DD/YY'} if ($varname =~ /rdate|visdate|adddate/);
+  if ($varname =~ /rdate|visdate|adddate/) {
+    $val = convert_date($val, $DATE_MDY);
+  }
+
   # Special field for changing the ID field, if editing.
   if (($varname eq 'ident') and not $addprog) {
     $identline = 
@@ -380,20 +382,6 @@ print $cgi->td($cgi->popup_menu(
 print "</tr>\n";
 
 print "<tr><td>&nbsp;</td></tr>\n";
-
-# Row for site up/down activity.
-# my $statstr = '';
-# $str = "select * from status where progid = '$ident' order by date desc";
-# $sh = dbQuery($dbh, $str);
-# while (my $statptr = $sh->fetchrow_hashref) {
-#   my %stat = %$statptr;
-#   my ($stat_date, $stat_status) = @stat{(qw(date status))};
-#   $stat_date = convertDates($stat_date)->{'MM/DD/YY'};
-#   $stat_status = ($stat_status) ? "Up" : "Down";
-#   my $thstr = (hasLen($statstr)) ? "<th>&nbsp;</th>" : "<th>Activity</th>";
-#   $statstr .= "<tr>${thstr}<td>$stat_date</td><td>$stat_status</td></tr>\n";
-# }
-# print $statstr if (hasLen($statstr));
 
 # 'Submit' and 'Cancel' buttons.
 

@@ -3,7 +3,7 @@
 package FileUtilities;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(filesIn dirContents stringInFile isDir mkDir pathForFile pathsForFile pathParts moveFile extnFiles makeDirs safeCopy safeMove isCopyOf fileContents writeFile fileExists fileHasSize storeImageFile columnFromFile fileStat dirStat recurFiles recurFileStat fileSizeStr summarizeFileList convertDirName);
+@EXPORT = qw(filesIn dirContents stringInFile isDir mkDir pathParts moveFile extnFiles makeDirs safeCopy safeMove isCopyOf fileContents writeFile fileExists fileHasSize storeImageFile columnFromFile fileStat dirStat recurFiles recurFileStat fileSizeStr summarizeFileList convertDirName);
 @EXPORT = (@EXPORT, qw($FSTAT_NAME $FSTAT_PATH $FSTAT_HOST $FSTAT_SIZE $FSTAT_MOD $FSTAT_FNAME $FSTAT_VERBOSE $FSTAT_DIRISOK));
 @EXPORT = (@EXPORT, qw($DIR_CYGWIN $DIR_CYGWIN_NEW $DIR_DOS));
 @EXPORT = (@EXPORT, qw($OPT_VERBOSE $OPT_FORCE $OPT_DUMMY $OPT_NOMOVE));
@@ -20,9 +20,6 @@ use Sys::Hostname;
 use File::Basename;
 use File::Spec;
 use File::Spec::Unix;
-
-use lib "/home/ahc/BIN/perl";
-use Utilities_new;
 
 # ============================================================
 # Option hash key values
@@ -78,16 +75,16 @@ sub fileContents {
   open(INFILE, '<', $infile) or return ();
   chomp(my @arr = (<INFILE>));
   if (wantarray()) {
-    if (hasLen($start)) {
-      $len = (hasLen($len)) ? $len : ($#arr - $start + 1);
+    if (has_len($start)) {
+      $len = (has_len($len)) ? $len : ($#arr - $start + 1);
       return(@arr[$start..($start + $len)]);
     } else {
       return @arr;
     }
   } else {
     my $ret = join("\n", @arr);
-    if (hasLen($start)) {
-      $len = (hasLen($len)) ? $len : (length($ret) - $start);
+    if (has_len($start)) {
+      $len = (has_len($len)) ? $len : (length($ret) - $start);
       return substr($ret, $start, $len);
     } else {
       return $ret;
@@ -123,7 +120,7 @@ sub writeFile {
 sub recurFiles {
   my ($dirname) = @_;
 
-  return () unless (hasLen($dirname));
+  return () unless (has_len($dirname));
   my (@contents) = ();
   find sub { push(@contents, $File::Find::name) if -f }, $dirname;
   return @contents;
@@ -175,7 +172,7 @@ sub mkDir {
   }
   my $wd = ($dir =~ /^\//) ? "" : cwd();
   return ($dir) if (-d $dir);
-  $mode = 0755 unless (hasLen($mode));
+  $mode = 0755 unless (has_len($mode));
   my @bits = split(/\//, $dir);
   my $path = $wd;
   foreach my $bit (@bits) {
@@ -190,160 +187,14 @@ sub mkDir {
   return $path;
 }
 
-sub pathForFile {
-  my ($dptr, $verbose) = @_;
-  
-  my $pptr = pathsForFile($dptr, $verbose);
-  return $pptr->{'image'};
-}
-
-# Return pointer to hash of paths for image files.
-# Keys of return structure:
-#   'subject' /human/LASTfirst123-45-67
-#   'study'   /human/LASTfirst123-45-67/PET990123
-#   'scan'    /human/LASTfirst123-45-67/PET990123/scan1
-#   'ima'     /human/LASTfirst123-45-67/PET990123/scan1/ima
-#   (plasma, results same as ima)
-#   'image'   = 'ima' for PET or 'scan' for MRI.
-#   'backup'  = stringified path of 'image'.
-
-sub pathsForFile {
-  my ($dptr, $verbose) = @_;
-  return undef unless (defined($dptr) and ref($dptr));
-  my %det = %$dptr;
-
-#   printHash($dptr, "FileUtilities::pathsForFile");
-
-#   my $nverbose = ((hasLen$verbose) && ($verbose > 0)) ? 1 : 0;
-  my $hostname = $ENV{'HOST'};
-  my $driveprefix = (hasLen($hostname) and ($hostname =~ /Recon/)) ? "/cygdrive/e" : "";
-
-  # Level 1: subjdir (/root/LASTfirst999).
-  my ($hist_no, $lname, $fname) = @det{qw(hist_no name_last name_first)};
-  $hist_no =~ s/[^0-9]//g;
-  my $hlen = length($hist_no);
-  ($lname, $fname) = ("\U$lname", "\L$fname");
-
-  my $fullname = "${lname}_${fname}_${hist_no}";
-   my $root = ($fullname =~ /BABOON|MONKEY|RHESUS|BAB\d/i) ? "animal" : "human";
-   if (($hist_no =~ /BAB\d/i) or ($lname =~ /^bab$/i) or ($fname =~ /^bab$/i)) {
-     $root = "animal";
-   }
-
-  # If missing last and first name, check to see if it's an animal study.
-  if ((not hasLen($fname)) or ($lname =~ /\d+/)) {
-    my @animalfiles = dirContents("/animal/");
-    my @matchfiles = grep(/$hist_no/, @animalfiles);
-    if (scalar(@matchfiles) == 1) {
-
-      $root = "animal";
-    }
-  }
-
-  $root = "${driveprefix}/${root}";
-  my $subjdir = "${root}/${fullname}";
-
-  # See if a directory already exists.
-  my @rootfiles = dirContents($root);
-  # Store existing directory matching this hist no.
-  my @matches = ();
-
-  if ($hlen and ($hlen >= 2)) {
-    foreach my $rootfile (@rootfiles) {
-      my $rootfilenum = $rootfile;
-      $rootfilenum =~ s/\D//g;
-      push(@matches, $rootfile) if ($hist_no eq $rootfilenum);
-    }
-  }
-  
-  if ($verbose) {
-    print scalar(@matches) . " of " . scalar(@rootfiles) . " matches in $root for $hist_no:\n";
-    print join("\n", @matches) . "\n";
-  }
-  my $existing = '';
-  if (scalar(@matches) == 1) {
-    $existing = "${root}/" . $matches[0];
-    # Use existing directory if found.
-    $subjdir = $existing;
-  }
-  
-  # Level 2: studydir (PET990101).
-  my ($modal, $date, $type) = @det{qw(modality scandate type)};
-  $date = convertDates($date)->{'YYMMDD'};
-  $modal = "\U$modal";
-
-  # Level 3: scandir (103515 or 001)
-  my $scandir;
-  if ($modal eq "PET") {
-    # Use scan time.
-    $scandir = hasLen($det{'time'}) ? $det{'time'} : $det{'scantime'};
-    $scandir =~ s/\D//g;
-  } elsif ($modal =~ /MRI/) {
-    $scandir = sprintf("%03d", $det{'series'});
-  } elsif ($modal =~ /CT/) {
-    my $time = $det{'scantime'};
-    $time =~ s/\D//g;
-    $scandir = sprintf("%s/%03d", $time, $det{'series'});
-  } elsif ($modal =~ /NM/) {
-    $scandir = $det{'series'};
-    if ($scandir =~ /^\d{1,3}$/) {
-      $scandir = sprintf("%03d", $scandir);
-    } else {
-      $scandir = $det{'series'};
-    }
-  } else {
-    $scandir = "FileUtilities::pathsForFile_unknown_modality";
-  }
-
-  my $studydir = "${modal}${date}";
-  my $study = "${subjdir}/${studydir}";
-  my $scan  = "${study}/${scandir}";
-
-  my ($ima, $plasma, $results) = (undef, undef, undef);
-  if (hasLen($type) and ($type =~ /DICOM/i)) {
-    $ima   = "${scan}/dcm";
-  } else {
-    # Special case.  ECAT files with 'study_descr = crystal' go into results.
-    if (hasLen($det{'study_descr'}) and ($det{'study_descr'} =~ /crystal/)) {
-      $ima   = "${scan}/results";
-    } else {
-      $ima   = "${scan}/ima";
-    }
-  }
-  if ($modal eq "PET") {
-    $plasma  = "${scan}/plasma";
-    $results = "${scan}/results";
-  }
-  # Add a non modality-dependant directory.
-  $scandir =~ s/\//_/g;
-  my $backup = "/home/ahc/data/${fullname}_${studydir}_${scandir}.tar";
-  my $image = ($modal eq "PET") ? $ima : $scan;
-
-  my %ret = (
-	     'backup'   => $backup,
-	     'existing' => $existing,
-	     'ima'      => $ima,
-	     'image'    => $image,
-	     'plasma'   => $plasma,
-	     'results'  => $results,
-	     'scan'     => $scan,
-	     'study'    => $study,
-	     'subject'	=> $subjdir,
-	     );
-
-  printHash(\%ret, "FileUtilities::pathsForFile($dptr->{'filename'})") if ($verbose);
-
-  return \%ret;
-}
-
 # pathParts: Return (path, filename) for given full file.
 
 sub pathParts {
   my ($fullname, $verbose) = @_;
-  $verbose = 0 unless (hasLen($verbose) and $verbose);
+  $verbose = 0 unless (has_len($verbose) and $verbose);
 
   my ($path, $filename) = ("", "");
-  if (hasLen($fullname)) {
+  if (has_len($fullname)) {
     my (@bits) = split(/\//, $fullname);
     my $nbits = scalar(@bits);
     if (-d $fullname) {
@@ -359,17 +210,6 @@ sub pathParts {
   }
   return ($path, $filename);
 }
-
-# sub pathHash {
-#   my ($fullname) = @_;
-
-#   my ($path, $filename) = pathParts($fullname);
-#   my %ret = ('filename' => $filename,
-# 	     'path'     => $path,
-# 	     'fullname' => "${path}/${filename}"
-# 	     );
-#   return \%ret;
-# }
 
 # Return array of files (only files) in given file/directory.
 #   infile: File/dir to examine.
@@ -423,19 +263,6 @@ sub dirContents {
   return(@dirfiles);
 }
 
-# Return sum of sizes of files in given directory.
-
-# sub dirSize {
-#   my ($indir) = @_;
-
-#   my $totsize = 0;
-#   my @dirfiles = dirContents($indir);
-#   foreach my $dirfile (@dirfiles) {
-#     $totsize += (-
-#   }
-# }
-
-
 # Move source to dest, and delete source, if successful and not same file.
 # Return: 0 on success, else 1.
 
@@ -479,7 +306,7 @@ sub extnFiles {
 
 sub makeDirs {
   my ($pptr, $verbose) = @_;
-  $verbose = 0 unless (hasLen($verbose));
+  $verbose = 0 unless (has_len($verbose));
   my %path = %$pptr;
   my $ret = 0;
 
@@ -643,7 +470,7 @@ sub fileExists {
   my $ret = 1;
 
   foreach my $filename (@filenames) {
-    (hasLen($filename) and -e $filename and -s $filename) or $ret = 0;
+    (has_len($filename) and -e $filename and -s $filename) or $ret = 0;
   }
   return $ret;
 }
@@ -663,60 +490,6 @@ sub fileHasSize($$;$) {
     print("FileUtilities::fileHasSize($infile, == $insize) returning $ret\n") if ($verbose);
   }
   return $ret;
-}
-
-# Given image file details, store this file.
-# $file     : Fully qualified file name.
-# $dptr     : Ptr to struct with file details.
-# $mkbackup : Put backup copy in backup dir.
-
-sub storeImageFile {
-  my ($file, $dptr, $args) = @_;
-
-  my %args = %$args;
-  my ($verbose, $force, $dummy, $nomove) = @args{($OPT_VERBOSE, $OPT_FORCE, $OPT_DUMMY, $OPT_NOMOVE)};
-
-  my $pptr = pathsForFile($dptr, $verbose);
-  my %paths = %$pptr;
-  my ($subject, $existing, $image) = @paths{qw(subject existing image)};
-  makeDirs($pptr, 0);
-
-  # Move and check the files.
-  my $destdir = ($nomove) ? '.' : $pptr->{'image'};
-  my $dest = "";
-  if (hasLen($dptr->{'detname'})) {
-    $dest = "${destdir}/" . $dptr->{'detname'};
-  } else {
-    my $filename = $dptr->{'filename'};
-    $filename = "\U$filename" if ($filename =~ /\.ie$|^d\./);
-    $dest = "${destdir}/${filename}";
-  }
-
-  print "FileUtilities::storeImageFile(): safeMove($file, $dest, $verbose, force $force)\n" if ($verbose);
-  if ($force) {
-    if ($dummy) {
-      print "*** Dummy: move($dest, ${dest}.bak)\n";
-      print "*** Dummy: move($file, $dest)\n";
-    } else {
-      move($dest, "${dest}.bak");
-      move($file, $dest);
-    }
-  } else {
-    if ($verbose == 3) {
-      # HACK: verbose == 3 => do a copy rather than move.
-      safeCopy($file, $dest, 1);
-      chmod(0444, $dest);
-    } elsif ($verbose < 2) {
-      if ($dummy) {
-        print "*** Dummy: safeMove($file, $dest, $verbose)\n";
-        print "*** Dummy: chmod(0444, $dest)\n";
-      } else {
-        safeMove($file, $dest, $verbose);
-        chmod(0444, $dest);
-      }
-    }
-  }
-  return $pptr;
 }
 
 # Return given column from input file.
@@ -747,9 +520,9 @@ sub fileStat {
     $verbose = (defined($opts{$FSTAT_VERBOSE}) and $opts{'verbose'}) ? 1 : 0;
     $dir_is_ok = 1 if (defined($opts{$FSTAT_DIRISOK}) and $opts{'dir_is_ok'});
   }
-  $verbose = 0 unless ( hasLen( $verbose ));
+  $verbose = 0 unless ( has_len( $verbose ));
 
-  return undef unless (hasLen($infile));
+  return undef unless (has_len($infile));
   $infile =~ s/^\s+//;
   $infile =~ s/\s+$//;
   my $host = hostname();

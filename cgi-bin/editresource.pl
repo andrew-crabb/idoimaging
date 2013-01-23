@@ -6,8 +6,8 @@ use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use Userbase;
 
 $| = 1;
@@ -15,11 +15,7 @@ my $cgi = new CGI;
 print $cgi->header();
 
 
-my $localdb = $cgi->param('localdb');
-my $loc_db = (defined($localdb)) ? "$localdb<br>\n" : "undefined<br>\n";
-print "localdb is $loc_db<br>\n";
-$localdb = hasLen($localdb) ? ($localdb) ? 1 : 0 : 0;
-my $dbh = hostConnect('', $localdb);
+my $dbh = hostConnect('');
 my $title = "I Do Imaging - Edit Resource";
 
 # If adding program, ensure logged-in user is admin.
@@ -31,16 +27,13 @@ unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
 
 print "<br>\n";
 dumpParams($cgi);
-if ($localdb) {
-  print "<br /><center><h3>Note: Running Local Database!</h3></center><br />\n";
-}
 my ($ident, $doAdd, $doDelete) = getParams($cgi, (qw(ident add delete)));
 
-if (hasLen($ident)) {
-  if (hasLen($doAdd)) {
+if (has_len($ident)) {
+  if (has_len($doAdd)) {
     # Given ident and add: from CGI params, add new or edit existing record.
     doEditAdd($ident);
-  } elsif(hasLen($doDelete) and $doDelete) {
+  } elsif(has_len($doDelete) and $doDelete) {
     my $str = "delete from resource where ident = '$ident'";
     printRowWhite($str);
     dbQuery($dbh, $str);
@@ -49,7 +42,7 @@ if (hasLen($ident)) {
     editAddForm($ident);
   }
 } else {
-  if (hasLen($doAdd)) {
+  if (has_len($doAdd)) {
     # Adding, no ident given: fill in blank form, call self with add and ident.
     editAddForm();
   } else {
@@ -67,11 +60,10 @@ sub editAddForm {
   print $cgi->start_form(
     -action => "/${STR_DO_EDIT_RES}",
   ) . "\n";
-  print $cgi->hidden(-name => 'localdb', -value => $localdb) . "\n";
   print "<table>\n";
 
   my $href = '';
-  if (hasLen($ident)) {
+  if (has_len($ident)) {
     # Given a particular ident: we're editing a resource.
     my $str = "select * from resource where ident = '$ident'";
 
@@ -82,10 +74,10 @@ sub editAddForm {
   # Now display a table for one resource.  Fill in default vals if applicable.
   my @fields = (qw(ident format program type url date reviewer summ descr urlstat));
   foreach my $field (@fields) {
-    my $val = (hasLen($href)) ? $href->{$field} : "";
-    $val = $val or "";
+    my $val = (has_len($href)) ? $href->{$field} : "";
+    $val = ($val or "");
     # Create the next free ID unless we have one.
-    if (($field eq "ident") and (not hasLen($ident))) {
+    if (($field eq "ident") and (not has_len($ident))) {
       $val = nextIdent($dbh, "resource");
       # Need to have hiddent 'ident' set later on.
       $ident = $val;
@@ -123,7 +115,7 @@ sub make_type_select {
   $res{''} = "- Select -";
   my @rkeys = sort {$res{$a} cmp $res{$b}} keys %res;
   my $type_select;
-  if (hasLen($val)) {
+  if (has_len($val)) {
     $type_select = $cgi->popup_menu(-name => 're_type',
 				    -values => \@rkeys,
 				    -default => $val,
@@ -147,7 +139,7 @@ sub make_format_select {
     $vals{$fkey} = $fmt{$fkey}->[0];
   }
   my $format_select;
-  if (hasLen($val)) {
+  if (has_len($val)) {
     $format_select = $cgi->popup_menu(-name => 're_format',
 				      -values => \@fkeys,
 				      -default => $val,
@@ -175,7 +167,7 @@ sub make_prog_select {
   $progs{''} = "- Select -";
   my @pkeys = sort {$progs{$a} cmp $progs{$b}} keys %progs;
   my $prog_select;
-  if (hasLen($ident)) {
+  if (has_len($ident)) {
     $prog_select = $cgi->popup_menu(-name => 're_program',
 				    -values => \@pkeys,
 				    -default => $ident,
@@ -202,9 +194,13 @@ sub doEditAdd {
   my @fields = qw(ident format program type url date reviewer summ descr urlstat);
   foreach my $field (@fields) {
     my $newval = $cgi->param("re_${field}");
-    $newval = '' unless (hasLen($newval));
-    $newval = convertDates($newval)->{'SQL'} if ($field =~ /date/);
-    if (hasLen($newval)) {
+    $newval = '' unless (has_len($newval));
+
+    if ($field =~ /date/) {
+      $newval = convert_date($newval, $DATE_SQL);
+    }
+
+    if (has_len($newval)) {
       unless ($doEdit and $newval eq $ref->{$field}) {
 	# Include this string only if it's different.
 	$updatestr .= "$comma $field = '$newval'";
@@ -232,11 +228,11 @@ sub showList {
   foreach my $resource (@resources) {
     my ($ident, $format, $program, $summ, $type, $url, $urlstat) = @$resource;
     my ($object, $class, $text) = ('', '', '');
-    if (hasLen($format) and ($format != 0)) {
+    if (has_len($format) and ($format != 0)) {
       $object = $radutils::cat_formats{$format}->[0];
       $class = "Y";
       $text = "Format";
-    } elsif (hasLen($program) and ($program != 0)) {
+    } elsif (has_len($program) and ($program != 0)) {
       $str = "select name from program where ident = '$program'";
       $sh = dbQuery($dbh, $str);
       my ($pname) = $sh->fetchrow_array();

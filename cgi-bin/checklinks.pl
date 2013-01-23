@@ -11,8 +11,8 @@ use Getopt::Std;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use httputils;
 
 $| = 1;
@@ -21,7 +21,6 @@ getopts('adlprsSuw', \%opts);
 
 our $do_all      = ($opts{'a'}) ? 1 : 0;
 our $dummy       = ($opts{'d'}) ? 1 : 0;
-our $local       = ($opts{'l'}) ? 1 : 0;
 our $do_program  = ($opts{'p'}) ? 1 : 0;
 our $do_resource = ($opts{'r'}) ? 1 : 0;
 our $do_author   = ($opts{'u'}) ? 1 : 0;
@@ -38,8 +37,7 @@ unless ($do_program or $do_resource or $do_author) {
   exit 1;
 }
 
-$local = 0 unless (hasLen($local) and $local);
-my $dbh = hostConnect('', $local);
+my $dbh = hostConnect('');
 
 # Digit suffixes appended to table name to allow duplicates.
 our %tables = (
@@ -80,7 +78,7 @@ sub checkTable {
     print "** numflds $numflds, i $i, urlfld $urlfld, statfld $statfld\n";
     
     my ($condstr, $junction) = ("", "where");
-    if (hasLen($id)) {
+    if (has_len($id)) {
       $condstr   .= " $junction name like '$id\%'";
       $junction = "and";
     }
@@ -127,11 +125,11 @@ sub checklink {
   my %element = %$href;
 #   my ($pname, $ident, $currstat) = @element{qw(name ident urlstat)};
   my ($pname, $ident, $currstat) = @element{qw(name ident $statfld)};
-  $currstat = 0 unless (hasLen($currstat) and $currstat);
+  $currstat = 0 unless (has_len($currstat) and $currstat);
   my $url = $element{$urlfld};
 
   my $date_today = today();
-  return 0 unless (hasLen($url));
+  return 0 unless (has_len($url));
   my $link_is_up = checkLinkStatus($href, $urlfld);
 
   # Record this date in 'program.urldate' field if link is up.

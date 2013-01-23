@@ -16,8 +16,8 @@ use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use Userbase;
 use constants;
 
@@ -40,19 +40,19 @@ my $title = "I Do Imaging - Edit Author";
 printRowWhiteCtr($cgi->h1($title));
 
 # Fetch existing record if performing edit, or table to edit one record.
-my $href = (hasLen($ident)) ? dbRecord($dbh, "author", $ident) : undef;
+my $href = (has_len($ident)) ? dbRecord($dbh, "author", $ident) : undef;
 
 if (($ident and not $add) or ($add and not $ident)) {
   # add set: case 2, show empty table, set process, ident, add (goes to case 7).
   # ident set: case 5, show filled table, set process and ident (goes to case 5).
   my @lines = ();
   foreach my $vname (@author_fields) {
-    my $val = (hasLen($ident)) ? $href->{$vname} : '';
+    my $val = (has_len($ident)) ? $href->{$vname} : '';
 
     if ($vname eq 'ident') {
       $val = ($val or nextIdent($dbh, "author"));
     }
-    if (($vname eq 'home') and hasLen($ident)) {
+    if (($vname eq 'home') and has_len($ident)) {
       $val =~ s{/http://}{};
       $val =~ s/\/$//;
     }
@@ -113,7 +113,7 @@ if (($ident and not $add) or ($add and not $ident)) {
 	$val = "<a href=${STR_EDIT_AUTHOR}?ident=$id>$fmtname</a>" ;
       } elsif ($vname =~ /home/) {
 	my $url = $href->{$vname};
-	$url = "&nbsp;" unless (hasLen($url));
+	$url = "&nbsp;" unless (has_len($url));
 	$val = "<a target='new' href='http://$url'>$url</a>";
       } else {
 	$val = $href->{$vname};

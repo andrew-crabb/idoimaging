@@ -5,9 +5,9 @@ use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use radutils qw($DB_INT $DB_CHR $DB_BEN $DB_DAT $DB_FLT);
-use Utilities_new;
 use strict;
 no strict 'refs';
 
@@ -21,7 +21,7 @@ my $dbh = hostConnect();
 my $title = "idoimaging - edit data";
 
 # ========== TEMP NOT PRINTING REDIRECT HEADER ==========
-# unless (hasLen($ident) and hasLen($doAdd)) {
+# unless (has_len($ident) and has_len($doAdd)) {
   print $cgi->header();
   dumpParams($cgi);
   
@@ -31,9 +31,9 @@ my $title = "idoimaging - edit data";
   print("<br>\n");
 # }
 
-if (hasLen($ident)) {
+if (has_len($ident)) {
   # Called from self.
-  if (hasLen($doAdd)) {
+  if (has_len($doAdd)) {
     # Given ident and add: from CGI params, add new or edit existing record.
     # This uses Add in a different sense to mean 'process changes'.
     doEditAdd($cgi, $dbh, $dbtable, $ident);
@@ -43,7 +43,7 @@ if (hasLen($ident)) {
   }
 } else {
   # Called from Admin screen.
-  if (hasLen($doAdd)) {
+  if (has_len($doAdd)) {
     # Adding, no ident given: create blank form, call self with add and ident.
     editAddForm($cgi, $dbh, $dbtable);
   } else {
@@ -63,7 +63,7 @@ sub editAddForm {
   print "<tr><th>Field</th><th>Value</th></tr>\n";
 
   my $href = '';
-  if (hasLen($ident)) {
+  if (has_len($ident)) {
     # Given a particular ident: we're editing.
     my $str = "select * from $dbtable where ident = '$ident'";
     my $sh = dbQuery($dbh, $str);
@@ -76,9 +76,9 @@ sub editAddForm {
   my %table = %{$tablename};
   my @sortkeys = sort {$table{$a}->[0] <=> $table{$b}->[0]} keys %table;
   foreach my $field (@sortkeys) {
-    my $dbval = (hasLen($href)) ? $href->{$field} : "";
+    my $dbval = (has_len($href)) ? $href->{$field} : "";
     # Create the next free ID unless we have one.
-    if (($field eq "ident") and (not hasLen($ident))) {
+    if (($field eq "ident") and (not has_len($ident))) {
       $dbval = nextIdent($dbh, "data");
       # Need to have hidden 'ident' set later on.
       $ident = $dbval;
@@ -121,7 +121,7 @@ sub doEditAdd {
   my $str = "select * from $dbtable where ident = $ident";
   my $sh = dbQuery($dbh, $str, 0);
   my $dbrec = $sh->fetchrow_hashref;
-  my $doEdit = (hasLen($dbrec)) ? 1 : 0;
+  my $doEdit = (has_len($dbrec)) ? 1 : 0;
   my ($updatestr, $comma) = ("", "");
 
   my $tablename = "radutils::db_${dbtable}";
@@ -131,7 +131,7 @@ sub doEditAdd {
     my $newval = $cgi->param("fld_${field}");
     $newval = valToSQL($newval, $table{$field});
 #   tt("editdata::doEditAdd(): field $field, oldval $dbrec->{$field}, newval $newval");
-    if (hasLen($newval)) {
+    if (has_len($newval)) {
       unless ($doEdit and ($newval eq $dbrec->{$field})) {
 	# Include this string only if it's different.
 	$updatestr .= "$comma $field = '$newval'";

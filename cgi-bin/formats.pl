@@ -9,8 +9,8 @@ use CGI;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 
 # ------------------------------------------------------------
 # Constants
@@ -27,11 +27,11 @@ my $dbh = hostConnect();
 our ($ident, $name);
 ($ident, $name) = ('', '');
 foreach my $var (qw(ident name)) {
-  $$var = (hasLen($cgi->param($var))) ? $cgi->param($var) : "";
+  $$var = (has_len($cgi->param($var))) ? $cgi->param($var) : "";
 }
 
 # Show one format in detail if specified.
-if (hasLen($ident)) {
+if (has_len($ident)) {
   # Get resources related to this format.
   my $str = "select ident, type, url, urlstat, summ from resource ";
   $str .= "where format = '$ident'";
@@ -60,7 +60,7 @@ if (hasLen($ident)) {
     my $urlicon = urlIcon(\%urlopts);
     my %urlicon = %$urlicon;
     my ($urlstr, $url_cvars) = @urlicon{qw(urlstr url_cvars)};
-  if (hasLen($url_cvars)) {
+  if (has_len($url_cvars)) {
     $tipstrs{$url_cvars->{'class'}} = $url_cvars unless (exists($tipstrs{$url_cvars->{'class'}}));
   }
 
@@ -140,7 +140,7 @@ while (my (@bits) = $sh->fetchrow_array()) {
   my ($id, $name, $summ) = @bits;
   my $url = "/${STR_FORMATS}?ident=$id";
   $name = "<a href='$url'>$name</a>";
-  $summ = (hasLen($summ)) ? $summ : "&nbsp;";
+  $summ = (has_len($summ)) ? $summ : "&nbsp;";
   print $cgi->Tr($cgi->td([$name, $summ])) . "\n";
 }
 

@@ -62,12 +62,10 @@ use WWW::Mechanize;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use Getopt::Std;
 
-my $toaddr = "ahc\@andy.rad.jhmi.edu";
-my $fromaddr = "ahc\@jhu.edu";
 my $sourceforgestring = 'class="folder level2 open (hidden|)">\s+<td class="tree"><a href="#" class="icon folder">';
 
 # Mech was killing program on 404 with autocheck on.

@@ -5,16 +5,16 @@ use CGI::Carp 'fatalsToBrowser';
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 
 my $cgi = new CGI;
 my $dbh = hostConnect();
 my ($ident, $field, $table) = getParams($cgi, (qw(ident field table)));
 
-unless (hasLen($ident) and hasLen($field) and hasLen($table)) {
+unless (has_len($ident) and has_len($field) and has_len($table)) {
   my $referer = $cgi->referer();
-  my $redir = (hasLen($referer)) ? $referer : "http://www.idoimaging.com";
+  my $redir = (has_len($referer)) ? $referer : "http://www.idoimaging.com";
   print $cgi->redirect($redir);
   exit;
 }

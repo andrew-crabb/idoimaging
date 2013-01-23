@@ -8,8 +8,8 @@ use FindBin qw($Bin);
 use strict;
 no strict 'refs';
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 use bigint;
 
 my $TIP_RSRCURL_1 = "Visit website for this resource";
@@ -25,25 +25,25 @@ my $dbh = hostConnect();
 # Ident of specified resource, and sort order.
 our ($ident, $order);
 foreach my $var (qw(ident order)) {
-  $$var = (hasLen($cgi->param($var))) ? $cgi->param($var) : "";
+  $$var = (has_len($cgi->param($var))) ? $cgi->param($var) : "";
 }
 print comment("resources: ident = '$ident', order = '$order'");
-$order = 'format' unless (hasLen($order));
+$order = 'format' unless (has_len($order));
 
 # Show one resource in detail if specified.
-if (hasLen($ident)) {
+if (has_len($ident)) {
   print comment("Show one resource in detail: $ident");
   my $str = "select format, type, url, summ, descr, reviewer";
   $str   .= " from resource";
   $str   .= " where ident = '$ident'";
   my $sh = dbQuery($dbh, $str);
   if (my ($rfmt, $rtype, $rurl, $rsumm, $rdesc, $rrev) = $sh->fetchrow_array()) {
-    $rfmt = '' unless (hasLen($rfmt));
-    $rtype = '' unless (hasLen($rtype));
-    $rurl = '' unless (hasLen($rurl));
-    $rsumm = '' unless (hasLen($rsumm));
-    $rdesc = '' unless (hasLen($rdesc));
-    $rrev = '' unless (hasLen($rrev));
+    $rfmt = '' unless (has_len($rfmt));
+    $rtype = '' unless (has_len($rtype));
+    $rurl = '' unless (has_len($rurl));
+    $rsumm = '' unless (has_len($rsumm));
+    $rdesc = '' unless (has_len($rdesc));
+    $rrev = '' unless (has_len($rrev));
     if ($rtype == 6) {
       # This is a review of a program.
       $str = "select program.name from program, resource where program.ident = resource.program";
@@ -138,12 +138,12 @@ foreach my $ref (@refs) {
     my $urlicon = urlIcon(\%urlopts);
     my %urlicon = %$urlicon;
     my ($urlstr, $url_cvars) = @urlicon{qw(urlstr url_cvars)};
-  if (hasLen($url_cvars)) {
+  if (has_len($url_cvars)) {
     $tipstrs{$url_cvars->{'class'}} = $url_cvars unless (exists($tipstrs{$url_cvars->{'class'}}));
   }
 
 
-  $summ = (hasLen($summ)) ? $summ : "&nbsp;";
+  $summ = (has_len($summ)) ? $summ : "&nbsp;";
   if (length($summ) > 50) {
     $summ = substr($summ, 0, 50);
     $summ .= "...";
@@ -151,7 +151,7 @@ foreach my $ref (@refs) {
   # ftype is file format name, or program name.
   my $ftype = "";
   my $category;
-  if (hasLen($program) and ($program != 0)) {
+  if (has_len($program) and ($program != 0)) {
     # Get the name of this program.
     $str = "select name from program where ident = '$program'";
     $sh = dbQuery($dbh, $str);
@@ -164,7 +164,7 @@ foreach my $ref (@refs) {
     $category = "Format";
   }
   my $rtype = $resourcetype{$type};
-  $rtype = "-" unless (hasLen($rtype));
+  $rtype = "-" unless (has_len($rtype));
   my $width = $headings{$format}->[1];
   print $cgi->Tr($cgi->td({-align => 'left',
 			  -width => $width},

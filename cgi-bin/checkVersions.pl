@@ -6,8 +6,8 @@ use Getopt::Std;
 use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
-use Utilities_new;
 # use strict;
 
 my $cgi = new CGI;
@@ -49,7 +49,7 @@ if (my ($progid) = grep(/Go_/, @params)) {
     my $cgival = $cgi->param($cgivar);
     my $dbval = $pprog->{"$varname"};
     my $diff = "    ";
-    if (hasLen($cgival) and hasLen($dbval)) {
+    if (has_len($cgival) and has_len($dbval)) {
       if ($cgival ne $dbval) {
 	$diff = "DIFF";
 	$upstr = "$comma $varname = '$cgival'";
