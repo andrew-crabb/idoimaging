@@ -4,7 +4,7 @@
 # Write table with new programs and versions.
 
 use CGI;
-# use CGI::Carp 'fatalsToBrowser';
+# use CGI::Carp;
 use CGI::Carp;
 use DBI;
 use Getopt::Std;

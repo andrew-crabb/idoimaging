@@ -3,7 +3,7 @@
 use DBI;
 use CGI;
 use Getopt::Std;
-use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+use CGI::Carp;
 use FindBin qw($Bin);
 use lib $Bin;
 use Utility;
@@ -16,7 +16,6 @@ print $cgi->header();
 my $dbh = hostConnect();
 my $title = "Manual Check Software Versions";
 
-warningsToBrowser(1);
 
 printStartHTML($cgi, $title);
 printTitle($cgi);

@@ -2,7 +2,7 @@
 
 use strict;
 use CGI;
-use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;

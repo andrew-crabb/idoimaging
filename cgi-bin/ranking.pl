@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl -w
 
 use CGI;
-use CGI::Carp 'fatalsToBrowser';
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use radutils;

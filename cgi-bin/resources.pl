@@ -3,7 +3,7 @@
 
 use DBI;
 use CGI;
-use CGI::Carp qw(fatalsToBrowser);
+use CGI::Carp;
 use FindBin qw($Bin);
 use strict;
 no strict 'refs';

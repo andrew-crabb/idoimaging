@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl -w
 
 use CGI;
-use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
@@ -26,7 +26,6 @@ my $title = "idoimaging - edit data";
   dumpParams($cgi);
   
   printStartHTML($cgi, $title);
-  warningsToBrowser(1);
   printTitle($cgi);
   print("<br>\n");
 # }

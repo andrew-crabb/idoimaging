@@ -2,7 +2,7 @@
 
 use DBI;
 use CGI;
-use CGI::Carp 'fatalsToBrowser';
+use CGI::Carp;
 use FindBin qw($Bin);
 use lib $Bin;
 use Utility;
@@ -40,14 +40,6 @@ foreach my $param (keys %acts) {
 my $pass = $cgi->param('pass');
 $pass = ($pass eq 'asdf') ? 1 : 0;
 my $loggedIn = ($pass) ? $pass : has_len($cgi->cookie('loggedin'));
-
-# Flag for local database.
-my $localdb = $cgi->param('localdb');
-if (has_len($localdb)) {
-  # Append 'localdb=1' to url.
-  my $appop = ($url =~ /\?/) ? '&' : '?';
-  $url .= "${appop}localdb=1";
-}
 
 my @params = $cgi->param();
 

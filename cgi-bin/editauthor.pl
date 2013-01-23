@@ -12,7 +12,7 @@
 
 use strict;
 use CGI;
-use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
@@ -29,7 +29,6 @@ my @author_fields = (qw(ident name_last name_first email home country));
 
 my $cgi = new CGI;
 print $cgi->header();
-warningsToBrowser(1);
 exit unless (is_admin_or_cli());
 
 dumpParams($cgi);

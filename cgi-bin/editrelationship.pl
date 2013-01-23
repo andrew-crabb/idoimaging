@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl -w
 
 use CGI;
-use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
@@ -18,7 +18,6 @@ no strict 'refs';
 my $cgi = new CGI;
 my $ishttp = (defined($ENV{'HTTP_HOST'})) ? 1 : 0;
 print $cgi->header() if ($ishttp);
-warningsToBrowser(1) if ($ishttp);
 
 
 my $dbh = hostConnect();

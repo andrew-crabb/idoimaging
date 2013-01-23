@@ -3,7 +3,7 @@
 # Apply the same attributes to a number of programs.
 
 use CGI;
-use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
@@ -23,14 +23,12 @@ if (has_len($referer)) {
 }
 
 print $cgi->header();
-# warningsToBrowser(1);
 
 my ($step0, $step1, $step2) = getParams($cgi, (qw(step0 step1 step2)));
 $step0 = 1 unless(has_len($step0) or has_len($step1) or has_len($step2));
 
 my $dbh = hostConnect('');
 my $title = "Edit Attributes";
-$title .= "\n<br />Note: Local Database" if ($localdb);
 
 printStartHTML($cgi, $title);
 printTitle($cgi, 1);
@@ -121,14 +119,12 @@ if (has_len($step0)) {
 
   %hiddens = (
     'step1'   => 1,
-    'localdb' => $localdb,
       );
 
 } elsif (has_len($step1)) {
   my $ncols = $numcols - 1;
   %hiddens = (
     'step2'   => 1,
-    'localdb' => "$localdb",
       );
   # List the incoming params that will be applied to selected programs.
   foreach my $opt_param (@opt_params) {

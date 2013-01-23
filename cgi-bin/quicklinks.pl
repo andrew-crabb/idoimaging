@@ -4,7 +4,7 @@
 # DICOM viewer (3), format converter (3), PACS client (2).
 
 use CGI;
-# use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+# use CGI::Carp;
 use DBI;
 use Getopt::Std;
 

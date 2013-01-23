@@ -8,7 +8,7 @@
 #   1. In programs listing all files, add 'where remdate != '0000-00-00'.
 
 use CGI;
-use CGI::Carp 'fatalsToBrowser';
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;

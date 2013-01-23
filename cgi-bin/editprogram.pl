@@ -1,7 +1,7 @@
 #! /usr/local/bin/perl -w
 
 use CGI;
-use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
@@ -18,7 +18,6 @@ my $cgi = new CGI;
 my $referer = $cgi->referer();
 
 print $cgi->header();
-warningsToBrowser(1);
 # My little javascript bit.
 my $jscript =<<EOJS;
 <script type="text/javascript">
@@ -47,7 +46,6 @@ unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
 
 my $dbh = hostConnect('');
 my $title = "Edit Program";
-$title .= "\n<br />Note: Local Database" if ($localdb);
 
 dumpParams($cgi);
 
@@ -145,7 +143,6 @@ $sh->finish();
 
 $ntrk = 0 unless (has_len($ntrk) and $ntrk);
 $title = "Editing: $name ($ntrk monitors, $nimg images)";
-$title .= "\n<br />Note: Local Database" if ($localdb);
 printRowWhiteCtr($cgi->h1($title));
 
 my $remdate = $prog->{'remdate'};
@@ -159,16 +156,7 @@ print $cgi->start_form(
   -action => "/${STR_DO_EDIT}",
     ) . "\n";
 print "<input type='hidden' name='Add' value='1'>\n"    if ($addprog);
-print "<input type='hidden' name='localdb' value='$localdb'>\n";
 
-# Row and TD for outer table.
-# print "<tr>\n";
-# print "<td class='white' colspan='2'>\n";
-
-# print comment("Outer table has 1 row, 2 columns");
-# print "<table class='new' border=1>\n";
-# print comment("Begin sole row of outer table");
-# print "<tr valign='top'>\n";
 print comment("Begin td for lefthand column");
 print "<td valign='top'>\n";
 
