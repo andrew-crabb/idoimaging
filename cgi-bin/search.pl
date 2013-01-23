@@ -5,6 +5,7 @@ use CGI::Carp 'fatalsToBrowser';
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 
@@ -30,7 +31,7 @@ my $RIGHTCOLWIDTH = 450;
 printRowWhiteCtr("<h2 class='title'>Search Results</h2>");
 
     
-unless (hasLen($search)) {
+unless (has_len($search)) {
   printRowWhite("There were no matches for your search.");
   if (defined(my $referer = $cgi->referer())) {
     printRowWhite("Click <a class='green' href='$referer'>here</a> to return to the previous screen.");
@@ -99,16 +100,16 @@ if (scalar(@namearr)) {
       my ($ifacestr, $iface_cvars) = @proglink{qw(ifacestr iface_cvars)};
 
       # Accumulate tooltip objects if they are new.
-      if (hasLen($prog_cvars)) {
+      if (has_len($prog_cvars)) {
 	$tipstrs{$prog_cvars->{'class'}} = $prog_cvars unless (exists($tipstrs{$prog_cvars->{'class'}}));
       }
-      if (hasLen($cap_cvars)) {
+      if (has_len($cap_cvars)) {
 	$tipstrs{$cap_cvars->{'class'}} = $cap_cvars unless (exists($tipstrs{$cap_cvars->{'class'}}));
       }
-      if (hasLen($plat_cvars)) {
+      if (has_len($plat_cvars)) {
 	$tipstrs{$plat_cvars->{'class'}} = $plat_cvars unless (exists($tipstrs{$plat_cvars->{'class'}}));
       }
-      if (hasLen($iface_cvars)) {
+      if (has_len($iface_cvars)) {
 	$tipstrs{$iface_cvars->{'class'}} = $iface_cvars unless (exists($tipstrs{$iface_cvars->{'class'}}));
       }
 
@@ -167,16 +168,16 @@ if ($newsumm) {
       my ($ifacestr, $iface_cvars) = @proglink{qw(ifacestr iface_cvars)};
 
       # Accumulate tooltip objects if they are new.
-      if (hasLen($prog_cvars)) {
+      if (has_len($prog_cvars)) {
 	$tipstrs{$prog_cvars->{'class'}} = $prog_cvars unless (exists($tipstrs{$prog_cvars->{'class'}}));
       }
-      if (hasLen($cap_cvars)) {
+      if (has_len($cap_cvars)) {
 	$tipstrs{$cap_cvars->{'class'}} = $cap_cvars unless (exists($tipstrs{$cap_cvars->{'class'}}));
       }
-      if (hasLen($plat_cvars)) {
+      if (has_len($plat_cvars)) {
 	$tipstrs{$plat_cvars->{'class'}} = $plat_cvars unless (exists($tipstrs{$plat_cvars->{'class'}}));
       }
-      if (hasLen($iface_cvars)) {
+      if (has_len($iface_cvars)) {
 	$tipstrs{$iface_cvars->{'class'}} = $iface_cvars unless (exists($tipstrs{$iface_cvars->{'class'}}));
       }
 

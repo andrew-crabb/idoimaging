@@ -11,6 +11,7 @@ use Getopt::Std;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use Utility;
 
@@ -97,9 +98,7 @@ while (my $ver = $sh->fetchrow_hashref()) {
       $value = $progstr;
       $classstr = "class='noborderright'";
     } elsif ($elem =~ /date$|version_add/) {
-      if (my $dt = parse_sql_date($ver->{$elem})) {
-	$value = $dt->mdy('/');
-      }
+      $value = convert_date($ver->{$elem}, $DATE_MDY);
     } elsif ($elem =~ /icons/) {
       $value = "${capstr}&nbsp;${platstr}";
     } else {
@@ -180,9 +179,7 @@ while (my $ver = $sh->fetchrow_hashref()) {
       $value = $progstr;
       $classstr = "class='noborderright'";
     } elsif ($elem =~ /date$|version_add/) {
-      if (my $dt = parse_sql_date($$elem)) {
-	$value = $dt->mdy('/');
-      }
+      $value = convert_date($$elem, $DATE_MDY);
     } elsif ($elem =~ /icons/) {
       $value = "${capstr}&nbsp;${platstr}";
     } else {

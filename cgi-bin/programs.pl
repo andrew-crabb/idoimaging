@@ -6,6 +6,7 @@ use CGI::Carp;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 # use FileUtilities;
 use bigint;
@@ -17,10 +18,10 @@ my $cgi = new CGI;
 # ------------------------------------------------------------
 # Constants.
 # ------------------------------------------------------------
-my $NPERPAGE = 20;	# Text items per page.
-my $NIMGPERPAGE = 12;   # Screen captures per page.
-my $NCAPCOL = 3;	# Screen capture columns per page.
-my $NCAPROW = 4;	# Screen capture rows per page.
+my $NPERPAGE = 20;		# Text items per page.
+my $NIMGPERPAGE = 12;		# Screen captures per page.
+my $NCAPCOL = 3;		# Screen capture columns per page.
+my $NCAPROW = 4;		# Screen capture rows per page.
 
 my $TIP_HOMEURL_1 = "Visit the website for this project";
 my $TIP_HOMEURL_0 = "Project website is currently down (try anyway)";
@@ -37,8 +38,7 @@ our %g_tipstrs = ();
 print $cgi->header();
 
 
-my $localdb = hasLen($cgi->param('localdb')) ? 1 : 0;
-my $dbh = hostConnect('', $localdb);
+my $dbh = hostConnect('');
 
 my ($progids, $included) = (undef, 0);
 if (defined($progids = $ENV{'progids'})) {
@@ -62,14 +62,10 @@ my @monitored = monitoredPrograms($dbh, $userid);
 # dumpParams($cgi);
 # print "</tr></td>\n";
 
-if ($localdb) {
-  print "<br /><center><h3>Note: Running Local Database!</h3></center><br />\n";
-}
-
 # Get search parameters.
 our ($category, $func, $readfmt, $writfmt, $plat, $lang, $edit, $showcap) = getParams($cgi, qw(category func readfmt writfmt plat lang edit showcap));
 my $cgiorder = $cgi->param('order');
-our $order = (hasLen($cgiorder)) ? $cgiorder : 'program.name';
+our $order = (has_len($cgiorder)) ? $cgiorder : 'program.name';
 
 # Number of items per page is different for image vs. text items.
 my $numperpage = ($showcap) ? $NIMGPERPAGE : $NPERPAGE;
@@ -96,27 +92,13 @@ while (my $iptr = $sh->fetchrow_hashref()) {
   $progimgs{$iptr->{'progid'}} = $iptr->{'numimg'};
 }
 
-# ------------------------------------------------------------
-# Get list of all blog and review resources.
-# ------------------------------------------------------------
-
-$str  = "select * from resource";
-$str .= " where ((type = $RES_BLO)";
-$str .= " or (type = $RES_REV))";
-$sh = dbQuery($dbh, $str);
-# Create hash by date of resource pointers.
-my %prog_res = ();
-while (my $resp = $sh->fetchrow_hashref) {
-  $prog_res{$resp->{'program'}}{$resp->{'date'}} = $resp;
-}
-
 # Get list of all program names.
 my %allprogs = allProgNames($dbh);
 
 # If progids is supplied, it is a comma-delimited list of prog ids to display.
 # All these progids are displayed, no other tests applied.
 my $proglist = '';
-if (hasLen($progids)) {
+if (has_len($progids)) {
   my @progids = split(/,/, $progids);
   my $sep = '';
   $proglist = "and (";
@@ -143,7 +125,7 @@ $sqlstr .= "where program.name is not null and program.auth = author.ident ";
 # $sqlstr .= "and program.ident >= 100 ";
 $sqlstr .= $proglist;
 $sqlstr .= "order by $order ";
-$sqlstr .= "desc" if (hasLen($cgiorder) and ($cgiorder =~ /percentile|rdate/));
+$sqlstr .= "desc" if (has_len($cgiorder) and ($cgiorder =~ /percentile|rdate/));
 $sqlstr .= ", program.name" if ($order =~ /urlstat/);
 $sh = dbQuery($dbh, $sqlstr);
 
@@ -176,13 +158,13 @@ while (my $sqlrec = $sh->fetchrow_hashref()) {
     # Retrieve index values from dropdown lists, and corresp SQL field.
     my $condval = $$cond;
     my $sqlval = $sqlrec->{$cond};
-    if (hasLen($condval) and ($condval > 0)) {
+    if (has_len($condval) and ($condval > 0)) {
       $somecond++;
       # Bit match to extract key bit.
       if (($condval * 1) & ($sqlval * 1)) {
         $makescond++;
         my $hashval = $hash{$$cond}->[0];
-        $hashval = '' unless (hasLen($hashval));
+        $hashval = '' unless (has_len($hashval));
         $condstr{$cond} = "$cond = $hashval\n";
       }
     }
@@ -267,11 +249,11 @@ my %hdg = (
   'bogus.rev'		=> [45,  'Rev'        , 0],
   'program.rdate'	=> [45,  'Date'       , 1],
   'bogus.watch'         => [30,  $add_col     , 0],
-  );
+);
   
 # Display $numperpage matches at a time, unless it's me doing admin.
 my $page = $cgi->param('page');
-$page = 0 unless (hasLen($page));
+$page = 0 unless (has_len($page));
 
 # finderstr used later for appending sort order to column URL.  
 # finderstr_noorder is for column headings that will have order added to them.
@@ -279,7 +261,7 @@ my ($finderstr, $finderstr_noorder) = ("", "");
 my ($ord_ampersand, $noord_ampersand) = ("", "");
 # Make up condition string, if needed, for finder.
 foreach my $var (qw(order func readfmt writfmt plat lang edit category showcap)) {
-  if (hasLen($cgi->param($var))) {
+  if (has_len($cgi->param($var))) {
     $finderstr .= "${ord_ampersand}$var=$$var";
     $ord_ampersand = "\&";
     # finderstr_noorder does not include the 'order' CGI parameter.
@@ -298,7 +280,7 @@ my ($low, $high, $navcode) = listParts($nummatch, $tnum, $tpage, $url, $finderst
 # listParts returns empty HTML if only one page to display.
 my @subrecs = @allrecs[$low..$high];
 my $numsubrecs = scalar(@subrecs);
-if (hasLen($navcode)) {
+if (has_len($navcode)) {
   print "<tr>\n<td class='white' align='center'>\n$navcode\n</td>\n</tr>\n";
 }
 
@@ -396,7 +378,7 @@ sub printColumnHeadings {
   my ($aref, $doprint) = @_;
   my @keys = @$aref;
 
-  $doprint = 1 unless (hasLen($doprint) and ($doprint ==0));
+  $doprint = 1 unless (has_len($doprint) and ($doprint ==0));
   # Print column headings to sort by.
   my $str = "<tr>\n";
   my $url;
@@ -437,7 +419,7 @@ sub printTableLine {
   my ($sqlrec, $doprint, $rowno) = @_;
   $rowno = 0 unless (defined($rowno) and $rowno);
 
-  $doprint = 1 unless (hasLen($doprint) and ($doprint ==0));
+  $doprint = 1 unless (has_len($doprint) and ($doprint ==0));
   my %sqlrec = %$sqlrec;
   my ($progid, $progname, $progsumm, $authid, $progurl, $urlstat, $revurl, $linkcount, $rev, $rdate, $interface, $percentile) = @sqlrec{(qw(ident name summ author.ident progurl urlstat revurl linkcount rev rdate interface percentile))};
 
@@ -459,30 +441,27 @@ sub printTableLine {
   # Change progstr if editing.
   if ($edit) {
     my $prog_url = "/${STR_EDIT_PROGRAM}?ident=$progid";
-    $prog_url .= "&localdb=1" if ($localdb);
     $progstr  = "<a href='$prog_url'>$progname</a>";
   }
 
   # ---------- 'Description' column ----------
   # Program summary gets icon for resource, if there are any.
-  $progsumm = "&nbsp;" unless hasLen($progsumm);
-  if (defined($prog_res{$progid})) {
-    my $rsrcicon = makeRsrcIcon(\%prog_res, $progid);
-    if (hasLen($rsrcicon)) {
-      $progsumm .= "&nbsp;&nbsp;$rsrcicon->{'iconstr'}";
-      addCvars($rsrcicon, \%g_tipstrs);
-    }
+  $progsumm = "&nbsp;" unless has_len($progsumm);
+  my $rsrcicon = makeRsrcIcon($dbh, $progid);
+  if (has_len($rsrcicon)) {
+    $progsumm .= "&nbsp;&nbsp;$rsrcicon->{'iconstr'}";
+    addCvars($rsrcicon, \%g_tipstrs);
   }
 
   # ---------- 'Author' column ----------
   my %authopts = (
     'maxlen'  => 20,
     'flag'    => 1,
-      );
+  );
   my $authptr = authName($dbh, $authid, \%authopts);
   addCvars($authptr, \%g_tipstrs);
   my $aname = $authptr->{'urlstr'};
-  $aname = "&nbsp;" unless hasLen($aname);
+  $aname = "&nbsp;" unless has_len($aname);
 
   # ---------- 'URL' column ----------
   my %urlopts = (
@@ -493,7 +472,7 @@ sub printTableLine {
     'table'   => "program",
     'tip_0'   => $TIP_HOMEURL_0,
     'tip_1'   => $TIP_HOMEURL_1,
-      );
+  );
 
   my $urlicon = urlIcon(\%urlopts);
   my %urlicon = %$urlicon;
@@ -506,17 +485,16 @@ sub printTableLine {
   my $linkicon = ($edit) ? $percentile : linkCountIcon($percentile);
 
   # ---------- 'Rev' column ----------
-  $rev = "&nbsp;" unless (hasLen($rev));
+  $rev = "&nbsp;" unless (has_len($rev));
 
   # ---------- 'Date' column ----------
-# tt("programs.pl $progid $progname $rdate<br>\n");
-  my $rdatestr = convertDates($rdate)->{'MM/DD/YY'};
-  $rdatestr = "&nbsp;" unless (hasLen($rdatestr));
+  my $rdatestr = "&nbsp;";
+  $rdatestr = convert_date($rdate, $DATE_MDY);
 
   # ---------- 'Add/Remove' column ----------
   # Data for monitor icon.
   my $is_monitored = grep(/$progid/, @monitored);
-  my $can_monitor = (hasLen($rev) or validDate($rdate));
+  my $can_monitor = (has_len($rev) or validDate($rdate));
 
   # Returns hash of (urlstr, iconstr, tipstr, tipclass).
   my $mon_det = make_monitor_details($userid, $progid, $is_monitored, $can_monitor, $included);
@@ -525,7 +503,7 @@ sub printTableLine {
   my $mon_cvars = $mon_det->{$MON_CVARS};
   my $tip_class = $mon_det->{$MON_TIPCL};
 
-  my $monitored = (hasLen($mon_url)) ? "<a href='$mon_url'>$mon_icon</a>" : $mon_icon;
+  my $monitored = (has_len($mon_url)) ? "<a href='$mon_url'>$mon_icon</a>" : $mon_icon;
 
   # Add the cvars objects for add/monitor icon to global variable g_tipstrs for later printing.
   $g_tipstrs{$tip_class} = $mon_cvars unless (defined($g_tipstrs{$tip_class}));
@@ -596,10 +574,15 @@ sub printTableLine {
     $str = "select revurl, visdate from program where ident = '$progid'";
     $sh = dbQuery($dbh, $str);
     my ($rurl, $vdate) = $sh->fetchrow_array();
-    $rurl = (hasLen($rurl)) ? "Y" : "&nbsp;";
+    $rurl = (has_len($rurl)) ? "Y" : "&nbsp;";
     $outstr .= $cgi->td({-align => 'center'}, $rurl) . "\n";
     # 4. Date host site last visited.
-    $vdate = hasLen($vdate) ? convertDates($vdate)->{'MM/DD/YY'} : "&nbsp;";
+    if (has_len($vdate)) {
+      $vdate = convert_date($vdate);
+    } else {
+      $vdate = "&nbsp;";
+    }
+
     $outstr .= $cgi->td({-align => 'center'}, $vdate) . "\n";
     # 5. 'Delete' button.
     my $delstr = "<a href='/${STR_RM_PROGRAM}?ident=$progid'>DEL</a>";
@@ -611,11 +594,11 @@ sub printTableLine {
   return $outstr;
 }
 
-sub countEntries {
-  my ($dbh, $str) = @_;
+  sub countEntries {
+    my ($dbh, $str) = @_;
 
-  my $sh = dbQuery($dbh, $str);
-  my ($ret) = $sh->fetchrow_array();
-  return $ret;
-}
+    my $sh = dbQuery($dbh, $str);
+    my ($ret) = $sh->fetchrow_array();
+    return $ret;
+  }
 

@@ -7,6 +7,7 @@ use CGI;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 
@@ -37,8 +38,8 @@ my %g_tipstrs = ();
 
 # my $ident = $cgi->param('ident');
 print $cgi->header();
-my ($ident, $localdb) = getParams($cgi, (qw(ident localdb)));
-my $dbh = hostConnect('', $localdb);
+my ($ident) = getParams($cgi, (qw(ident)));
+my $dbh = hostConnect('');
 my $verbose = 0;
 
 # Get ident of logged-in user.
@@ -135,10 +136,9 @@ my @prer = listPrereq($dbh, $prog->{'prer'});
 print comment("Start row for 'List programs' graphic");
 print "<tr>\n";
 my $progstr = "Program:  $prog->{'name'}";
-$progstr .= "<br />NOTE: USING LOCAL DATABASE" if ($localdb);
 print "<td width='$radutils::TABLEWIDTH' class='white' align='center'><h2>$progstr</h2></td>\n";
 print "</tr>\n";
-if (hasLen($subtitlestr)) {
+if (has_len($subtitlestr)) {
 print "<tr>\n";
   print "<td width='$radutils::TABLEWIDTH' class='white' align='center'><h3>$subtitlestr</h3></td>\n";
 print "<tr>\n";
@@ -148,7 +148,7 @@ print "<tr>\n";
 # ------------------------------------------------------------
 # Row for ISNOW or FORMERLY program name.
 # ------------------------------------------------------------
-# if (hasLen($newprog)) {
+# if (has_len($newprog)) {
 #   my $str = "select name from program where ident = '$newprog'";
 #   my $sh = dbQuery($dbh, $str, $verbose);
 #   my ($newname) = $sh->fetchrow_array();
@@ -163,7 +163,7 @@ print "<tr>\n";
 # ------------------------------------------------------------
 my $remdate = $prog->{'remdate'};
 unless ($remdate =~ /^0000/) {
-  $remdate = convertDates($remdate)->{'MM/DD/YY'};
+  $remdate = convert_date($remdate, $DATE_MDY);
   printRowWhiteCtr("<h3>Note: This program was removed on $remdate and is not being monitored</h3>");
 }
 
@@ -183,7 +183,7 @@ print "<table width='$FULLWIDTH' border='1' cellspacing='0' cellpadding='2'>\n";
 
 my @monitored = monitoredPrograms($dbh, $userid);
 my $is_monitored = grep(/$ident/, @monitored);
-my $can_monitor = (hasLen($prog->{'rev'}) or hasLen($prog->{'rdate'}));
+my $can_monitor = (has_len($prog->{'rev'}) or has_len($prog->{'rdate'}));
 my $included = 0;
 
 my $mon_det = make_monitor_details($userid, $ident, $is_monitored, $can_monitor, $included);
@@ -196,11 +196,11 @@ my $mon_text  = $mon_det->{$MON_TEXT};
 # Put links together differently depending on login, is_monitored, can_monitor.
 # All states get the basic icon and message.
 my $iconstr = "${mon_icon}&nbsp;${mon_text}";
-my $loginstr = (hasLen($mon_url)) ? "<a href='$mon_url'>${iconstr}</a>" : $iconstr;
+my $loginstr = (has_len($mon_url)) ? "<a href='$mon_url'>${iconstr}</a>" : $iconstr;
 $g_tipstrs{$tip_class} = $mon_cvars unless (defined($g_tipstrs{$tip_class}));
 
 # All logged-in states get a link to user page (see all monitored programs).
-if (hasLen($userid)) {
+if (has_len($userid)) {
   $loginstr .= "&nbsp;&mdash;&nbsp;";
   $loginstr .= "<a href='/${STR_USER_HOME}'>See all monitored programs</a>";
 
@@ -249,7 +249,7 @@ foreach my $fld (qw(summ descr rev auth plat interface func category readfmt wri
    }
    # -------------------- rev --------------------
    if ($fld eq 'rev' and validDate($prog->{'rdate'}))  {
-     my $fdate = convertDates($prog->{'rdate'})->{'MM/DD/YY'};
+     my $fdate = convert_date($prog->{'rdate'}, $DATE_MDY);
      $val = "$val (Released: $fdate)";  
      last SWITCH;
    }
@@ -306,7 +306,7 @@ foreach my $fld (qw(summ descr rev auth plat interface func category readfmt wri
        $val .= "&nbsp;&nbsp;(" . join(",&nbsp;", @dvals) . ")\n" if (scalar(@dvals));
      } else {
        $val = join(",&nbsp;", @dvals);
-       if (hasLen($iconstr)) {
+       if (has_len($iconstr)) {
 	 $val .= "&nbsp;&nbsp;${iconstr}"
        }
      }
@@ -316,10 +316,10 @@ foreach my $fld (qw(summ descr rev auth plat interface func category readfmt wri
   # ------------------------------ End of the big switch ------------------------------
 
   # CODE FOR BLOG AND REVIEW RESOURCES
-  $val = "&nbsp;" unless (hasLen($val));
+  $val = "&nbsp;" unless (has_len($val));
   if ($fld eq 'summ') {
-    my $rsrcicon = makeRsrcIcon(\%prog_res, $ident);
-    if (hasLen($rsrcicon)) {
+    my $rsrcicon = makeRsrcIcon($dbh, $ident);
+    if (has_len($rsrcicon)) {
       $val .= "&nbsp;&nbsp;$rsrcicon->{'iconstr'}";
        addCvars($rsrcicon, \%g_tipstrs);
     }
@@ -427,7 +427,8 @@ while (my $revp = $rsh->fetchrow_hashref()) {
   }
   # Each revision entry creates a line in this subtable.
   $rtxt .= "<tr><td>$revp->{'version'}</td>";
-  $rtxt .= "<td>" . convertDates($revp->{'reldate'})->{'MM/DD/YY'} . "</td>";
+  my $mdydate = convert_date($prog->{'reldate'}, $DATE_MDY);
+  $rtxt .= "<td>$mdydate</td>";
   $rtxt .= "</tr>\n";
 }
 if (length($rtxt)) {

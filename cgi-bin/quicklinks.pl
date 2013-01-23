@@ -10,6 +10,7 @@ use Getopt::Std;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bignum;
 
@@ -206,7 +207,7 @@ sub isMatch {
   my $ret = 0;
 
   if (($plat * 1) & ($platform * 1)) {
-    if (hasLen($function)) {
+    if (has_len($function)) {
       # HACK: select Dicom (val = 2) programs if function is Display.
       if ($function == $radutils::FUNC_DISP) {
 	$ret = (($readfmt * 1) & 2) ? 1 : 0;
@@ -226,7 +227,7 @@ sub isMatch {
 sub addToCvars {
   my ($cvar, $tipstrs) = @_;
 
-  if (hasLen($cvar)) {
+  if (has_len($cvar)) {
     my $cclass = $cvar->{'class'};
     unless (exists($tipstrs->{$cclass})) {
       $tipstrs->{$cclass} = $cvar ;

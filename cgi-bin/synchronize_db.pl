@@ -9,6 +9,7 @@ use strict;
 no strict 'refs';
 use FindBin qw($Bin);
 use lib $FindBin::Bin;
+use Utility;
 use CGI;
 
 use radutils;

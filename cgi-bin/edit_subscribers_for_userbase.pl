@@ -3,6 +3,7 @@
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 use strict;
@@ -18,7 +19,7 @@ my %ub_users = ();
 while (my $ref = $sh->fetchrow_hashref()) {
   my $ub_id = $ref->{'id'};
   my $ub_email = $ref->{'username'};
-  if (hasLen($ub_email)) {
+  if (has_len($ub_email)) {
     $ub_users{$ub_email} = $ub_id;
   }
 }
@@ -55,7 +56,10 @@ foreach my $ub_email (sort keys %ub_users) {
 
     # Update userbase record with account creation time from subscribers.
     my $sub_date = $sub_rec->{'Date_Applied'};
-    my $epoch_time = convertDates($sub_date)->{$DATES_SECS};
+    my $epoch_time = '';
+    if (my $dt = parse_sql_date($sub_date)) {
+      $epoch_time = $dt->epoch();
+    }
     $str = "update userbase_users set cdate = '$epoch_time' where id = '$ub_id'";
      $sh = dbQuery($dbh_u, $str);
     # print "$epoch_time  ";

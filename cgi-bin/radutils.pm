@@ -3,7 +3,7 @@
 package radutils;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(authName sortHashVal truncateHashVals selectedVals listPrereq hostConnect formatList nextIdent comment dbRecord daysAgo linkCountIcon fmtAuthorName dbQuery nextIndex addVersionRecord loggedInIdent monitoredPrograms validDate relatedPrograms truncateString getEnv listHashMembers makeDir dumpParams printTitle printStartHTML urlIcon listParts relatedProgramsTable programsHavingSpeciality sortedcomb makeTableBinary makeemailicon valToSQL valToTDedit valToTDsumm sortedHeadingRow getParams definedVal isNonZero makeProgramLink getSecondaryScreenCaptures printRowWhite printRowWhiteCtr createAdvertTable printPageIntro makeIfaceCell printToolTips addCvars make_cvars_text conditionString getCaptureImages randomSubset allProgNames makeRsrcIcon write_file timeNowHash make_monitor_details is_admin_or_cli);
+@EXPORT = qw(authName sortHashVal truncateHashVals selectedVals listPrereq hostConnect formatList nextIdent comment dbRecord linkCountIcon fmtAuthorName dbQuery nextIndex addVersionRecord loggedInIdent monitoredPrograms validDate relatedPrograms truncateString getEnv listHashMembers makeDir dumpParams printTitle printStartHTML urlIcon listParts relatedProgramsTable programsHavingSpeciality sortedcomb makeTableBinary makeemailicon valToSQL valToTDedit valToTDsumm sortedHeadingRow getParams definedVal isNonZero makeProgramLink getSecondaryScreenCaptures printRowWhite printRowWhiteCtr createAdvertTable printPageIntro makeIfaceCell printToolTips addCvars make_cvars_text conditionString getCaptureImages randomSubset allProgNames makeRsrcIcon write_file timeNowHash make_monitor_details is_admin_or_cli);
 @EXPORT = (@EXPORT, (qw(%resourcetype %formats %db_program_fields %relationships)));
 @EXPORT = (@EXPORT, (qw($DB_INT $DB_CHR $DB_BEN $DB_DAT $DB_FLT)));
 @EXPORT = (@EXPORT, (qw($KEY_CGI $KEY_CGI $KEY_IDENT $KEY_URLSTAT $KEY_TABLE $KEY_FIELD $KEY_URL $KEY_TIP0 $KEY_TIP1 $KEY_TIPNA)));
@@ -678,15 +678,13 @@ sub makeRsrcIcon {
   # Create hash by date of resource pointers.
   my %prog_res = ();
   while (my $resp = $rsh->fetchrow_hashref) {
-    if (my $dt = parse_sql_date($resp->{'date'})) {
-      my $resdate = $dt->mdy('/');
-      my $url = $resp->{'url'};
-      $idstr = $idstr . $iddiv . $resp->{'ident'};
-      $iddiv = '_';
-      my $urlstr = "<a target='new' href='http://${url}'>$resourcetype{$resp->{'type'}}</a>";
-      $tipstr .= "${tipdiv}$urlstr, dated $resdate";
-      $tipdiv = "<br />";
-    }
+    my $resdate = convert_date($resp->{'date'}, $DATE_MDY);
+    my $url = $resp->{'url'};
+    $idstr = $idstr . $iddiv . $resp->{'ident'};
+    $iddiv = '_';
+    my $urlstr = "<a target='new' href='http://${url}'>$resourcetype{$resp->{'type'}}</a>";
+    $tipstr .= "${tipdiv}$urlstr, dated $resdate";
+    $tipdiv = "<br />";
   }
 
   if (has_len($tipstr)) {
@@ -748,7 +746,7 @@ sub selectedVals {
 
   my %hash = %$hashname;
   unless (scalar(keys(%hash))) {
-    tt("ERROR: Hash $hashname is empty");
+    warn "ERROR: Hash $hashname is empty";
     return;
   }
   my @hkeys = keys(%hash);
@@ -1038,17 +1036,18 @@ sub dbQuery {
   $dummy = 0 unless (has_len($dummy) and $dummy);
   warn("radutils::dbQuery($str)") if ($verbose);
   return "" if ($dummy);
-  
+
   my ($sh, $errstr);
   unless ($sh = $dbh->prepare($str)) {
     $errstr = $dbh->errstr;
-    tt("radutils::dbQuery($str): Error: $errstr");
+    warn("radutils::dbQuery($str): Error: $errstr");
     $ENV{'ERRMSG'} = $errstr;
     return "";
   }
+
   unless ($sh->execute) {
     $errstr = $sh->errstr;
-    tt("DBI:MySQL sth error: $errstr");
+    warn("DBI:MySQL sth error: $errstr");
     $ENV{'ERRMSG'} = $errstr;
     return "";
   }
@@ -1091,7 +1090,7 @@ sub addVersionRecord {
   $sql_str = "select rev, rdate from program where ident = '$progid'";
   $sh = dbQuery($dbh, $sql_str);
   my ($old_rev, $old_rdate) = $sh->fetchrow_array();
-  $old_rdate = convertDates($old_rdate)->{'MM/DD/YY'};
+  $old_rdate = convert_date($old_rdate, $DATE_MDY);
   $new_rev = "" unless (has_len($new_rev));
   $old_rev = "" unless (has_len($old_rev));
   $new_rdate = "" unless (has_len($new_rdate));
@@ -1107,7 +1106,7 @@ sub addVersionRecord {
 
   if ($diffrevlen or $diffrdate or $diffrev) {
     my $today = today();
-    $new_rdate = convertDates($new_rdate)->{'SQL'};
+    $new_rdate = convert_date($new_rdate, $DATE_SQL);
     my $update_str = "insert into version set ident = '$nextident', ";
     $update_str .= "progid = '$progid', version = '$new_rev', ";
     $update_str .= "reldate = '$new_rdate', adddate = '$today'";
@@ -1166,20 +1165,6 @@ sub truncateString {
     $str = substr($str, 0, $len) . "...";
   }
   return $str;
-}
-
-sub daysAgo {
-  my ($indate) = @_;
-
-  confess "XXXXXXXX  radutils::daysAgo()";
-
-
-  my $indays = convertDates($indate)->{'DDDD'};
-  # print STDERR "xxx radutils::daysAgo($indate): $indays\n";
-  my $time_now = convertDates(time());
-  my $nowdays = $time_now->{'DDDD'};
-  # print STDERR "xxx radutils::daysAgo(): $nowdays\n";
-  return ($nowdays - $indays);
 }
 
 # Return alphabetical list of hash members encoded by $val in %$fld.
@@ -1592,7 +1577,7 @@ sub valToTDedit {
   my $stable = $stables{$table};
   
   # Process default value if necessary.
-  $val = convertDates($val)->{'MM/DD/YY'} if ($f_type == $DB_DAT);
+  $val = convert_date($val, $DATE_MDY) if ($f_type == $DB_DAT);
   
   # tddata is selector for selection-type fields, else freeform text.
   my $ret = '';
@@ -1632,7 +1617,7 @@ sub valToTDedit {
     @imgfiles = sort(grep(/[^\.]/, @imgfiles));
     @imgfiles = sort(grep(/^${stable}_/, @imgfiles));
     @imgfiles = ("", @imgfiles);
-    tt("radutils::valToTDedit(): files in $imgdir: " . join(" ", @imgfiles));
+    warn "radutils::valToTDedit(): files in $imgdir: " . join(" ", @imgfiles);
     
     $ret = $cgi->popup_menu(
       -name    => "fld_${f_key}",
@@ -1666,7 +1651,7 @@ sub valToTDsumm {
     my %dtbl = createOrdinalHash($f_key);
     $ret = $dtbl{$val};
   } elsif ($f_type == $DB_DAT) {
-    $ret = convertDates($val)->{'MM/DD/YY'};
+    $ret = convert_date($val, $DATE_MDY);
   } else {
     $ret = $val;
   }
@@ -2017,12 +2002,6 @@ sub printPageIntro {
   # Table containing everything in page body.
   print "<table width='$tablewidth' border='0' cellpadding='5' cellspacing='0'>\n";
 
-#   # Row 0: Title image.
-#   my $tdstr = "<td class='white' width='$tablewidth' align='center'>\n$titlestr\n</td>";
-#   print comment(" Main table row for title image ");
-#   print "<tr>\n${tdstr}\n</tr>\n";
-#   print comment(" End main table row for title image ");
-
   # Row 1: Navigation code.
   my $navstr = makeNavCode($currpage);
   print comment(" Main table row for navigation table ");
@@ -2303,7 +2282,7 @@ sub write_file {
     }
   }
   unless (open(OUTFILE, '>', $outfile)) {
-    print "ERROR FileUtilities::writeFile(): Could not open $outfile\n";
+    warn "ERROR FileUtilities::writeFile(): Could not open $outfile\n";
     return 1;
   }
   print OUTFILE $contents;

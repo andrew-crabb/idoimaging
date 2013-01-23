@@ -8,6 +8,7 @@ use CGI;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 
@@ -25,11 +26,11 @@ my ($dbh) = hostConnect();
 # Ident of specified author, and sort order.
 our ($order, $page, $ident);
 foreach my $var (qw(order ident page)) {
-  $$var = (hasLen($cgi->param($var))) ? $cgi->param($var) : "";
+  $$var = (has_len($cgi->param($var))) ? $cgi->param($var) : "";
 }
-$order = 'name_last' unless (hasLen($order));
+$order = 'name_last' unless (has_len($order));
 
-if (hasLen($ident)) {
+if (has_len($ident)) {
   # Gather data on programs written by this author.
   # Do this first as may print redirect header if exactly one program.
   my $austr  = "select ident, name, summ from program where auth = '$ident' and ident >= 100 order by name";
@@ -98,7 +99,7 @@ my @matches = @$aref;
 my $nmatch = scalar(@matches);
 
 # Display $NPERPAGE matches at a time.
-$page = 0 unless (hasLen($page));
+$page = 0 unless (has_len($page));
 my $offset = $page * $NPERPAGE;
 my $first = $offset + 1;
 my $max = $offset + $NPERPAGE;
@@ -176,11 +177,11 @@ foreach my $bptr (@subrec) {
   my $aulink = $aptr->{'urlstr'};
   addCvars($aptr, \%tipstrs);
 
-  $first = "" unless (hasLen($first));
-  $last = "" unless (hasLen($last));
+  $first = "" unless (has_len($first));
+  $last = "" unless (has_len($last));
   # 'email' field is icon of email addr, or blank space if no email addr.
   my $email_txt = "&nbsp;";
-  if (hasLen($email)) {
+  if (has_len($email)) {
     $email_txt = sprintf("/img/email/email_%04d.gif", $id);
     $email_txt = "<img border='0' src='${email_txt}' alt='email.gif' />";
   }
@@ -199,7 +200,7 @@ foreach my $bptr (@subrec) {
     my %urlicon = %$urlicon;
     my ($urlstr, $url_cvars) = @urlicon{qw(urlstr url_cvars)};
 #     push(@tipstrs, $tipstr) unless (grep(/^$tipstr$/, @tipstrs));
-  if (hasLen($url_cvars)) {
+  if (has_len($url_cvars)) {
     $tipstrs{$url_cvars->{'class'}} = $url_cvars unless (exists($tipstrs{$url_cvars->{'class'}}));
   }
 

@@ -6,6 +6,7 @@ use CGI::Carp;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 
@@ -29,7 +30,7 @@ my $order = $cgi->param('order');
 my $ndays = $cgi->param('days') || '';
 my $table = $cgi->param('table') || 'version';
 $table = 'version' unless ($table =~ /program|version/);
-$order = "adddate desc, name asc" unless (hasLen($order));
+$order = "adddate desc, name asc" unless (has_len($order));
 
 # Run this different ways depending on whether programs or versions being listed.
 my @versions = ();
@@ -46,7 +47,7 @@ $str .= "from version, program ";
 $str .= "where version.progid = program.ident ";
 $str .= "and ((length(version) > 0) ";
 $str .= "or (reldate != '0000-00-00')) ";
-$str .= "and ${table}.adddate > date_add(curdate(), interval - $ndays day) " if (hasLen($ndays));
+$str .= "and ${table}.adddate > date_add(curdate(), interval - $ndays day) " if (has_len($ndays));
 $str .= "order by $order ";
 $str .= "limit 500";
 # tt($str);
@@ -76,11 +77,11 @@ if ($table eq 'program') {
 my $nver = scalar(@versions);
 
 my $page = $cgi->param('page');
-$page = 0 unless (hasLen($page));
+$page = 0 unless (has_len($page));
 my $tmporder = $order;
 $tmporder =~ s/\ /\&nbsp\;/g;
 # my $optstr = "order=$tmporder";
-my $optstr = (hasLen($ndays)) ? "days=$ndays" : "";
+my $optstr = (has_len($ndays)) ? "days=$ndays" : "";
 
 my $linkcode = "/${STR_LIST_VERSIONS}";
 my ($low, $high, $navcode) = listParts($nver, $NPERPAGE, $page, $linkcode, $optstr);
@@ -89,7 +90,7 @@ my @subver = @versions[$low..$high];
 print "<tr><td class='light_bg' align='center'><h2 class='title'>Version Release Archive</h2></td></tr>\n";
 
 
-if (hasLen($ndays)) {
+if (has_len($ndays)) {
   my $dtxt = "Displaying versions added in the past $ndays days";
   print "<tr><td class='light_bg' align='center'>$dtxt</td></tr>\n";
 }
@@ -141,8 +142,8 @@ foreach my $version (@subver) {
   # Add tooltip objects to global g_tipvars.
   addCvars($proglink, \%g_tipstrs);
 
-  $reldate = convertDates($reldate)->{'MM/DD/YY'};
-  $adddate = convertDates($adddate)->{'MM/DD/YY'};
+  $reldate = convert_date($reldate, $DATE_MDY);
+  $adddate = convert_date($adddate, $DATE_MDY);
 
   $outstr .= "<tr>\n";
   $outstr .= "<td width='130' align='left'>$progstr</td>\n";

@@ -75,16 +75,16 @@ sub fileContents {
   open(INFILE, '<', $infile) or return ();
   chomp(my @arr = (<INFILE>));
   if (wantarray()) {
-    if (hasLen($start)) {
-      $len = (hasLen($len)) ? $len : ($#arr - $start + 1);
+    if (has_len($start)) {
+      $len = (has_len($len)) ? $len : ($#arr - $start + 1);
       return(@arr[$start..($start + $len)]);
     } else {
       return @arr;
     }
   } else {
     my $ret = join("\n", @arr);
-    if (hasLen($start)) {
-      $len = (hasLen($len)) ? $len : (length($ret) - $start);
+    if (has_len($start)) {
+      $len = (has_len($len)) ? $len : (length($ret) - $start);
       return substr($ret, $start, $len);
     } else {
       return $ret;
@@ -120,7 +120,7 @@ sub writeFile {
 sub recurFiles {
   my ($dirname) = @_;
 
-  return () unless (hasLen($dirname));
+  return () unless (has_len($dirname));
   my (@contents) = ();
   find sub { push(@contents, $File::Find::name) if -f }, $dirname;
   return @contents;
@@ -172,7 +172,7 @@ sub mkDir {
   }
   my $wd = ($dir =~ /^\//) ? "" : cwd();
   return ($dir) if (-d $dir);
-  $mode = 0755 unless (hasLen($mode));
+  $mode = 0755 unless (has_len($mode));
   my @bits = split(/\//, $dir);
   my $path = $wd;
   foreach my $bit (@bits) {
@@ -191,10 +191,10 @@ sub mkDir {
 
 sub pathParts {
   my ($fullname, $verbose) = @_;
-  $verbose = 0 unless (hasLen($verbose) and $verbose);
+  $verbose = 0 unless (has_len($verbose) and $verbose);
 
   my ($path, $filename) = ("", "");
-  if (hasLen($fullname)) {
+  if (has_len($fullname)) {
     my (@bits) = split(/\//, $fullname);
     my $nbits = scalar(@bits);
     if (-d $fullname) {
@@ -306,7 +306,7 @@ sub extnFiles {
 
 sub makeDirs {
   my ($pptr, $verbose) = @_;
-  $verbose = 0 unless (hasLen($verbose));
+  $verbose = 0 unless (has_len($verbose));
   my %path = %$pptr;
   my $ret = 0;
 
@@ -470,7 +470,7 @@ sub fileExists {
   my $ret = 1;
 
   foreach my $filename (@filenames) {
-    (hasLen($filename) and -e $filename and -s $filename) or $ret = 0;
+    (has_len($filename) and -e $filename and -s $filename) or $ret = 0;
   }
   return $ret;
 }
@@ -520,9 +520,9 @@ sub fileStat {
     $verbose = (defined($opts{$FSTAT_VERBOSE}) and $opts{'verbose'}) ? 1 : 0;
     $dir_is_ok = 1 if (defined($opts{$FSTAT_DIRISOK}) and $opts{'dir_is_ok'});
   }
-  $verbose = 0 unless ( hasLen( $verbose ));
+  $verbose = 0 unless ( has_len( $verbose ));
 
-  return undef unless (hasLen($infile));
+  return undef unless (has_len($infile));
   $infile =~ s/^\s+//;
   $infile =~ s/\s+$//;
   my $host = hostname();

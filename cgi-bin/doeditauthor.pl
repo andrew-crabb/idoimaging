@@ -6,6 +6,7 @@ use CGI::Carp qw(warningsToBrowser fatalsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use Userbase;
 use constants;
@@ -35,11 +36,11 @@ my $title = "I Do Imaging - Edit Author";
 printRowWhiteCtr($cgi->h1($title));
 
 # Fetch existing record if performing edit, or table to edit one record.
-my $href = (hasLen($ident)) ? dbRecord($dbh, "author", $ident) : undef;
+my $href = (has_len($ident)) ? dbRecord($dbh, "author", $ident) : undef;
 
 
 # Perform editing and exit, if called from self.  Handles add and self-edit.
-if (hasLen($process)) {
+if (has_len($process)) {
   my ($updatestr, $comma) = ('', '');
   foreach my $vname (@author_fields) {
     my $newval = ($cgi->param("au_${vname}") or '');
@@ -51,7 +52,7 @@ if (hasLen($process)) {
     }
   }
   if (length($updatestr)) {
-    if (hasLen($add)) {
+    if (has_len($add)) {
       # Case 7.
       $updatestr = "insert into author set $updatestr";
     } else {

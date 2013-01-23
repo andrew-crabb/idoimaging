@@ -3,8 +3,11 @@
 use CGI;
 use CGI::Carp 'fatalsToBrowser';
 use DBI;
+use DateTime::Format::MySQL;
+
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 use strict;
@@ -26,8 +29,8 @@ print "<tr><td class='white'>\n";
 # Retrieve existing record.
 my $ident = $cgi->param('ident');
 my $addprog = $cgi->param('Add Program');
-$addprog = (hasLen($addprog)) ? $addprog : 0;
-unless (hasLen($ident) or $addprog) {
+$addprog = (has_len($addprog)) ? $addprog : 0;
+unless (has_len($ident) or $addprog) {
   print "ERROR: No ident or addprog parameter<br>\n";
   exit;
 } else {
@@ -67,21 +70,25 @@ foreach my $varname (@pkeys) {
   }
   # Convert date.
   $val = definedVal($val);
-  $val = convertDates($val)->{'SQL'} if ($varname =~ /rdate|adddate|visdate/);
+  if ($varname =~ /rdate|adddate|visdate/) {
+    val = convert_date($val, DATE_SQL);
+  }
   if ($addprog) {
     $update_str .= "$comma $varname = '$val'";
     $comma = ", ";
   } else {
     my $dbval = definedVal($prog->{$varname});	# Database val.
-    my $cmpval = ($varname =~ /date$/) ? convertDates($dbval)->{'SQL'} : $dbval;
-    $dbval = convertDates($dbval)->{'SQL'} if ($varname =~ /date$/);
-    tt("doeditprogram: val undefined, varname $varname") unless (defined($val));
-    tt("doeditprogram: dbval undefined, varname $varname") unless (defined($dbval));
-    # tt("doeditprogram: varname '$varname', dbval '$dbval', val '$val' ");
+    my $cmpval = $dbval;
+    if ($varname =~ /date$/) {
+      $dbval = $cmpval = convert_date($dbval, $DATE_SQL);
+    }
+
+    warn("doeditprogram: val undefined, varname $varname") unless (defined($val));
+    warn("doeditprogram: dbval undefined, varname $varname") unless (defined($dbval));
+
     my $valsdiffer = ($val ne $dbval) ? 1 : 0;
     my $valnonzero = (isNonZero($val) or isNonZero($dbval));
     if ($valsdiffer and $valnonzero) {
-      # tt("doeditprogram: varname $varname, val >$val< ne dbval >$dbval<");
       $update_str .= "$comma $varname = '$val'";
       $comma = ", ";
       my ($vstr, $svstr) = ("", "");
@@ -97,8 +104,8 @@ my $sh;
 if ($addprog) {
   addVersionRecord($dbh, $ident, $cgi);
   $update_str = "insert into program set $update_str";
-    tt($update_str);
-   $sh = dbQuery($dbh, $update_str, 1);
+  tt($update_str);
+  $sh = dbQuery($dbh, $update_str, 1);
 } else {
   if (length($update_str)) {
     $update_str = "update program set $update_str where ident = '$ident'";
@@ -198,7 +205,7 @@ my @seccaps = grep (/seccap_/, @params);
 foreach my $seccap (@seccaps) {
   my $selected_seccap_file = $cgi->param($seccap);
   if ($seccap =~ /seccap_add/) {
-    if (hasLen($selected_seccap_file))  {
+    if (has_len($selected_seccap_file))  {
       # Adding a new secondary screen capture.  All values are valid - no testing required.
       $str  = "insert into resource";
       $str .= " set program = '$ident'";
@@ -255,7 +262,7 @@ sub format_string {
       $spc = "-";
     }
   }
-  $ret = "($ret)" if (hasLen($ret));
+  $ret = "($ret)" if (has_len($ret));
   return $ret;
 }
 

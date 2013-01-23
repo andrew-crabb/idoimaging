@@ -5,6 +5,7 @@ use Getopt::Std;
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 
 my %opts;
@@ -26,7 +27,7 @@ my $sh = dbQuery($dbh, $str, 1);
 my $ptr = $sh->fetchall_arrayref;
 foreach my $pptr (@$ptr) {
   my ($ident, $email) = @$pptr;
-  $email = '' unless (hasLen($email));
+  $email = '' unless (has_len($email));
   print "Processing ($ident, $email)\n";
   next unless ($ident and $email);
   my $filename = sprintf("${emaildir}/email_%04d.gif", $ident);

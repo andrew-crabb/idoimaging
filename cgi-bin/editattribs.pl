@@ -7,6 +7,7 @@ use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use bigint;
 use strict;
@@ -17,18 +18,17 @@ my $cgi = new CGI;
 # Redirect unless this has come from me, not a search engine.
 my $referer = $cgi->referer();
 my $doredirect = 1;
-if (hasLen($referer)) {
+if (has_len($referer)) {
     $doredirect = 0 if (substr($referer, 0, 25) =~ /idoimaging|andy|localhost|127.0.0.1/);
 }
 
 print $cgi->header();
 # warningsToBrowser(1);
 
-my ($localdb, $step0, $step1, $step2) = getParams($cgi, (qw(localdb step0 step1 step2)));
-$localdb = (hasLen($localdb) and $localdb) ? 1 : 0;
-$step0 = 1 unless(hasLen($step0) or hasLen($step1) or hasLen($step2));
+my ($step0, $step1, $step2) = getParams($cgi, (qw(step0 step1 step2)));
+$step0 = 1 unless(has_len($step0) or has_len($step1) or has_len($step2));
 
-my $dbh = hostConnect('', $localdb);
+my $dbh = hostConnect('');
 my $title = "Edit Attributes";
 $title .= "\n<br />Note: Local Database" if ($localdb);
 
@@ -48,7 +48,7 @@ my %hiddens = ();
 my %programs = ();
 my %prog_names_by_ident = ();
 my @prog_idents_by_name = ();
-if (hasLen($step1) or hasLen($step2)) {
+if (has_len($step1) or has_len($step2)) {
   my $str = "select * from program";
   $str   .= " where ident >= 100";
   $str   .= " and remdate like '0000%'";
@@ -76,7 +76,7 @@ print "<td valign='top'>\n";
 print comment("Table for editing fields");
 print "<table border='1' cellspacing='0' class='new'  border=0>\n";
 
-if (hasLen($step0)) {
+if (has_len($step0)) {
   # First time round, choose params to set.
   # Row 0: Title.
   my @titles = ();
@@ -124,7 +124,7 @@ if (hasLen($step0)) {
     'localdb' => $localdb,
       );
 
-} elsif (hasLen($step1)) {
+} elsif (has_len($step1)) {
   my $ncols = $numcols - 1;
   %hiddens = (
     'step2'   => 1,
@@ -175,7 +175,7 @@ if (hasLen($step0)) {
     print "<td>\n$tdtxt\n</td>\n";
   }
   print "</tr>\n";
-} elsif (hasLen($step2)) {
+} elsif (has_len($step2)) {
   my @progs_to_do = $cgi->param('programs');
   foreach my $prog (@progs_to_do) {
     my $program = $programs{$prog};

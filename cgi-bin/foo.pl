@@ -10,6 +10,7 @@ use CGI::Carp 'fatalsToBrowser';
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 
 print "findbin: $FindBin::Bin - Bin is $Bin\n";

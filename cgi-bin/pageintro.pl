@@ -5,6 +5,7 @@ use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 
 use strict;
@@ -14,5 +15,5 @@ my $cgi = new CGI;
 
 print $cgi->header();
 my $currpage = $cgi->param('currpage');
-$currpage = '' unless (hasLen($currpage));
+$currpage = '' unless (has_len($currpage));
 printPageIntro('', '', '', $currpage);

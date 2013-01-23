@@ -17,6 +17,7 @@ no strict 'refs';
 
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 use FileUtilities;
 
@@ -186,7 +187,7 @@ foreach my $infile (@g_infiles) {
     # Matches 3 fields.
     # name_ordinal.suff
     print "$infile matches pattern 2\n";
-    if (hasLen($opts->{$OPT_IDENT}) and hasLen($opts->{$OPT_IDENT})) {
+    if (has_len($opts->{$OPT_IDENT}) and has_len($opts->{$OPT_IDENT})) {
       @imgdet{qw(rsrcname suffix)} = ($1, $3);
       @imgdet{qw(rsrcfld rsrcid)} = @$opts{($OPT_RSRC, $OPT_IDENT)};
       my @allfiles = (@g_infiles, @g_newfiles);
@@ -196,7 +197,7 @@ foreach my $infile (@g_infiles) {
     print "ERROR: file $infile does not match pattern!\n";
   }
 
-  unless (hasLen($imgdet{'height'})) {
+  unless (has_len($imgdet{'height'})) {
     my $inpath = $g_image_details->{'path'};
     if (my $ret = $image->Read(filename => "${inpath}/${infile}")) {
       print "ret $ret, ERROR: Could not read $infile from $inpath\n";
@@ -210,7 +211,7 @@ foreach my $infile (@g_infiles) {
 
 
   # Skip this file if its name hasn't parsed.
-  unless (hasLen($imgdet{'rsrcid'})) {
+  unless (has_len($imgdet{'rsrcid'})) {
     print "ERROR: Name parse failure: no rsrcid for $infile\n";
     next;
   }
@@ -271,27 +272,27 @@ sub processImages {
 
   # Details of actual image file on disk.
   my ($imgwidth, $imgheight, $imgsuff, $imgpath, $imgfilename, $imgrsrcname) = @imgdet{qw(width height suffix path filename rsrcname)};
-  $imgpath = '' unless (hasLen($imgpath));
+  $imgpath = '' unless (has_len($imgpath));
 
   my $is_first_opt = 1;
   foreach my $opt (@opts) {
     # Each opt is a hash with target image details.
     my %opts = %{$opt};
     my ($newpath, $newsuff, $newmaxdim) = @opts{qw(path suffix maxdim)};
-    my $disppath = (hasLen($newpath)) ? $newpath : "<empty>";
-    my $dispmax  = (hasLen($newmaxdim)) ? $newmaxdim : "<empty>";
+    my $disppath = (has_len($newpath)) ? $newpath : "<empty>";
+    my $dispmax  = (has_len($newmaxdim)) ? $newmaxdim : "<empty>";
     print "-------------------- processImages(): (newpath $disppath, newsuff $newsuff, newmaxdim $dispmax) --------------------\n";
 
     # If the size, suffix and filename are correct, no action needed.
     my $imgdim = ($imgwidth > $imgheight) ? $imgwidth : $imgheight;
-    my $imgdimok = ((not hasLen($newmaxdim)) or ($imgdim <= $newmaxdim)) ? 1 : 0;
+    my $imgdimok = ((not has_len($newmaxdim)) or ($imgdim <= $newmaxdim)) ? 1 : 0;
     my $imgsuffok = ($imgsuff eq $newsuff) ? 1 : 0;
     my $imgpathok = ($imgpath eq $newpath) ? 1 : 0;
 
     # Get rsrcname from database if present.  It will be used in the file name
     # and its presence (meaning rsrcnmae unreliable) is a flag to process this file.
     my $dbrsrcname = rsrcNameFor($imgdet{'rsrcfld'}, $imgdet{'rsrcid'});
-    if (hasLen($dbrsrcname) and ($dbrsrcname ne $imgdet{'rsrcname'})) {
+    if (has_len($dbrsrcname) and ($dbrsrcname ne $imgdet{'rsrcname'})) {
       print "Changing rsrcname from $imgdet{'rsrcname'} to $dbrsrcname\n";
       $imgdet{'rsrcname'} = $dbrsrcname;
     }
@@ -301,7 +302,7 @@ sub processImages {
     
 #     print("processImages(OK = $imgok): filename $imgfilename, Dimension OK $imgdimok ($imgdim, $dispmax), Suffix OK $imgsuffok ($imgsuff, $newsuff), Path OK $imgpathok ($imgpath, $disppath)\n");
 
-    if ($imgok and not hasLen($newpath)) {
+    if ($imgok and not has_len($newpath)) {
       # Ensure this (unaltered) image file is in the database.
       $imgdet{'scale'} = 'full';
       checkDBEntry($dbh, \%imgdet);
@@ -353,7 +354,7 @@ sub processImage {
   my $doscale = 0;
   my ($newwidth, $newheight);
   my $infilename = $imgdet{'filename'};
-  if (hasLen($newmaxdim)) {
+  if (has_len($newmaxdim)) {
     my ($width, $height) = @imgdet{qw(width height)};
     my $istall = ($height > $width) ? 1 : 0;
     # Title images smaller than newmaxdim stay so.
@@ -375,7 +376,7 @@ sub processImage {
   $newimgdet{'suffix'} = $newsuff;
   $newimgdet{'filename'} = makeFileName(\%newimgdet);
   $newimgdet{'path'} = $newpath;
-  $newpath = (hasLen($newpath)) ? "${newpath}/" : "";
+  $newpath = (has_len($newpath)) ? "${newpath}/" : "";
   my $img_dir = $g_image_details->{'path'};
   my $outfile = "${img_dir}/${newpath}$newimgdet{'filename'}";
   my $haveoutfile = (-f $outfile);
@@ -397,7 +398,7 @@ sub processImage {
           height => $newheight,
             );
 	# Medium-sized images get the magnifier icon.
-	if (hasLen($newmaxdim) and ($newmaxdim == $MEDDIM)) {
+	if (has_len($newmaxdim) and ($newmaxdim == $MEDDIM)) {
 	  $image->Composite(
             image   => $magimage,
             compose => 'Atop',
@@ -503,14 +504,14 @@ sub checkDBRec {
 
   my $sqlstr = "select filename from image";
   $sqlstr   .= " where rsrcfld = '$rsrc_type'";
-  if (hasLen($path)) {
+  if (has_len($path)) {
     $sqlstr .= " and path = '$path";
   } else {
     $sqlstr .= " and length(path) = 0";
   }
   my $sh = dbQuery($dbh, $sqlstr);
   my $aref = $sh->fetchall_arrayref;
-  my $pathstr = (hasLen($path)) ? "${path}/" : "";
+  my $pathstr = (has_len($path)) ? "${path}/" : "";
   my @dbfilenames = @$aref;
   my $img_dir = $g_image_details->{'path'};
   foreach my $dbrec (@dbfilenames) {

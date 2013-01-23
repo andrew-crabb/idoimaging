@@ -5,6 +5,7 @@ use CGI;
 use CGI::Carp 'fatalsToBrowser';
 use FindBin qw($Bin);
 use lib $Bin;
+use Utility;
 use radutils;
 
 my $cgi = new CGI;
@@ -29,7 +30,7 @@ my %acts = (
   'BUpdates'   => "checklinkupdate?email=1",
     );
 foreach my $param (keys %acts) {
-  if (hasLen($cgi->param($param))) {
+  if (has_len($cgi->param($param))) {
     $url = $acts{$param};
     last;
   }
@@ -38,11 +39,11 @@ foreach my $param (keys %acts) {
 # Password.
 my $pass = $cgi->param('pass');
 $pass = ($pass eq 'asdf') ? 1 : 0;
-my $loggedIn = ($pass) ? $pass : hasLen($cgi->cookie('loggedin'));
+my $loggedIn = ($pass) ? $pass : has_len($cgi->cookie('loggedin'));
 
 # Flag for local database.
 my $localdb = $cgi->param('localdb');
-if (hasLen($localdb)) {
+if (has_len($localdb)) {
   # Append 'localdb=1' to url.
   my $appop = ($url =~ /\?/) ? '&' : '?';
   $url .= "${appop}localdb=1";
