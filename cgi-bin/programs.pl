@@ -578,7 +578,7 @@ sub printTableLine {
     $outstr .= $cgi->td({-align => 'center'}, $rurl) . "\n";
     # 4. Date host site last visited.
     if (has_len($vdate)) {
-      $vdate = convert_date($vdate);
+      $vdate = convert_date($vdate, $DATE_MDY);
     } else {
       $vdate = "&nbsp;";
     }
