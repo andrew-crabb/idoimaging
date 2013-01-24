@@ -18,10 +18,8 @@ error_reporting(E_ALL);
 // Includes
 // ------------------------------------------------------------
 
-$include_path = get_include_path() ;
-$sep = PATH_SEPARATOR;
-// set_include_path($include_path . $sep . '/Users/ahc/BIN/php' . $sep . '/Users/ahc/public_html/idoimaging');
-set_include_path('/Users/ahc/BIN/php' . $sep . '/Users/ahc/public_html/idoimaging/php');
+$curr_dir = realpath(dirname(__FILE__));
+set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
 
 require_once 'Utility.php';
 require_once 'Library.php';
