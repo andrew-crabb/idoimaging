@@ -640,14 +640,8 @@ sub import_users_from_CSV_file
 
           # My change ahc.
           ## send_welcome_email($new_user_id,$user,$pass,$email,$realname) unless $signup;
-          # my $add_user_str = "/opt/local/bin/php $PREF{mailchimp_util} -a -m=${user}";
-          # my @ret = `$add_user_str`;
-
           # my change ahc.  Remove this one and use the one 20 lines below.
           start_html_output();
-	  # print "Run: $add_user_str<br>\n";
-	  # print "Returned:<br>\n" . join("<br>\n", @ret) . "<br>\n";
-          # print join("<br>\n", @ret) . "<br>\n";
 
           foreach my $groupname (split(/:/, $groups)) {
             add_user_to_group($user, $groupname);
@@ -1771,19 +1765,17 @@ sub do_email_verification($$)
       create_filechucker_userdir($uid,$username,$realname,$email);
       add_user_to_group($username,$_) for (split(/\s*,\s*/, $PREF{automatically_add_new_signups_to_these_groups})); # The fact that we're doing email verification means that it was a signup.
       notify_admin_of_new_signup($uid);
-    
+
       start_html_output("Email Address Verified");
       $PREF{email_verified_active_template} =~ s/%%login_url%%/$PREF{login_url}/g;
       print $PREF{email_verified_active_template};
-    
+
       # My change ahc.
       # send_welcome_email($new_user_id,$user,$pass,$email,$realname) unless $signup;
       my $add_user_prog = $PREF{mailchimp_util};
       my $add_user_str = "/opt/local/bin/php $add_user_prog -w -a -m=${email}";
       my @ret = `$add_user_str`;
-      print join("<br>\n", ($add_user_str, @ret));
-          # my $add_user_str = "php $PREF{mailchimp_util} -a -m=${email}";
-          # my @ret = `$add_user_str`;
+      print STDERR "do_email_verification(): " . join("\n", ($add_user_str, @ret));
 
       finish_html_output();
     }
@@ -2178,22 +2170,18 @@ sub edit_user_account()
 
             # My addition ahc.
             # my $add_user_prog = "$ENV{DOCUMENT_ROOT}php/$PREF{mailchimp_add_user_prog}";
-            my $add_user_prog = "$ENV{DOCUMENT_ROOT}php/$PREF{mailchimp_util}";
-            my $edit_user_str = "php $add_user_prog -m=${emailaddr_in_db} -e=${emailaddr_from_form}";
-            # print "Issuing: $edit_user_str\n";
+	    my $add_user_prog = $PREF{mailchimp_util};
+            my $edit_user_str = "/opt/local/bin/php $add_user_prog -m=${emailaddr_in_db} -e=${emailaddr_from_form}";
+	    print STDERR "edit_user_account(): Issuing: $edit_user_str\n";
             my @output_lines = `$edit_user_str`;
             my $ret_val = $?;
-
-            # print "Returned:\n$ret\n";
-
-            
           } else {
             push @results, 108;
           }
         }
       }
     }
-    
+
     if (user_is_allowed_to($PREF{logged_in_userid}, 'change_group_memberships')) {
       my $groups = get_groups_hash($userid);
       foreach my $group (sort keys %$groups) {

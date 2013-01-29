@@ -16,8 +16,7 @@ $PREF{ahc_default_password}                        = 'Pass';
 $PREF{ahc_user_home}                            = '/user_home';
 
 # Program to add user to MailChimp
-# $PREF{mailchimp_add_user_prog}                     = 'idi_add_user.php';
-$PREF{mailchimp_util}                              = '/Users/ahc/BIN/php/user_util.php';
+$PREF{mailchimp_util}                              = '/Users/ahc/idoimaging/php/bin/user_util.php';
 
 $PREF{fixed_username_field_for_CSV_import}         = 'username';
 $PREF{fixed_password_field_for_CSV_import}         = 'password';

@@ -15,7 +15,6 @@ class MailChimp {
   const GROUPING_PROGRAMS = 'programs';
   const WEB_ID_PATTERN = "/[0-9a-f]{8,12}/";
   const TEST_HTML_EMAIL   = 'test_html_email.html';
-  const LOGFILE_STEM      = "/usr/home/acrabb/open/webhook_test_";
 
   const TEMPL_PATH        = 'email/templ';
   const CONTENT_PATH      = 'email/cont';
@@ -31,9 +30,13 @@ class MailChimp {
   // Constructor.
 
   function __construct($verbose = 0) {
-    
-    require_once 'MCAPI.class.php';
+    $curr_dir = realpath(dirname(__FILE__));
+
+    set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
     require_once 'Utility.php';
+    
+    set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../contrib/mailchimp");
+    require_once 'MCAPI.class.php';
     require_once 'config.inc.php'; //contains apikey
     
     $this->api_key = $apikey;
@@ -359,6 +362,19 @@ class MailChimp {
   }
 
   // ------------------------------------------------------------
+  // Output from listMembers() call:
+  // Array
+  // (
+  //     [total] => 22902
+  //     [data] => Array
+  //         (
+  //             [0] => Array
+  //                 (
+  //                     [email] => daurisel@bol.com.br
+  //                     [timestamp] => 2003-11-10 13:56:00
+  //                 )
+  // 
+  //             [1] => Array ...
 
   public function list_users($do_print = true, $page) {
     $list_id = $this->list_id;
