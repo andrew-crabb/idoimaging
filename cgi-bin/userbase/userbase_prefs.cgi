@@ -182,11 +182,13 @@ $PREF{groups_allowed_to_access_protected_directory_01}	= 'admin'; # comma-separa
 #
 $PREF{webmaster_email_address}				= 'andy@idoimaging.com'; # recipient for admin approval
 $PREF{app_email_address}				= 'userbase@example.com'; # sender.
-$PREF{smtp_server}					= 'localhost:25'; # port is usually 25 or 587.
-$PREF{smtp_port}					= '25'; # port is usually 25 or 587.
+# $PREF{smtp_server}					= 'localhost:25'; # port is usually 25 or 587.
+# $PREF{smtp_port}					= '25'; # port is usually 25 or 587.
+$PREF{smtp_server}					= 'smtp.mandrillapp.com:587'; # port is usually 25 or 587.
+$PREF{smtp_port}					= '587'; # port is usually 25 or 587.
 $PREF{path_to_sendmail}					= '/usr/sbin/sendmail';
-$PREF{smtp_auth_username}				= '';
-$PREF{smtp_auth_password}				= '';
+$PREF{smtp_auth_username}				= 'ahc@me.com';
+$PREF{smtp_auth_password}				= 'FTXsNfkRRB_qpjGDnMoxxg';
 
 
 
