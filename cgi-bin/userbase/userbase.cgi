@@ -48,7 +48,7 @@ my (%PREF,%TEXT,%COOKIE) = ();
 use Time::HiRes 'gettimeofday'; $PREF{script_start_time_highres} = gettimeofday();
 
 my $debuglog = undef; 
-open($debuglog, ">>encdata/userbase/debuglog.ubtemp.log") or die_nice("couldn't open debuglog: $!\n"); flock $debuglog, 2; print $debuglog "\n\n";
+# open($debuglog, ">>encdata/userbase/debuglog.ubtemp.log") or die_nice("couldn't open debuglog: $!\n"); flock $debuglog, 2; print $debuglog "\n\n";
 
 use strict;
 use DBI;
