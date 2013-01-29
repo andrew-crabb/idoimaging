@@ -139,8 +139,8 @@ if ($opts[OPT_HELP] or $opts[Utility::OPTS_ERR] or ($numopts == 0)) {
 if ($opts[OPT_ADD] or $opts[OPT_DELETE] or $opts[OPT_EDIT] or $opts[OPT_INFO]) {
   $email = $opts[OPT_MAIL];
   if (!($lib->validEmail($email) or $mc->valid_web_id($email))) {
-    print "ERROR in email address: $email\n";
-    print "Pattern expected: " . MailChimp::WEB_ID_PATTERN . "\n";
+    error_log("ERROR in email address: $email");
+    error_log("Pattern expected: " . MailChimp::WEB_ID_PATTERN);
     exit;
   }
 }
@@ -156,10 +156,10 @@ if ($opts[OPT_INFO]) {
   if ($lib->validEmail($new_email)) {
     $edited_ok = $mc->edit_user($email, $new_email);
     if ($edited_ok) {
-      print "Edited $email to $new_email OK\n";
+      error_log("Edited $email to $new_email OK");
     }
   } else {
-    print "ERROR in new email address: $email\n";
+    error_log("ERROR in new email address: $email");
     exit;
   }
 } elseif ($opts[OPT_ADD]) {
@@ -195,20 +195,18 @@ function print_user_info($email) {
 function add_mc_to_db() {
   global $mc, $ub, $util;
 
-
-    for ($page = 218; $page <= 230; $page++) {
-      print "page $page\n";
-      $mc_users = $mc->list_users(false, $page);
-  $i = 0;
-  foreach ($mc_users as $mc_user) {
-    $mc_email = $mc_user[MailChimp::EMAIL];
-    $mc_webid = $mc_user[MailChimp::WEB_ID];
-
-    // print "add_user(): email $mc_email, mc_id $mc_webid\n";
-    $ret = $ub->add_mc_to_user($mc_email, $mc_webid);
-
-  }
+  for ($page = 218; $page <= 230; $page++) {
+    print "page $page\n";
+    $mc_users = $mc->list_users(false, $page);
+    $i = 0;
+    foreach ($mc_users as $mc_user) {
+      $mc_email = $mc_user[MailChimp::EMAIL];
+      $mc_webid = $mc_user[MailChimp::WEB_ID];
+      
+      // print "add_user(): email $mc_email, mc_id $mc_webid\n";
+      $ret = $ub->add_mc_to_user($mc_email, $mc_webid);
     }
+  }
 }
 
 function list_users() {
@@ -266,10 +264,10 @@ function list_users() {
 function delete_user ($email) {
   global $mc, $ub;
 
-  // $mc_deleted_ok = $mc->delete_user($email);
-  // $ub_deleted_ok = $ub->delete_user($email);
-  $mc_deleted_ok = 'DUMMY';
-  $ub_deleted_ok = 'DUMMY';
+  $mc_deleted_ok = $mc->delete_user($email);
+  $ub_deleted_ok = $ub->delete_user($email);
+  // $mc_deleted_ok = 'DUMMY';
+  // $ub_deleted_ok = 'DUMMY';
   print "delete_user($email): mc_deleted_ok $mc_deleted_ok, ub_deleted_ok $ub_deleted_ok\n";
 }
 
@@ -309,43 +307,32 @@ function delete_all_users() {
   print count($emails_to_delete) . " emails to delete after UB\n";
 
   foreach ($emails_to_delete as $email) {
-    delete_user($email);
-    // print "delete($email)\n";
+    // delete_user($email);
+    print "delete($email)\n";
   }
 
-  /*
-   * This code used to be called instead of delete_all_users()
-   } elseif ($opts[OPT_DEL_ALL]) {
-   $all_users = $mc->list_users(false);
-   foreach ($all_users as $user) {
-   $user_email = $user[MailChimp::EMAIL];
-   print "Delete: $user_email\n";
-   $mc->delete_user($user_email);
-   $ub->delete_user($user_email);
-   }
-  */
 }
 
 function add_user($email, $send_welcome) {
   global $mc, $ub, $util;
 
   // Adding a user.
-  print "add_user($email)\n";
+  error_log("add_user($email)");
   $added_ok = $mc->add_user($email, false, $send_welcome);
   if ($added_ok) {
-    print "add_user(): Added $email OK\n";
+    error_log("add_user(): Added $email OK");
     // Now update userbase with MC user id.
     $opts = array($mc->list_id, $email);
     $new_member = $mc->run_api_query('listMemberInfo', $opts);
     if (isset($new_member) && $new_member['success']) {
       $mc_id_new = $new_member['data'][0]['web_id'];
-      print "add_user(): email $email, mc_id $mc_id_new\n";
+      error_log("add_user(): email $email, mc_id $mc_id_new");
       $ret = $ub->add_mc_to_user($email, $mc_id_new);
     } else {
-      print "ERROR query new email: $email\n";
+      error_log("ERROR query new email: $email");
     }
   } else {
-    print "ERROR: mc->add_user($email)\n";
+    error_log("ERROR: mc->add_user($email)");
   }
 }
 

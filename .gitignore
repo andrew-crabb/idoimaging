@@ -3,6 +3,7 @@
 /cgi-bin/userbase/encdata/
 /cgi-bin/userbase/orig/
 /cgi-bin/redirect_log.txt
+/mailchimp/mailchimp-api-class/examples
 /php/notused/
 /public_html/blog/
 /public_html/img/
@@ -27,3 +28,5 @@
 *~
 .*~
 *.bak
+\#*
+.#*

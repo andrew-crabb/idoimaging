@@ -31,11 +31,6 @@
 	// Constants
 	// ------------------------------------------------------------
 
-	define('DIR_BIN_DEVEL' , '/Users/ahc/BIN/php');
-	define('DIR_BIN_ONLINE', '');
-	define('DIR_PUB_DEVEL' , '/Users/ahc/public_html/php');
-	define('DIR_PUB_ONLINE', '');
-
 	// ------------------------------------------------------------
 	// Includes
 	// ------------------------------------------------------------
@@ -57,5 +52,4 @@
 	  $postvals[] = "$key = $value";
 	}
 
-	$logfile = MailChimp::LOGFILE_STEM . $util->timenow(Utility::DATES_DATETIME) . ".txt";
 	$util->write_file($logfile, $postvals, 'a+');

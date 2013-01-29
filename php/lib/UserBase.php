@@ -1,9 +1,9 @@
 <?php
 error_reporting(E_ALL|E_STRICT);
 
-$sep = PATH_SEPARATOR;
-set_include_path('/Users/ahc/BIN/php' . $sep . '/Users/ahc/public_html/idoimaging/php');
-$include_path = get_include_path() ;
+$curr_dir = realpath(dirname(__FILE__));
+set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
+require_once 'Utility.php';
 
 require_once 'Radutil.php';
 
@@ -58,7 +58,6 @@ class UserBase {
 
   function delete_user($email) {
     $str  = "delete from " . self::USERS;
-    // $str .= " where " . self::EMAIL . " = '$email'";
     $str .= " where " . self::USERNAME . " = '$email'";
     print "$str\n";
     $rslt = $this->util->query_issue($this->dbh, $str);
