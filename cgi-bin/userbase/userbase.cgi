@@ -47,7 +47,8 @@ use lib "$ENV{DOCUMENT_ROOT}/../cgi-bin/perlmodules";
 my (%PREF,%TEXT,%COOKIE) = ();
 use Time::HiRes 'gettimeofday'; $PREF{script_start_time_highres} = gettimeofday();
 
-my $debuglog = undef; #open($debuglog, ">>encdata/userbase/debuglog.ubtemp.log") or die_nice("couldn't open debuglog: $!\n"); flock $debuglog, 2; print $debuglog "\n\n";
+my $debuglog = undef; 
+open($debuglog, ">>encdata/userbase/debuglog.ubtemp.log") or die_nice("couldn't open debuglog: $!\n"); flock $debuglog, 2; print $debuglog "\n\n";
 
 use strict;
 use DBI;
