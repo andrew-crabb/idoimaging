@@ -362,6 +362,19 @@ class MailChimp {
   }
 
   // ------------------------------------------------------------
+  // Output from listMembers() call:
+  // Array
+  // (
+  //     [total] => 22902
+  //     [data] => Array
+  //         (
+  //             [0] => Array
+  //                 (
+  //                     [email] => daurisel@bol.com.br
+  //                     [timestamp] => 2003-11-10 13:56:00
+  //                 )
+  // 
+  //             [1] => Array ...
 
   public function list_users($do_print = true, $page) {
     $list_id = $this->list_id;
