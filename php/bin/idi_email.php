@@ -2,51 +2,25 @@
 
 <?php
 error_reporting(E_ALL);
-set_include_path(get_include_path() . PATH_SEPARATOR . '/Users/ahc/BIN/php');
+
+$curr_dir = realpath(dirname(__FILE__));
+set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
+require_once 'Utility.php';
+require_once 'MailChimp.php';
+require_once 'MailDB.php';
 
 // ------------------------------------------------------------
 // Constants
 // ------------------------------------------------------------
 
 define('MYDEBUG', 1);
-define('DIR_DEVEL'     , '/Users/ahc/BIN/php');
-define('DIR_ONLINE'    , '/usr/home/acrabb/BIN/php');
 
 define('EMAIL_TEMPLATE', "2col-1-2.html");
-// define('HTML_PATH'     , $_SERVER['HOME'] . "/public_html/idoimaging");
-// define('TEMPL_PATH'    , "email/templ");
-// define('CONTENT_PATH'  , "email/cont");
 define('DEFAULT_PERIOD', 30);
 define('AHC_ID', 5237);    // My email ID for I Do Imaging (HTML, email program)
 define('AHC_JH', 5233);    // My email ID for JHU (text).
 define('AHC_GM', 25152);   // My email id for Gmail (HTML, web browser).
 define('AHC_MM', 2056);    // My email id for MobileMe
-
-// $g_include_dirs  = array(DIR_DEVEL, DIR_ONLINE);
-$g_include_dirs  = array($_SERVER['HOME'] . '/BIN/php');
-$g_ahc_emails    = array(AHC_ID, AHC_JH, AHC_GM, AHC_MM);
-$g_include_files = array('Utility', 'MailChimp', 'MailDB');
-
-$files_tried = array();
-foreach ($g_include_files as $include_file) {
-  $file_found = 0;
-  foreach ($g_include_dirs as $inc_dir) {
-    $full_include_file = "${inc_dir}/${include_file}.php";
-    if (file_exists($full_include_file)) {
-      include_once $full_include_file;
-      print "include $full_include_file\n";
-      $file_found = 1;
-      break;
-    } else {
-      array_push($files_tried, $full_include_file);
-    }
-  }
-  if ($file_found == 0) {
-    print "\nERROR: Cound not find include file $include_file, and I tried the following:\n";
-    print_r($files_tried);
-    // exit;
-  }
-}
 
 set_error_handler("my_error_handler");
 $util = new Utility();        // General purpose utilities.

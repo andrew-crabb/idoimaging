@@ -268,7 +268,7 @@ EOD;
     print "<!-- Login section -->\n";
     print "<div id='page_header_login'>\n";
     if (!$ub_details[Radutil::USER_LOGGED_IN]) {
-      $readme = "<a href='/static_cont/login_message' class='showTip readme_login'>Logging In?  Read Me</a>";
+      $readme = "<a href='/static/login_message' class='showTip readme_login'>Logging In?  Read Me</a>";
       print "<div id='login_message'>$readme</div>\n";
     }
     $this->print_login_for_state(Radutil::UB_HDR, $ub_details);
