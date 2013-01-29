@@ -22,6 +22,7 @@
 
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
+!/public_html/blog/wp-content/themes/idoimaging/
 
 # Don't track these files
 *~
