@@ -181,7 +181,7 @@ $PREF{groups_allowed_to_access_protected_directory_01}	= 'admin'; # comma-separa
 # emails.
 #
 $PREF{webmaster_email_address}				= 'andy@idoimaging.com'; # recipient for admin approval
-$PREF{app_email_address}				= 'userbase@example.com'; # sender.
+$PREF{app_email_address}				= 'I Do Imaging <andy@idoimaging.com>'; # sender.
 # $PREF{smtp_server}					= 'localhost:25'; # port is usually 25 or 587.
 # $PREF{smtp_port}					= '25'; # port is usually 25 or 587.
 $PREF{smtp_server}					= 'smtp.mandrillapp.com:587'; # port is usually 25 or 587.
