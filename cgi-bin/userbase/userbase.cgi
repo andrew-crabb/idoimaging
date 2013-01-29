@@ -33,7 +33,7 @@
 
 
 my $version = "2.38e01";
-use CGI::Carp 'fatalsToBrowser';
+# use CGI::Carp 'fatalsToBrowser';
 $ENV{PATH} = '/bin:/usr/bin:/usr/local/bin';
 delete @ENV{'IFS', 'CDPATH', 'ENV', 'BASH_ENV'};
 ($ENV{DOCUMENT_ROOT}) = ($ENV{DOCUMENT_ROOT} =~ /(.*)/); # untaint.
@@ -13922,9 +13922,6 @@ elsif ($qs =~ /(?:^|&)format=justlink(?:&|$)/) {
 } elsif ($qs =~ /(?:^|&)format=loginstatus(?:&|$)/) {
   print_login_status_and_exit();
 } elsif ($qs =~ /(?:^|&)format=mini(?:&|$)/) {
-  # ahc
-  my $whereto = $PREF{member_is_logged_in} ? 'a' : $qs =~ /action=validate/ ? 'b' : 'c';
-
   $PREF{member_is_logged_in} ? print_main_menu() : $qs =~ /action=validate/ ? do_login() : prompt_for_login();
 }
 
