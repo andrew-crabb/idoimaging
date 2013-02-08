@@ -10,6 +10,19 @@
 
 # My additions ahc
 $PREF{hide_poweredby}                              = 'yes';
+
+# Sending test emails (  ***  remember to turn off enable_email_test  ***  )
+$PREF{enable_email_test}			   = 'yes';
+$PREF{email_test_recipient}			= 'andycrabb@gmail.com';
+$PREF{email_test_sender}			= 'andy@idoimaging.com';
+$PREF{mailtest_email_format}			= 'html';
+
+# Email tags for Mandrill
+$PREF{mandrill_tag_verification}		= 'idi_verification';
+$PREF{mandrill_tag_verification_resend}		= 'idi_verification_resend';
+$PREF{mandrill_tag_password_reset}		= 'idi_password_reset';
+$PREF{mandrill_tag_temporary_password}		= 'idi_temporary_password';
+
 # Default password for accounts created without one.
 $PREF{ahc_default_password}                        = 'Pass';
 # 'My Programs' page - user home.  Must match target in .htaccess.
@@ -334,7 +347,9 @@ $PREF{visitors_can_sign_up_for_their_own_accounts}	= 'yes';
 $PREF{require_email_verification_for_new_signups}	= 'yes';
 $PREF{verification_email_format}			= 'text'; # 'html' or 'text'
 $PREF{verification_email_subject}			= qq`Verify your new account on $ENV{HTTP_HOST}`;
-$PREF{verification_email_template}			= qq`Hello,\n\nThanks for creating an account at $ENV{HTTP_HOST}.\n\nTo verify your email address, visit the following page:\n\n%%link%%\n\nThanks,\nThe Webmaster\n`;
+# ahc
+# $PREF{verification_email_template}			= qq`Hello,\n\nThanks for creating an account at $ENV{HTTP_HOST}.\n\nTo verify your email address, visit the following page:\n\n%%link%%\n\nThanks,\nI Do Imaging\n`;
+$PREF{verification_email_template}			= qq`Hello,\n\nThanks for creating an account at I Do Imaging.\n\nTo verify your email address, visit the following page:\n\n%%link%%\n\nThanks,\nI Do Imaging\n`;
 $PREF{email_verified_pending_template}			= qq`<p>Thanks for verifying your email address.&nbsp; This site requires administrator approval for <br />new accounts, so your account will be activated if and when the administrator approves it.</p>\n`;
 $PREF{email_verified_active_template}			= qq`<p>Thanks for verifying your email address.&nbsp; Your account is now active.</p><p>You can <a href="%%login_url%%">log in here.</a></p>\n`;
 #

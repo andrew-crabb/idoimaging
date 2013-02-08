@@ -1524,17 +1524,24 @@ sub process_new_account()
   
     if ($pending_email_verification) {
       $PREF{verification_email_template} =~ s/%%link%%/$PREF{protoprefix}$ENV{HTTP_HOST}$PREF{login_url}?action=verify&u=$new_user_id&t=$token/g;
-    
+
       my $user_email = $PREF{usernames_must_be_email_addresses} =~ /yes/i ? $user : $email;
-    
+
+      # ahc
+      my @my_headers = ();
+      push(@my_headers, qq`X-MC-Tags: $PREF{mandrill_tag_verification}`);
+      push(@my_headers, qq`X-MC-Track: opens`);
+
       send_email(	$user_email,
                         $PREF{app_email_address},
                         $PREF{verification_email_subject},
                         $PREF{verification_email_template},
                         ($PREF{verification_email_format} || $PREF{global_email_format}),
-                        'die_on_email_error'
+                        'die_on_email_error',
+			# ahc
+			'', '', \@my_headers,
                       );
-    
+
       if ($payment_url) {
         enc_redirect($payment_url);
       } else {
@@ -1812,12 +1819,19 @@ sub resend_verification_email()
     $PREF{verification_email_template} =~ s/%%link%%/$PREF{protoprefix}$ENV{HTTP_HOST}$PREF{login_url}?action=verify&u=$uid&t=$token/g;
     my $user_email = get_email_address($uid);
 
+    # ahc
+    my @my_headers = ();
+    push(@my_headers, qq`X-MC-Tags: $PREF{mandrill_tag_verification_resend}`);
+    push(@my_headers, qq`X-MC-Track: opens`);
+
     send_email(	$user_email,
                 $PREF{app_email_address},
                 $PREF{verification_email_subject},
                 $PREF{verification_email_template},
                 ($PREF{verification_email_format} || $PREF{global_email_format}),
-                'die_on_email_error'
+                'die_on_email_error',
+		# ahc
+		'', '', \@my_headers,
               );
 
     my $address_obscured = $user_email;
@@ -5483,12 +5497,19 @@ sub print_pwreset_page
                 . qq`\n\nUser-Agent: $ENV{HTTP_USER_AGENT}`
                   . $PREF{password_reset_email_footer};
 
+      # ahc
+      my @my_headers = ();
+      push(@my_headers, qq`X-MC-Tags: $PREF{mandrill_tag_password_reset}`);
+      push(@my_headers, qq`X-MC-Track: opens`);
+
       send_email(	$recipient,
                         $PREF{app_email_address},
                         "Please confirm your password reset request",
                         $email_msg,
                         ($PREF{pwreset_email_format} || $PREF{global_email_format}),
-                        'die_on_email_error'
+                        'die_on_email_error',
+			# ahc
+			'', '', \@my_headers,
                       );
 
       enc_redirect("$PREF{login_url}?phase=spwrst2");
@@ -5550,12 +5571,19 @@ sub process_pwreset
                 . qq`\n\nUser-Agent: $ENV{HTTP_USER_AGENT}`
                   . $PREF{password_reset_email_footer};
 
+	# ahc
+	my @my_headers = ();
+	push(@my_headers, qq`X-MC-Tags: $PREF{mandrill_tag_temporary_password}`);
+	push(@my_headers, qq`X-MC-Track: opens`);
+
         send_email(	$recipient,
                         $PREF{app_email_address},
                         "Your new temporary password",
                         $email_msg,
                         ($PREF{pwreset_email_format} || $PREF{global_email_format}),
-                        'die_on_email_error'
+                        'die_on_email_error',
+			# ahc
+			'', '', \@my_headers,
                       );
 
         my $sth = $PREF{dbh}->prepare("DELETE FROM `$PREF{pwreset_table}` WHERE `token` = '$token' AND `requestdate` = '$requestdate';");
@@ -8309,7 +8337,10 @@ sub mirror_dir_tree_and_contents($$)
 #
 sub send_email
   {
-    my ($to, $from, $subj, $msg, $mimetype, $die_on_error, $attachment_hashref, $dont_fork) = @_;
+    # ahc
+    # Added my_headers_ref for additional message header fields.
+#     my ($to, $from, $subj, $msg, $mimetype, $die_on_error, $attachment_hashref, $dont_fork) = @_;
+    my ($to, $from, $subj, $msg, $mimetype, $die_on_error, $attachment_hashref, $dont_fork, $my_headers_ref) = @_;
     $mimetype = $mimetype =~ /html/i ? 'text/html' : 'text/plain';
 
     $die_on_error = $die_on_error eq 'die_on_email_error' ? 1 : 0;
@@ -8348,6 +8379,13 @@ sub send_email
         push @enc_headers, qq`X-Encodable-Sitename: $ENV{HTTP_HOST}`;
         push @enc_headers, qq`X-Encodable-Header: website-visitor`;
         push @enc_headers, qq`X-Encodable-Sent: $sentdate`;
+	if ($my_headers_ref) {
+	  my @my_headers = @$my_headers_ref;
+	  foreach my $my_header (@my_headers) {
+	    push(@enc_headers, $my_header);
+# 	    $msg .= "$my_header\n";
+	  }
+	}
       }
 
       my $msgid = '<' . time . '.' . md5_hex($to . $from . $subj . $msg . $$ . $ENV{REMOTE_PORT}) . '@' . $ENV{HTTP_HOST} . '>';
@@ -9527,7 +9565,7 @@ sub get_php_var_from_cache($)
 
 sub do_email_test
   {
-    my $to		= $PREF{email_test_recipient};
+    my $to	= $PREF{email_test_recipient};
     my $from	= $PREF{email_test_sender};
     my $subj	= 'test message - ' . time . " - $ENV{HTTP_HOST}";
     my $format	= $PREF{mailtest_email_format} || $PREF{global_email_format};
@@ -9547,9 +9585,15 @@ email settings:
 \$PREF{path_to_sendmail}	='$PREF{path_to_sendmail}'
 \$PREF{smtp_auth_username}	is $authname.
 \$PREF{smtp_auth_password}	is $authpass.
+Here is a link to <a href="http://idoimaging.com/program/332">my website</a>
 `;
 
-    send_email($to, $from, $subj, $msg, $format, $die);
+    # ahc added my header fields for Mandril.
+    #    send_email($to, $from, $subj, $msg, $format, $die);
+    my @my_headers = ();
+    push(@my_headers, qq`X-MC-Tags: mandril_email_test`);
+#    push(@my_headers, qq`X-MC-Track: opens,clicks_all`);
+    send_email($to, $from, $subj, $msg, $format, $die, '', '', \@my_headers);
 
     exit_with_notice(qq`Sent test message from "$from" to "$to"; no immediate error occurred. <br /><br />\n\nIf the MIME::Lite Perl module is installed ($mimelite_available) and if \$PREF{smtp_server} is not null (it's "$PREF{smtp_server}"), then we tried to send the email using SMTP. <br /><br />\n\nIf your sendmail executable exists ($sendmail_available) (specified by \$PREF{path_to_sendmail}, currently "$PREF{path_to_sendmail}"), then we tried to send the email using sendmail, too.`);
   }
