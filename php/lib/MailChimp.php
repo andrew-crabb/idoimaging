@@ -9,18 +9,23 @@ class MailChimp {
   const EMAIL    = 'email';
   const ID       = 'id';
   const WEB_ID   = 'web_id';
-  public $FIELDS = array(self::EMAIL, self::ID, self::WEB_ID);
+  const TIMESTAMP = 'timestamp';
+  public $FIELDS = array(self::EMAIL, self::ID, self::WEB_ID, self::TIMESTAMP);
 
-  const DASHES = "----------------------------------------\n";
   const GROUPING_PROGRAMS = 'programs';
   const WEB_ID_PATTERN = "/[0-9a-f]{8,12}/";
   const TEST_HTML_EMAIL   = 'test_html_email.html';
+  const MAX_USERS_PER_QUERY = 50;	// See API Doc for listMemberInfo()
 
   const TEMPL_PATH        = 'email/templ';
   const CONTENT_PATH      = 'email/cont';
+
+  // Which MC mail list to use.
+  const MAIL_LIST_TEST    = 'mail_list_temp';
+  const MAIL_LIST_LIVE    = 'mail_list_live';
   
   public $api_key; // MailChimp API key
-  public $list_id; // MailChimp id of my mailing list
+  public $list_id; // MailChimp id of the mailing list currently in use.
 
   public $util;                    // Utility class object.
   public $programs_grouping_id;    // MailChimp ID of the 'programs' grouping.
@@ -29,18 +34,18 @@ class MailChimp {
   // ------------------------------------------------------------
   // Constructor.
 
-  function __construct($verbose = 0) {
+  function __construct($verbose = 0, $no_test = false) {
     $curr_dir = realpath(dirname(__FILE__));
 
     set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
     require_once 'Utility.php';
+    require_once 'mailchimp_config.php'; //contains apikey
     
     set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../contrib/mailchimp");
     require_once 'MCAPI.class.php';
-    require_once 'config.inc.php'; //contains apikey
     
     $this->api_key = $apikey;
-    $this->list_id = $listId;
+    $this->list_id = ($no_test) ? $listId_main : $listId_test;
     $this->api = new MCAPI($this->api_key);
     // print "MailChimp::__construct(): api_key = "  . $this->api_key . "\n";
     $this->util = new Utility();
@@ -363,6 +368,7 @@ class MailChimp {
 
   // ------------------------------------------------------------
   // Output from listMembers() call:
+  // ------------------------------------------------------------
   // Array
   // (
   //     [total] => 22902
@@ -375,36 +381,85 @@ class MailChimp {
   //                 )
   // 
   //             [1] => Array ...
+  // ------------------------------------------------------------
+  // Output (selected) from listMemberInfo()['data'][0] call:
+  // ------------------------------------------------------------
+  // Array
+  // (
+  //   [success] => 9
+  //   [errors] => 5
+  //   [data] => Array
+  //        (
+  //  // Successful results listed like this:
+  //            [0] => Array
+  //                (
+  //                    [email] => ahc@me.com
+  //                    [id] => 99ab06b844
+  //                    [email_type] => html
+  //                    [web_id] => 333017053
+  //                    [merges] => Array
+  //                        (
+  //                            [EMAIL] => ahc@me.com
+  //                        )
+  //                    [status] => subscribed
+  //                    [timestamp] => 2012-12-05 22:13:40
+  //                    [is_gmonkey] => 
+  //                    [lists] => Array
+  //                        (
+  //                            [8742aa4b68] => subscribed
+  //                        )
+  //  // Errors listed like this:
+  //            [2] => Array
+  //                (
+  //                    [email_address] => miguel7788@gmail.com
+  //                    [error] => The email address passed does not exist on this list
+  //                )
 
-  public function list_users($do_print = true, $page) {
+
+  /*
+   * List users from both UB and MC
+   * CUrrently only set up for most recent month.
+   */
+
+  public function list_new_users($n_days) {
     $list_id = $this->list_id;
-    $opts = array($list_id, 'subscribed', NULL, $page, 100);
 
+    $since = date("Y-m-d G:H:s", strtotime("-${n_days} day"));
+    $opts = array($list_id, 'subscribed', $since, 0, self::MAX_USERS_PER_QUERY, 'DESC');
     $list_members = $this->run_api_query('listMembers', $opts, $this->verbose);
-    print_r($list_members);
-    exit;
-    $list_total = $list_members['total'];
-    // print "list_total $list_total\n";
     $list_data = $list_members['data'];
-    $all_users = array();
+    $emails = array();
     foreach ($list_data as $index => $element) {
-      $email = $element['email'];
-      $member_opts = array($list_id, array($email));
-      $list_member = $this->run_api_query('listMemberInfo', $member_opts);
-      // print_r($list_member['data'][0]);
-      $member_data = $list_member['data'][0];
-      $member_email = $member_data['email'];
-      $member_id = $member_data['id'];
-      $member_web_id = $member_data['web_id'];
-      $groups = $member_data['merges']['GROUPINGS'][0]['groups'];
-      if ($do_print) {
-        printf("%2d %-10s %-10s %-40s %s\n", $index, $member_id, $member_web_id, $member_email, $groups);
+      $emails[] = $element[self::EMAIL];
+    }
+    print_r($emails);
+    return $this->get_user_details_by_email($emails);
+  }
+
+  public function get_user_details_by_email($emails) {
+    $list_id = $this->list_id;
+    $member_opts = array($list_id, $emails);
+    // print_r($member_opts);
+
+    $list_members = $this->run_api_query('listMemberInfo', $member_opts);
+    $list_success = $list_members['success'];
+    $list_errors  = $list_members['errors'];
+    $list_data    = $list_members['data'];
+    if (strlen($list_errors)) {
+      print "ERROR: MailChimp::get_user_details_by_name(): errors $list_errors\n";
+    }
+    
+    $all_users = array();
+    foreach ($list_data as $index => $member_info) {
+      if (isset($member_info['error'])) {
+	print "ERROR: No MC user for email '" . $member_info['email_address'] . "'\n";
+      } else {
+	$user_info = array();
+	foreach ($this->FIELDS as $field) {
+	  $user_info[$field] = $member_info[$field];
+	}
+	$all_users[] = $user_info;
       }
-      $user_info = array();
-      foreach ($this->FIELDS as $field) {
-        $user_info[$field] = $member_data[$field];
-      }
-      $all_users[] = $user_info;
     }
     return $all_users;
   }

@@ -20,16 +20,19 @@ class UserBase {
   const NAME     = 'name';
   const EMAIL    = 'email';
   const CDATE    = 'cdate';
-  const MC_IDENT = 'mc_ident';
+  // Took this out 2/6/13, not using MC ident any more.
+  // const MC_IDENT = 'mc_ident';
 
-  public $UB_FIELDS = array(self::ID, self::USERNAME, self::NAME, self::EMAIL, self::CDATE, self::MC_IDENT);
+  // public $UB_FIELDS = array(self::ID, self::USERNAME, self::NAME, self::EMAIL, self::CDATE, self::MC_IDENT);
   
   function __construct() {
     $this->util = new Utility();
     $this->rad  = new Radutil($this->util);
     // Changed this 10/30/12 to always use the server UB database.
     // $db_det = ($this->rad->which_host() == Radutil::SITE_DEVEL) ? Radutil::DB_MMC_UB : Radutil::DB_LOCAL_UB;
-    $db_det = Radutil::DB_MMC_UB;
+    // Changed 2/6/13 to always use localhost - don't need to syn mc_userid into local UB DB.
+    // $db_det = Radutil::DB_MMC_UB;
+    $db_det = Radutil::DB_LOCAL_UB;
     $this->dbh = $this->rad->host_connect($db_det);
   }
 
@@ -49,10 +52,30 @@ class UserBase {
     return $ret;
   }
 
-  function list_users() {
+  /**
+   * Return following fields as elements of hash indexed by Userbase::ID:
+   */
+
+  function list_users($order = '', $limit = '', $where_str = '', $keyfield = self::ID ) {
     $ret = array();
-    $str  = "select * from " . self::USERS;
-    $user_info = $this->util->query_as_hash($this->dbh, $str, self::ID);
+    $str  = "select " . self::ID;
+    $str .= ", " . self::USERNAME;
+    $str .= ", " . self::NAME;
+    $str .= ", " . self::EMAIL;
+    $str .= ", " . self::CDATE;
+    // $str .= ", " . self::MC_IDENT;
+    $str .= " from " . self::USERS;
+    if (strlen($where_str)) {
+      $str .= " where $where_str";
+    }
+    if (strlen($order)) {
+      $str .= " order by $order";
+    }
+    if (strlen($limit)) {
+      $str .= " limit $limit";
+    }
+    print "$str\n";
+    $user_info = $this->util->query_as_hash($this->dbh, $str, $keyfield);
     return $user_info;
   }
 
@@ -64,11 +87,12 @@ class UserBase {
     return($rslt);
   }
 
+  // Took this out 2/6/13, not using MC ident any more.
   /**
    * Add mailchimp id user to UserBase field MC_IDENT
    *
    */
-
+  /*
   function add_mc_to_user($email, $mc_ident = '') {
     $sql_str  = "update " . self::USERS;
     $sql_str .= " set " . self::MC_IDENT . " = '$mc_ident'";
@@ -76,8 +100,8 @@ class UserBase {
     $sql_str .= " where " . self::USERNAME . " = '$email'";
     // print "UserBase::add_mc_to_user(): $sql_str\n";
     $this->util->query_issue($this->dbh, $sql_str);
-    
   }
+  */
 }
   
 ?>

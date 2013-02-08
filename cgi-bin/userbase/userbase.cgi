@@ -1534,11 +1534,11 @@ sub process_new_account()
                         ($PREF{verification_email_format} || $PREF{global_email_format}),
                         'die_on_email_error'
                       );
-    
       if ($payment_url) {
         enc_redirect($payment_url);
       } else {
         $TEXT{messages}{sactvrf} =~ s!%%username%%!$user!g;
+	# ahc this was the call to the infinite loop bug writing keyed_message.
         kmsg_redirect($TEXT{messages}{sactvrf});
       }
     } elsif ($pending_admin_approval) {
@@ -8098,6 +8098,7 @@ sub store_keyed_message
   {
     my $new_message = shift;
     $new_message =~ s/\n/::ENCNL::/gs;
+    print STDERR "ahc new_message = '$new_message'\n";
 
     my $one_day = 60*60*24*1;
     my $one_week = 60*60*24*7;
@@ -8108,11 +8109,16 @@ sub store_keyed_message
     my $uid = $PREF{logged_in_userid} =~ /^-?\d+$/ ? $PREF{logged_in_userid} : 0;
 
     my $mfile = add_initial_cwd_prefix($PREF{datadir} . '/' . "_$PREF{internal_appname}_keyed_messages.cgi");
-    
+    print STDERR "ahc mfile = '$mfile'\n";
 
     create_file_if_DNE($mfile,$PREF{writable_file_perms});
     my @messages = ();
-    open(MFILE,"+<$mfile") or die_nice("could not open file '$mfile' for R/W: $!\n");
+    # ahc this is the bug that was killing my system.
+    # open(MFILE,"+<$mfile") or die_nice("could not open file '$mfile' for R/W: $!\n");
+    unless (open(MFILE,"+<$mfile")) {
+      print STDERR "could not open file '$mfile' for R/W: $!\n";
+      return;
+    }
     flock MFILE, 2;
     seek MFILE, 0, 0;
     while (<MFILE>) {
@@ -8312,6 +8318,10 @@ sub send_email
     my ($to, $from, $subj, $msg, $mimetype, $die_on_error, $attachment_hashref, $dont_fork) = @_;
     $mimetype = $mimetype =~ /html/i ? 'text/html' : 'text/plain';
 
+    # ahc my change.
+    # $die_on_error = 0;
+    # $dont_fork = 1;
+
     $die_on_error = $die_on_error eq 'die_on_email_error' ? 1 : 0;
     $dont_fork = $dont_fork eq 'dont_fork' ? 1 : 0;
     my $do_fork = !$die_on_error; # if we want to die on error, we can't fork, or the die() will go unreported.
@@ -8369,7 +8379,13 @@ sub send_email
               $type = $attachment_hashref ? 'multipart/mixed' : 'text/plain; charset=ISO-8859-1; format=flowed';
             }
 
-            my $mime_msg = MIME::Lite->new(To => $to, From => $from, Subject => $subj, Type => $type, Data => $msg);
+            my $mime_msg = MIME::Lite->new(
+	      To      => $to,
+	      From    => $from,
+	      Subject => $subj,
+	      Type    => $type,
+	      Data    => $msg,
+	    );
             die "$PREF{internal_appname}: error creating MIME body: $!\n" unless($mime_msg);
 
             if ($PREF{generate_message_id_internally} =~ /yes/i) {
@@ -8391,9 +8407,9 @@ sub send_email
 
                 # Attach the test file
                 $mime_msg->attach(
-                  Type => $mimetype,
-                  Path => $filename,
-                  Filename => $recommended_filename,
+                  Type        => $mimetype,
+                  Path        => $filename,
+                  Filename    => $recommended_filename,
                   Disposition => 'attachment'
                 ) or die "$PREF{internal_appname}: error attaching file to email: $!\n";
               }
@@ -8402,15 +8418,33 @@ sub send_email
 
             $PREF{smtp_server} = enc_untaint($PREF{smtp_server});
             if ($PREF{smtp_auth_username} =~ /\S/ && $PREF{smtp_auth_password} =~ /\S/) {
-              eval { MIME::Lite->send('smtp', $PREF{smtp_server}, Timeout=>30, AuthUser=>$PREF{smtp_auth_username}, AuthPass=>$PREF{smtp_auth_password}, Port=>$PREF{smtp_port}); };
+              eval {
+		MIME::Lite->send(
+		  'smtp',
+		  $PREF{smtp_server},
+		  Timeout  => 30,
+		  AuthUser => $PREF{smtp_auth_username},
+		  AuthPass => $PREF{smtp_auth_password},
+		  Port     => $PREF{smtp_port},
+		);
+	      };
             } else {
-              eval { MIME::Lite->send('smtp', $PREF{smtp_server}, Timeout=>30, Port=>$PREF{smtp_port}); };
+              eval {
+		MIME::Lite->send(
+		  'smtp',
+		  $PREF{smtp_server},
+		  Timeout => 30,
+		  Port    => $PREF{smtp_port},
+		);
+	      };
             }
             die "$PREF{internal_appname}: MIME::Lite->send failed: $@\n" if $@;
 
-            eval { $mime_msg->send; };
+            eval {
+	      $mime_msg->send;
+	    };
             if ($@) {
-              die "$PREF{internal_appname}: \$mime_msg->send failed: $@\n";
+	      die "$PREF{internal_appname}: \$mime_msg->send failed: $@\n";
             } else {
               $mail_sent_successfully = 1;
             }
@@ -8427,10 +8461,16 @@ sub send_email
       }
 
       my $sendmail_error = '';
-      if ($PREF{path_to_sendmail}   &&   !$mail_sent_successfully) {
+
+      # ahc 2/7/13 disabled sendmail, was causing huge memory use.
+      # setting PREF{path_to_sendmail} to '' wasn't working for some reason?
+
+      # if ($PREF{path_to_sendmail}   &&   !$mail_sent_successfully) {
+      if (0 and $PREF{path_to_sendmail}   and   !$mail_sent_successfully) {
         if ($smtp_error) {
           enc_warn "$PREF{internal_appname}: send_email(): SMTP failed, so falling back to sendmail.  SMTP error was: $smtp_error\n";
         }
+      print STDERR "ahc in sendmail block\n";
 
         eval
           {
@@ -8721,6 +8761,13 @@ sub enc_redirect
 
 sub kmsg_redirect
   {
+    print STDERR "ahc kmsg_redirect here_static = '$PREF{here_static}'\n";
+    print STDERR "ahc kmsg_redirect here = '$PREF{here}'\n";
+    print STDERR "ahc get_extra_debug_output() = >>" . get_extra_debug_output() . "<<\n";
+    print STDERR "ahc _[0] = >> $_[0] << \n";
+    print STDERR "ahc foo = '" . store_keyed_message($_[0] . get_extra_debug_output()) . "'\n";
+    print STDERR "ahc default_ufl_vars = '$PREF{default_url_vars}'\n";
+
     # Any $PREF{extra_debug} will be lost on redirect unless we store it with the keyed message.
     enc_redirect(   ($PREF{here_static} || $PREF{here}) . "?kmsg=" . store_keyed_message($_[0] . get_extra_debug_output()) . $PREF{default_url_vars}   );
   }
@@ -14064,6 +14111,6 @@ elsif ($qs =~ /(?:^|&)action=customfields(?:&|$)/) {
         prompt_for_login();
       }
     }
-}
-# print STDERR "UBruntime=" . (gettimeofday() - $PREF{script_start_time_highres}) . "\n";
+  }
+#  print STDERR "UBruntime=" . (gettimeofday() - $PREF{script_start_time_highres}) . "\n";
 

@@ -24,7 +24,7 @@
 
 <a class='toleft' href="http://www.linkedin.com/in/andrewcrabb" style="text-decoration:none;"><span style="font: 80% Arial,sans-serif; color:#0783B6;"><img src="/img/icon/links/linkedin_16.png"  alt="View Andrew Crabb's LinkedIn profile" style="vertical-align:middle" border="0" />&nbsp;</span></a>
 
-<span class='toright'>Original content Copyright &#169; 2002-2012<br />Medical Imageworks LLC</span>
+<span class='toright'>Original content Copyright &#169; 2002-2013<br />Medical Imageworks LLC</span>
 
 <?php
 			  if (isset($this)) {
