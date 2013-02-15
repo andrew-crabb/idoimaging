@@ -1,12 +1,6 @@
 <?php
 error_reporting(E_ALL|E_STRICT);
 
-$curr_dir = realpath(dirname(__FILE__));
-set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
-require_once 'Utility.php';
-
-require_once 'Radutil.php';
-
 /**
  * @package UserBase
  * Accesses and modifies the 'userbase' database.

@@ -22,14 +22,19 @@ const DFLT_REPORT_PERIOD = 30;
 // ------------------------------------------------------------
 
 $curr_dir = realpath(dirname(__FILE__));
-set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
+$include_path = get_include_path() 
+  . PATH_SEPARATOR . realpath("${curr_dir}/../lib")
+  . PATH_SEPARATOR . realpath("${curr_dir}/../contrib")
+  . PATH_SEPARATOR . realpath("${curr_dir}/../contrib/mailchimp");
+set_include_path($include_path);
 
-require_once 'Utility.php';
 require_once 'Library.php';
 require_once 'MailChimp.php';
-require_once 'UserBase.php';
 require_once 'MailDB.php';
+require_once 'MCAPI.class.php';
 require_once 'Radutil.php';
+require_once 'UserBase.php';
+require_once 'Utility.php';
 
 $util = new Utility();
 $rad  = new Radutil($util);
@@ -225,13 +230,14 @@ function print_user_info($email) {
   $mc_email    = $util->elem_of($mc_info, MailChimp::EMAIL);
   $mc_id       = $util->elem_of($mc_info, MailChimp::ID);
   $mc_web_id   = $util->elem_of($mc_info, MailChimp::WEB_ID);
+  $mc_status   = $util->elem_of($mc_info, MailChimp::STATUS);
   $ub_id       = $util->elem_of($ub_info, UserBase::ID);
   $ub_username = $util->elem_of($ub_info, UserBase::USERNAME);
   $ub_email    = $util->elem_of($ub_info, UserBase::EMAIL);
   $ub_cdate    = $util->elem_of($ub_info, UserBase::CDATE);
-  $fmtstr = "%-10s %-10s %-30s %-5s %-10s %-30s %-10s\n";
-  printf($fmtstr, 'MC_ID', 'MC_WEB_ID', 'MC_EMAIL', 'UB_ID', 'UB_USERNAME', 'UB_EMAIL', 'UB_CDATE');
-  printf($fmtstr, $mc_id, $mc_web_id, $mc_email, $ub_id, $ub_username, $ub_email, $ub_cdate);
+  $fmtstr =       "%-10s   %-10s        %-30s       %-13s        %-5s     %-30s        %-10s\n";
+  printf($fmtstr, 'MC_ID', 'MC_WEB_ID', 'MC_EMAIL', 'MC_STATUS', 'UB_ID', 'UB_USERNAME', 'UB_CDATE');
+  printf($fmtstr, $mc_id , $mc_web_id , $mc_email,  $mc_status , $ub_id , $ub_username , $ub_cdate);
 }
 
 function add_mc_to_db() {

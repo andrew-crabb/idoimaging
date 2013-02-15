@@ -6,14 +6,16 @@ class MailChimp {
   // MailChimp field constants
   // ============================================================
 
-  const EMAIL    = 'email';
-  const ID       = 'id';
-  const WEB_ID   = 'web_id';
+  const EMAIL     = 'email';
+  const ID        = 'id';
+  const WEB_ID    = 'web_id';
   const TIMESTAMP = 'timestamp';
-  public $FIELDS = array(self::EMAIL, self::ID, self::WEB_ID, self::TIMESTAMP);
+  const STATUS    = 'status';
+  public $FIELDS = array(self::EMAIL, self::ID, self::WEB_ID, self::TIMESTAMP, self::STATUS);
 
   const GROUPING_PROGRAMS = 'programs';
-  const WEB_ID_PATTERN = "/[0-9a-f]{8,12}/";
+  const EMPTY_GROUP       = '_empty';
+  const WEB_ID_PATTERN    = "/[0-9a-f]{8,12}/";
   const TEST_HTML_EMAIL   = 'test_html_email.html';
   const MAX_USERS_PER_QUERY = 50;	// See API Doc for listMemberInfo()
 
@@ -35,17 +37,11 @@ class MailChimp {
   // Constructor.
 
   function __construct($verbose = 0, $no_test = false) {
-    $curr_dir = realpath(dirname(__FILE__));
-
-    set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
-    require_once 'Utility.php';
-    require_once 'mailchimp_config.php'; //contains apikey
-    
-    set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../contrib/mailchimp");
-    require_once 'MCAPI.class.php';
+    require 'mailchimp_config.php'; //contains apikey
     
     $this->api_key = $apikey;
     $this->list_id = ($no_test) ? $listId_main : $listId_test;
+    $this->programs_grouping_id = NULL;
     $this->api = new MCAPI($this->api_key);
     // print "MailChimp::__construct(): api_key = "  . $this->api_key . "\n";
     $this->util = new Utility();
@@ -162,36 +158,34 @@ class MailChimp {
   }
 
   // ------------------------------------------------------------
+  // Maximum 60 groups permitted, so delete and start afresh each time.
 
   function delete_existing_groups() {
     $list_id = $this->list_id;
     print "MailChimp::delete_existing_groups()\n";
     $interest_groupings = $this->run_api_query('listInterestGroupings', array($list_id));
-    // print_r($interest_groupings);
     if ($this->verbose) {
-      $this->util->printr($interest_groupings, 'interest_groupings');
+      $this->util->printr($interest_groupings, 'interest_groupings', true);
     }
     if (isset($interest_groupings)) {
       // Iterate through groupings to find 'programs'
       $grouping = NULL;
       foreach ($interest_groupings as $interest_grouping) {
         if ($interest_grouping['name'] == self::GROUPING_PROGRAMS) {
-          $grouping = $interest_grouping;
-        }
+	  $this->programs_grouping_id = $interest_grouping['id'];
+	  $groups = $interest_grouping['groups'];
+	  foreach ($groups as $group) {
+	    $group_name = $group['name'];
+	    if ($group_name != self::EMPTY_GROUP) {
+	      $list_params = array($list_id, $group_name, $this->programs_grouping_id);
+	      $this->run_api_query('listInterestGroupDel', $list_params);
+	      print "listInterestGroupDel($group_name, " . $this->programs_grouping_id . ")\n";
+	    }
+	  }
+	}
       }
-
-      if (isset($grouping)) {
-        $this->programs_grouping_id = $grouping['id'];
-        $groups      = $grouping['groups'];
-        foreach ($groups as $group) {
-          $group_name = $group['name'];
-          $list_params = array($list_id, $group_name, $this->programs_grouping_id);
-          $this->run_api_query('listInterestGroupDel', $list_params);
-          print "listInterestGroupDel($group_name, " . $this->programs_grouping_id . ")\n";
-        }
-      } else {
-        print "ERROR: MailChimp::delete_existing_groups(): Could not find grouping " . self::GROUPING_PROGRAMS . "\n";
-      }
+    } else {
+      print "interest_groupings is not set\n";
     }
   }
 
@@ -216,24 +210,56 @@ class MailChimp {
   }
 
   // ------------------------------------------------------------
+  // Fill in the ID of the 'programs' groupings, creating if necessary.
+
+  function create_groupings() {
+    print "MailChimp::create_groupings()\n";
+
+    // Get id of 'programs' grouping, creating if necessary.
+    $interest_groupings = $this->run_api_query('listInterestGroupings', array($this->list_id));
+    if ($this->verbose) {
+      $this->util->printr($interest_groupings, 'interest_groupings', true);
+    }
+
+    // Iterate through existing groupings to find 'programs'
+    if (isset($interest_groupings)) {
+      foreach ($interest_groupings as $interest_grouping) {
+        if ($interest_grouping['name'] == self::GROUPING_PROGRAMS) {
+	  $this->programs_grouping_id = $interest_grouping['id'];
+	}
+      }
+    }
+
+    // Create 'programs' interest grouping if necessary.
+    if (!$this->programs_grouping_id) {
+      $params = array($this->list_id, self::GROUPING_PROGRAMS, 'hidden', array(self::EMPTY_GROUP));
+      $this->programs_grouping_id = $this->run_api_query('listInterestGroupingAdd', $params);
+    }
+  }
+
+  // ------------------------------------------------------------
   // Given array of group names, creates interest groups on MC
 
-  function create_groups($group_names, $groupnames_for_users, $all_users) {
+  function create_groups($group_names, $groupnames_for_users) {
     $list_id = $this->list_id;
     print "MailChimp::create_groups()\n";
+
+    if (!$this->programs_grouping_id) {
+      throw new Exception("programs_grouping_id not set");
+    }
 
     // Create group_names and groupnames_for_users
     foreach ($group_names as $group_name) {
       $group_params = array($list_id, $group_name, $this->programs_grouping_id);
-      $add_ok = $this->run_api_query('listInterestGroupAdd', $group_params);
-      print "listInterestGroupAdd($group_name) returned $add_ok\n";
+      if (!$this->run_api_query('listInterestGroupAdd', $group_params)) {
+	throw new Excpetion("Create group ($group_name)");
+      }
     }
     
     // Update each user on MC server with appropriate interest groups.
-    foreach ($groupnames_for_users as $userid => $group_names_for_user) {
-      $group_names_string = join(",", $group_names_for_user);
-      print "MailChimp::create_groups(): User $userid, group_string $group_names_string\n";
-      print "MailChimp::create_groups(): Adding user $userid\n";
+    foreach ($groupnames_for_users as $user_email => $group_names_for_user) {
+      $group_names_string = join(',', $group_names_for_user);
+      print "MailChimp::create_groups(): User $user_email, group_string '$group_names_string'\n";
       $merge_vars = array(
         'GROUPINGS' => array(
           array(
@@ -243,20 +269,19 @@ class MailChimp {
         ),
       );
       // print_r($merge_vars);
-      if ($this->verbose) {
-        $this->util->printr($merge_vars, 'merge_vars');
-      }
-      $user_email = $all_users[$userid]['Email'];
       $member_params = array(
         $list_id,
-        $user_email,
+	$user_email,
         $merge_vars,
       );
+      if ($this->verbose) {
+        $this->util->printr($member_params, 'member_params', true);
+      }
       $update_ok = $this->run_api_query('listUpdateMember', $member_params);
       if ($update_ok) {
-        print "User $userid ($user_email) updated OK with groups $group_names_string\n";
+        print "User $user_email ($user_email) updated OK with groups $group_names_string\n";
       } else {
-        print "ERROR: User $userid ($user_email) not updated\n";
+	throw new Exception("listUpdateMember ($user_email)");
       }
     }
   }
@@ -336,6 +361,7 @@ class MailChimp {
     if ($do_print) {
       $this->util->printr($params, 'params');
     }
+
     if (count($params) === 1) {
       $ret = $this->api->$progname($params[0]);
     } elseif (count($params) === 2) {
@@ -472,6 +498,7 @@ class MailChimp {
   public function get_user_info($email_addr) {
     $opts = array($this->list_id, $email_addr);
     $info = $this->run_api_query('listMemberInfo', $opts);
+    // print_r($info);
     $user_info = NULL;
     if ($info['success']) {
       $det = $info['data'][0];
@@ -518,6 +545,10 @@ class MailChimp {
     $html_str = $this->util->file_contents($html_file);
     
     $campaign_id = $mail->create_campaign($html_str, $text_str, $group_names);
+  }
+
+  function list_templates() {
+
   }
 
 }

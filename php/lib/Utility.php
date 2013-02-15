@@ -111,9 +111,11 @@ class Utility {
   // Database constants
   // ------------------------------------------------------------
   
-  const HOST_HAL  = 'hal.rad.jhmi.edu';
   const HOST_ANDY = 'andy';
-  const HOST_IDI_USERBASE  = 'idoimaging.com_userbase';
+  const HOST_LOCALHOST_USERBASE = 'localhost_userbase';
+  const HOST_LOCALHOST_IMAGING  = 'localhost_imaging';
+  const HOST_IDI_USERBASE       = 'idoimaging.com_userbase';
+  const HOST_IDI_IMAGING        = 'idoimaging.com_imaging';
 
   const DB_HOST     = 'db_host';
   const DB_USER     = 'db_user';
@@ -121,17 +123,29 @@ class Utility {
   const DB_DATABASE = 'db_database';
 
   public $DB_DATA = array(
-    self::HOST_HAL => array(
-      self::DB_HOST     => 'hal.rad.jhmi.edu',
-      self::DB_USER     => '_www',
-      self::DB_PASS     => 'PETimage',
-      self::DB_DATABASE => 'filesys',
-    ),
     self::HOST_IDI_USERBASE => array(
       self::DB_HOST     => 'idoimaging.com',
       self::DB_USER     => '_www',
       self::DB_PASS     => 'PETimage',
       self::DB_DATABASE => 'userbase',
+    ),
+    self::HOST_IDI_IMAGING => array(
+      self::DB_HOST     => 'idoimaging.com',
+      self::DB_USER     => '_www',
+      self::DB_PASS     => 'PETimage',
+      self::DB_DATABASE => 'imaging',
+    ),
+    self::HOST_LOCALHOST_USERBASE => array(
+      self::DB_HOST     => 'localhost',
+      self::DB_USER     => '_www',
+      self::DB_PASS     => 'PETimage',
+      self::DB_DATABASE => 'userbase',
+    ),
+    self::HOST_LOCALHOST_IMAGING => array(
+      self::DB_HOST     => 'localhost',
+      self::DB_USER     => '_www',
+      self::DB_PASS     => 'PETimage',
+      self::DB_DATABASE => 'imaging',
     ),
   );
 
@@ -564,6 +578,9 @@ class Utility {
     $eol = ($is_http) ? "<br>\n" : "\n";
     print "------------------------------------------------------------$eol";
     $backtrace = debug_backtrace();
+    if (count($backtrace) < 2) {
+      print "***  $comment  ***\n";
+    }
     $comment = (strlen($comment)) ? ": $comment" : $comment;
     foreach (array_slice($backtrace, 1) as $indx => $det) {
       $funcname = $det['function'];
@@ -1128,12 +1145,24 @@ class Utility {
    * Perform MySQL query and return all rows in hash indexed by given field.
    */
 
-  public function host_connect( $host = self::HOST_HAL, $verbose = 0 ) {
+  public function host_connect( $host, $verbose = 0 ) {
     $db_data = $this->DB_DATA[$host];
 
-    $dbh = mysql_connect($db_data[self::DB_HOST], $db_data[self::DB_USER], $db_data[self::DB_PASS])
-      or die('Could not connect: ' . mysql_error());
-    mysql_select_db($db_data[self::DB_DATABASE]) or die('Could not select database $imaging');
+    // print "Utility::host_connect(" . $db_data[self::DB_HOST] . ", " . $db_data[self::DB_USER] . ", " . $db_data[self::DB_PASS] . ", " . $db_data[self::DB_DATABASE] . ")\n";
+    $dbh = mysql_connect($db_data[self::DB_HOST], $db_data[self::DB_USER], $db_data[self::DB_PASS], true) or die('Could not connect: ' . mysql_error());
+    mysql_select_db($db_data[self::DB_DATABASE], $dbh) or die('Could not select database $imaging');
+    return $dbh;
+  }
+
+  public function host_connect_pdo( $host, $verbose = 0 ) {
+    $db_data = $this->DB_DATA[$host];
+
+    try {
+      $dbname = "mysql:dbname=" . $db_data[self::DB_DATABASE] . "; host=localhost";
+      $dbh = new PDO($dbname, $db_data[self::DB_USER], $db_data[self::DB_PASS]);
+    } catch (PDOException $ex) {
+      echo "Connection failed: " . $ex->getMessage();
+    }
     return $dbh;
   }
 
@@ -1155,6 +1184,20 @@ class Utility {
     return $ret;
   }
 
+  public function query_as_hash_pdo( $dbh, $str, $keyfield ) {
+    $ret = array();
+    print "query_as_hash_pdo():\n$str\n";
+    try {
+      $result = $dbh->query($str);
+    } catch (PDOException $ex) {
+      echo ("Query failed: " . $ex->getMessage() . "\n");
+    }
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+      $ret[$row[$keyfield]] = $row;
+    }
+    return $ret;
+  }
+
   /**
    * Perform MySQL query and return all rows in array.
    */
@@ -1162,10 +1205,8 @@ class Utility {
   public static function query_as_array( $dbh, $str ) {
     $ret = array();
     $result = mysql_query($str) or die("Query failed: " . mysql_error() . "\n");
-    // print "Utility::query_as_array(): $str\n";
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
       array_push($ret, $row);
-      // print "Utility::query_as_array(): $row\n";
     }
     mysql_free_result($result);
     return $ret;
@@ -1174,6 +1215,15 @@ class Utility {
   public function query_as_count( $str ) {
     $result = mysql_query($str) or die("Query failed: " . mysql_error() . "\n");
     return mysql_num_rows($result);
+  }
+
+  public static function query_issue_pdo($dbh, $str ) {
+    try {
+      $result = $dbh->query($str);
+    } catch (PDOException $ex) {
+      echo ("Query failed: " . $ex->getMessage() . "\n");
+    }
+    return $result;
   }
 
   public static function query_issue($dbh, $str ) {

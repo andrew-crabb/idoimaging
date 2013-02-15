@@ -29,7 +29,6 @@ class MailDB {
   // Constructor
   
   function MailDB() {
-    require_once 'Utility.php';
     require_once 'simplehtmldom/simple_html_dom.php';
     $this->util = new Utility();
     $this->image_path = array(
@@ -78,6 +77,21 @@ class MailDB {
     $str .= "order by program.name, version.adddate desc";
     print "$str\n";
     $versions_this_period = $this->util->query_as_hash($dbh, $str, 'ident');
+    return $versions_this_period;
+  }
+
+  function make_versions_this_period_pdo($dbh, $days) {
+    $period = "$days day";
+    $perstr = "date_add(curdate(), interval - $period)";
+
+    $str  = "select version.* ";
+    $str .= "from version, program ";
+    $str .= "where ((version.reldate > $perstr) ";
+    $str .= "or (version.adddate > $perstr)) ";
+    $str .= "and (program.ident = version.progid) ";
+    $str .= "order by program.name, version.adddate desc";
+    print "$str\n";
+    $versions_this_period = $this->util->query_as_hash_pdo($dbh, $str, 'ident');
     return $versions_this_period;
   }
 

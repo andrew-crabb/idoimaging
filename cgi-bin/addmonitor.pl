@@ -46,7 +46,7 @@ if (has_len($addedIdent) and has_len($userid)) {
   print $cgi->header();
   printRowWhiteCtr($cgi->h1("Not Logged In"), $radutils::TABLEWIDTH);
   printRowWhite "You must be logged in to add a program to the list of programs that you are tracking";
-  print "<tt>obf_userid $obf_userid  OBF_USERID $OBF_USERID</tt>\n";
+  # print "<tt>obf_userid $obf_userid  OBF_USERID $OBF_USERID</tt>\n";
   printRowWhite "Log in (at top of page) to track programs.";
   if (has_len(my $referer = $cgi->referer())) {
     printRowWhite "Or click <a class='green' href='$referer'>here</a> to return to the previous screen";
