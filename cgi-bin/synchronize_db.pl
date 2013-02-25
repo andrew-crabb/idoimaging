@@ -9,8 +9,13 @@ use strict;
 no strict 'refs';
 use FindBin qw($Bin);
 use lib $FindBin::Bin;
+use lib Cwd::abs_path($FindBin::Bin . '/../lib');
 use Utility;
 use CGI;
+
+# Including for just this one program.
+use lib '/Users/ahc/BIN/perl/lib';
+use Utilities_new;
 
 use radutils;
 use Percona;
@@ -23,7 +28,8 @@ my %dbs = (
   $DB_IMAGING => {
     $DB_DATABASE => 'imaging',
     # $DB_TABLES => [qw(author format image monitor program redirect related resource version)],
-    $DB_TABLES => [qw(author format image monitor program related resource version)],
+    # $DB_TABLES => [qw(author format image monitor program related resource version)],
+    $DB_TABLES => [qw(author format image program related resource version)],
   },
   $DB_TEST => {
     $DB_DATABASE => 'test',

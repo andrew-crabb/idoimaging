@@ -4,7 +4,7 @@ package Utility;
 require Exporter;
 @ISA = qw(Exporter);
 
-@EXPORT = qw(platform has_len parse_sql_date convert_date);
+@EXPORT = qw(platform has_len parse_sql_date convert_date is_apache_environment);
 
 @EXPORT = (@EXPORT, qw($PLAT_LNX $PLAT_WIN $PLAT_MAC $DATE_MDY $DATE_SQL));
 
@@ -99,6 +99,12 @@ sub convert_date {
   }
 
   return $outdate;
+}
+
+sub is_apache_environment {
+  my $gw = $ENV{'GATEWAY_INTERFACE'};
+  my $ret = (has_len($gw) and ($gw =~ /^CGI/)) ? 1 : 0;
+  return $ret;
 }
 
 1;

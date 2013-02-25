@@ -19,6 +19,10 @@ class MailDB {
   const NEWS_DIV           = "news_content";
   const SIDEBAR_DIV        = "sidebar_content";
 
+  // New improved templates are stored on MailChimp.
+  const TEMPLATE_FIRST_LINE = '__FIRST_LINE__';
+  const TEMPLATE_MESSAGE_BODY = '__MESSAGE_BODY__';
+
   // Class variables
   public $util;
   public $all_programs;
@@ -95,9 +99,16 @@ class MailDB {
     return $versions_this_period;
   }
 
+  function add_content_to_template($template_str, $user_content, $program_content) {
+    $email_str = $template_str;
+    $email_str = str_replace(self::TEMPLATE_FIRST_LINE , 'This is the first line'   , $email_str);
+    $email_str = str_replace(self::TEMPLATE_MESSAGE_BODY , $user_content . $program_content   , $email_str);
+    return $email_str;
+  }
+
   // ------------------------------------------------------------
 
-  function add_content_to_template($template_str, $user_content, $program_content) {
+  function old_add_content_to_template($template_str, $user_content, $program_content) {
     // Use simpleDOM to extract news and sidebar DIV contents
     $dom_doc = str_get_html($user_content);
     $news_content    = $dom_doc->find("div[id=" . self::NEWS_DIV    . "]");

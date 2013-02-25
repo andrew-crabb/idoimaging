@@ -362,7 +362,9 @@ class MailChimp {
       $this->util->printr($params, 'params');
     }
 
-    if (count($params) === 1) {
+    if (count($params) === 0) {
+      $ret = $this->api->$progname();
+    } elseif (count($params) === 1) {
       $ret = $this->api->$progname($params[0]);
     } elseif (count($params) === 2) {
       $ret = $this->api->$progname($params[0], $params[1]);
@@ -547,8 +549,50 @@ class MailChimp {
     $campaign_id = $mail->create_campaign($html_str, $text_str, $group_names);
   }
 
-  function list_templates() {
+  public function list_campaigns() {
+    $campaigns = $this->run_api_query('campaigns', array());
+    // print_r($campaigns);
+    $num_campaigns = $campaigns['total'];
+    for ($i = 0; $i < $num_campaigns; $i++) {
+      if ($i == 0) {
+	printf("%-2s %-12s %s\n", 'n', 'ID', 'Title');
+      }
+      $data = $campaigns['data'][$i];
+      $id    = $data['id'];
+      $title = $data['title'];
+      printf("%-2d %-12s %s\n", $i, $id, $title);
+    }
+  }
 
+  public function list_templates() {
+    $resp = $this->run_api_query('templates', array());
+    // print_r($resp);
+    $templates = $resp['user'];
+    if (is_array($templates)) {
+      $line_no = 0;
+      foreach ($templates as $template) {
+	if ($line_no == 0) {
+	  printf("%-3s %-8s %s\n", '', 'ID', 'Name');
+	}
+	$id   = $template['id'];
+	$name = $template['name'];
+	printf("%-3d %-8d %s\n", $line_no, $id, $name);
+	$line_no++;
+      }
+    }
+    
+    $templ_content = $this->run_api_query('templateInfo', array('281581'));
+    // print_r($templ_content);
+  }
+
+  public function select_template() {
+    // This will select the template.  Dummy for now.
+    return '281581';
+  }
+
+  public function get_html_of_template($template_id) {
+    $templ_content = $this->run_api_query('templateInfo', array('281581'));
+    return $templ_content['source'];
   }
 
 }

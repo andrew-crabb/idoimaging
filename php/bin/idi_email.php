@@ -21,7 +21,10 @@ require_once 'Utility.php';
 define('MYDEBUG', 1);
 
 define('EMAIL_TEMPLATE', "2col-1-2.html");
-define('DEFAULT_PERIOD', 30);
+define('DEFAULT_PERIOD', 30);	// Period for program updates in email.
+define('MAX_EMAILS', 3);	// Number of most recent email addrs to receive newsletter only.
+
+
 
 // set_error_handler("my_error_handler");
 $util = new Utility();        // General purpose utilities.
@@ -32,9 +35,9 @@ $util = new Utility();        // General purpose utilities.
 
 define('OPT_HELP'    , 'h');     // h: Help   :
 define('OPT_LOCAL'   , 'l');     // l: Local  : Don't connect to MailChimp
+define('OPT_NOPROGS' , 'N');     // N: No Progs: Newsletter only, no program versions.
 define('OPT_PERIOD'  , 'p');     // p: Period : Period in days
 define('OPT_SEND'    , 's');     // s: Send   : Send emails through MailChimp
-define('OPT_TOME'    , 'm');     // m: To Me  : Send to my email addresses only.
 define('OPT_USER'    , 'u');     // u: User   : User ident to send to
 define('OPT_VERBOSE' , 'v');     // v: Verbose:
 define('OPT_CONTENT' , 'c');     // c: Content: File with news paragraph and column 0.
@@ -51,11 +54,10 @@ $allopts = array(
     Utility::OPTS_TYPE => Utility::OPTS_BOOL,
     Utility::OPTS_TEXT => 'Run locally',
   ),
-  OPT_TOME => array(
-    Utility::OPTS_NAME => 'me',
+  OPT_NOPROGS => array(
+    Utility::OPTS_NAME => 'noprogs',
     Utility::OPTS_TYPE => Utility::OPTS_BOOL,
-    Utility::OPTS_TEXT => 'Send to me',
-    Utility::OPTS_DFLT => true,
+    Utility::OPTS_TEXT => 'Newsletter only, no program versions',
   ),
   OPT_PERIOD => array(
     Utility::OPTS_NAME => 'period',
@@ -110,6 +112,8 @@ if ($opts{OPT_SEND}) {
 $mail   = new MailChimp($opts{OPT_VERBOSE});      // Functions specific to MailChimp
 $maildb = new MailDB();         // Database-related mail content
 
+// $mail->list_campaigns();
+// $mail->list_templates();
 
 
 // Initialize database.
@@ -166,6 +170,13 @@ $prog_imgs = make_images_for_programs($prog_ids);
 $users_this_email = array_keys($vers_for_users);
 print "users_this_email: " . join(" ", $users_this_email) . "\n";
 
+// Send non-program related emails and exit, if option selected.
+if ($opts{OPT_NOPROGS}) {
+  $mail->send_newsletter_only($users_this_email);
+  print "Exiting after sending email to non program subscribers\n";
+  exit;
+}
+
 list($group_names, $groupnames_for_users) = $mail->create_group_names($users_for_progs);
 $util->printr($group_names, 'group_names', true);
 $util->printr($groupnames_for_users, 'groupnames_for_users', true);
@@ -178,13 +189,17 @@ list($program_content, $text_str) = $maildb->content_for_programs($prog_ids, $pr
 // Template, news paragraph, and sidebar (column 0) content.
 // $content_file = $opts{OPT_CONTENT};
 try {
-  $template_str = $util->file_contents_optional($template_file, 1, 1);  // Email template.
+  //  $template_str = $util->file_contents_optional($template_file, 1, 1);  // Email template.
   $user_content = $util->file_contents_optional($content_file , 0, 1);  // News and col 0.
 }
 catch (Exception $e) {
   print $e->getMessage() . "\n";
   exit;
 }
+
+// template_str is retrieved from MailChimp
+$template_id = $mail->select_template();
+$template_str = $mail->get_html_of_template($template_id);
 
 $html_str = $maildb->add_content_to_template($template_str, $user_content, $program_content);
 if ($handle = fopen('/tmp/ahc_email.html', 'w')) {
@@ -234,10 +249,6 @@ exit;
 $group_names_str = join(",", $group_names);
 $maildb->update_mail_group($campaign_id, $mail->time_now, $group_names_str);
 $maildb->update_mail_sent($campaign_id, $users_this_email);
-
-// Closing connection
-// mysql_close($dbh_ub);
-// mysql_close($dbh_im);
 
 // ================================================================================
 //                               FUNCTIONS

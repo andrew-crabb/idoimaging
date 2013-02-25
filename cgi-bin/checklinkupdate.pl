@@ -96,6 +96,7 @@ $query .= " and name like '\%$ARGV[0]\%'" if (scalar(@ARGV));
 $query .= " and revurl is not null";
 $query .= " and remdate $notstr like '0000%'";
 # $query .= " order by visdate";
+$query .= " order by name";
 
 my $sh = dbQuery($dbh, $query);
 
