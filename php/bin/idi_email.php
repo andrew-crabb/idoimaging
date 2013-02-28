@@ -20,7 +20,6 @@ require_once 'Utility.php';
 
 define('MYDEBUG', 1);
 
-define('EMAIL_TEMPLATE', "2col-1-2.html");
 define('DEFAULT_PERIOD', 30);	// Period for program updates in email.
 define('MAX_EMAILS', 3);	// Number of most recent email addrs to receive newsletter only.
 
@@ -41,7 +40,6 @@ define('OPT_SEND'    , 's');     // s: Send   : Send emails through MailChimp
 define('OPT_USER'    , 'u');     // u: User   : User ident to send to
 define('OPT_VERBOSE' , 'v');     // v: Verbose:
 define('OPT_CONTENT' , 'c');     // c: Content: File with news paragraph and column 0.
-define('OPT_TEMPL'   , 't');     // t: Template: File to use as email template.
 
 $allopts = array(
   OPT_HELP => array(
@@ -85,12 +83,6 @@ $allopts = array(
     Utility::OPTS_TYPE => Utility::OPTS_VALO,
     Utility::OPTS_TEXT => 'File for news/sidebar content (FQ or will glob default dir)',
   ),
-  OPT_TEMPL => array(
-    Utility::OPTS_NAME => 'template',
-    Utility::OPTS_TYPE => Utility::OPTS_VALO,
-    Utility::OPTS_TEXT => 'File for email template (FQ or will glob default dir, or use default)',
-    Utility::OPTS_DFLT => EMAIL_TEMPLATE,
-  ),
 );
 
 $opts = $util->process_opts($allopts);
@@ -98,7 +90,9 @@ if ($opts[OPT_HELP]) {
   $util->usage($allopts);
   exit;
 }
-$util->printr($opts, 'opts', true);
+// $util->printr($opts, 'opts', true);
+$util->print_opts($opts, $allopts);
+
 // Check if option 's' selected.
 if ($opts{OPT_SEND}) {
   $response = readline("Really send the emails? [y/N]: ");
@@ -110,7 +104,7 @@ if ($opts{OPT_SEND}) {
 // ------------------------------------------------------------
 
 $mail   = new MailChimp($opts{OPT_VERBOSE});      // Functions specific to MailChimp
-$maildb = new MailDB();         // Database-related mail content
+$maildb = new MailDB($opts{OPT_VERBOSE});         // Database-related mail content
 
 // $mail->list_campaigns();
 // $mail->list_templates();
@@ -122,21 +116,14 @@ $userbase_key = $opts{OPT_LOCAL} ? Utility::HOST_LOCALHOST_USERBASE : Utility::H
 $dbh_ub  = $util->host_connect_pdo($userbase_key);
 $dbh_im  = $util->host_connect_pdo($imaging_key);
 
-// For template and content, use defined file or glob pattern in default location.
-$document_root = $util->server_details[Utility::ENV_DOCUMENT_ROOT];
-$template_path = '/Users/ahc/idoimaging/' . MailChimp::TEMPL_PATH;
+// For content, use defined file or glob pattern in default location.
 $content_path  = '/Users/ahc/idoimaging/' . MailChimp::CONTENT_PATH;
-
-$template_file = $util->file_defined_or_glob($opts{OPT_TEMPL}, $template_path, $allopts{OPT_TEMPL}{Utility::OPTS_DFLT});
 $content_file = $util->file_defined_or_glob($opts{OPT_CONTENT}, $content_path);
-if (!strlen($content_file) || !strlen($template_file)) {
-  print "ERROR: Missing content file ($content_file) or template file ($template_file)\n";
+if (!strlen($content_file)) {
+  print "ERROR: Missing content file ($content_file)\n";
   exit(1);
 }
-
-print "template_file $template_file\n";
 print "content_file  $content_file\n";
-
 
 // ------------------------------------------------------------
 // Main Program
@@ -144,13 +131,10 @@ print "content_file  $content_file\n";
 
 // Get all new versions over this period.
 $versions_this_period = $maildb->make_versions_this_period_pdo($dbh_im, $opts{OPT_PERIOD});
-print_r($versions_this_period);
 
 // Analyze program versions in this period.
 list($vers_for_users, $prog_ids) = make_vers_for_users($versions_this_period);
- print "vers_for_users: \n";
-$util->printr($vers_for_users, 'vers_for_users', true);
-
+exit;
  print "prog_ids: \n";
 $util->printr($prog_ids, 'prog_ids', true);
 
@@ -183,13 +167,10 @@ $util->printr($groupnames_for_users, 'groupnames_for_users', true);
 
 // Create text and HTML content from template files.
 list($program_content, $text_str) = $maildb->content_for_programs($prog_ids, $prog_imgs, $versions_this_period);
-// print "\n\n$program_content\n\n";
-// print "\n\n$text_str\n\n";
 
-// Template, news paragraph, and sidebar (column 0) content.
+// News paragraph, and sidebar (column 0) content.
 // $content_file = $opts{OPT_CONTENT};
 try {
-  //  $template_str = $util->file_contents_optional($template_file, 1, 1);  // Email template.
   $user_content = $util->file_contents_optional($content_file , 0, 1);  // News and col 0.
 }
 catch (Exception $e) {
@@ -205,10 +186,6 @@ $html_str = $maildb->add_content_to_template($template_str, $user_content, $prog
 if ($handle = fopen('/tmp/ahc_email.html', 'w')) {
   fwrite($handle, $html_str);
 }
-
-// Don't know why I had this.  If they weren't on the list why add them now?
-// $mail->check_users_on_list($users_this_email, $all_users);
-// print "users_this_email now: " . join(" ", $users_this_email) . "\n";
 
 // Delete all existing groups, re-create for users getting this email.
 try {

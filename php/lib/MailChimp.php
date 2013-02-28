@@ -537,18 +537,6 @@ class MailChimp {
     return $ret;
   }
 
-  // ------------------------------------------------------------
-  // Send a simple email to given user.
-
-  public function send_test_email($email) {
-    $document_root = $this->util->server_details[Utility::ENV_DOCUMENT_ROOT];
-    $template_path = $document_root . '/' . self::TEMPL_PATH;
-    $html_file = $template_path . '/' . self::TEST_HTML_EMAIL;
-    $html_str = $this->util->file_contents($html_file);
-    
-    $campaign_id = $mail->create_campaign($html_str, $text_str, $group_names);
-  }
-
   public function list_campaigns() {
     $campaigns = $this->run_api_query('campaigns', array());
     // print_r($campaigns);
@@ -587,6 +575,8 @@ class MailChimp {
 
   public function select_template() {
     // This will select the template.  Dummy for now.
+    // $templates = $this->run_api_query('templates');
+    // print_r($templates);
     return '281581';
   }
 

@@ -32,9 +32,10 @@ class MailDB {
   // ------------------------------------------------------------
   // Constructor
   
-  function MailDB() {
+  function MailDB($verbose = false) {
     require_once 'simplehtmldom/simple_html_dom.php';
     $this->util = new Utility();
+    $this->verbose = $verbose;
     $this->image_path = array(
       self::RSRC_TITLE => self::IMG_TITLE_PATH,
       self::RSRC_PROG  => self::IMG_PROG_PATH,
@@ -79,8 +80,9 @@ class MailDB {
     $str .= "or (version.adddate > $perstr)) ";
     $str .= "and (program.ident = version.progid) ";
     $str .= "order by program.name, version.adddate desc";
-    print "$str\n";
+    // print "$str\n";
     $versions_this_period = $this->util->query_as_hash($dbh, $str, 'ident');
+
     return $versions_this_period;
   }
 
@@ -96,6 +98,17 @@ class MailDB {
     $str .= "order by program.name, version.adddate desc";
     print "$str\n";
     $versions_this_period = $this->util->query_as_hash_pdo($dbh, $str, 'ident');
+
+    if ($this->verbose) {
+      print "MailDB::make_versions_this_period\n";
+      $lines = array();
+      foreach ($versions_this_period as $ident => $vals) {
+	$lines[] = $vals;
+      }
+      $headings = array('ident', 'progid', 'version', 'reldate', 'adddate');
+      $this->util->print_array_formatted($lines, true, "Versions this period", $headings);
+    }
+
     return $versions_this_period;
   }
 
