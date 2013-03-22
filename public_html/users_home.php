@@ -32,6 +32,7 @@
 	  $str .= " and program.remdate like '0000%'";
 	  $str .= " and userid = '$userid'";
 	  $str .= " order by progid";
+
           if ($rslt = Utility::query_as_array($dbh, $str)) {
 	    $n = count($rslt);
 	    print "<tr id='user_home_content'>\n";

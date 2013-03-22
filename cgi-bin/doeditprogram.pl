@@ -31,7 +31,7 @@ my $ident = $cgi->param('ident');
 my $addprog = $cgi->param('Add Program');
 $addprog = (has_len($addprog)) ? $addprog : 0;
 unless (has_len($ident) or $addprog) {
-  print "ERROR: No ident or addprog parameter<br>\n";
+  print STDERR "ERROR: No ident or addprog parameter<br>\n";
   exit;
 } else {
   print "ident $ident, addprog $addprog<br>\n";
@@ -44,7 +44,7 @@ if (not $addprog) {
   my $str = "select * from program where ident = '$ident'";
   my $sh = dbQuery($dbh, $str, 0);
   unless ($prog = $sh->fetchrow_hashref()) {
-    print "<br><b>ERROR: doeditprogram: fetchrow_hashref failed</b><br>\n";
+    print STDERR "ERROR: doeditprogram: fetchrow_hashref failed\n";
     exit 1;
   }
 }
@@ -63,27 +63,38 @@ foreach my $varname (@pkeys) {
   if (($varname eq "ident") and not $addprog) {
     $val = $cgi->param('newident');
   } else {
-    # val is the new val to be compared against the db val.
-    # It is set to the db val (null comparison) or to a new value
-    # from cgi.  Binary-encoded values are decoded first.
-    $val = decodeCGI($cgi, $varname) or $prog->{$varname};
+#    $val = ($cgi->param($varname) or '');
+    $val = (decodeCGI($cgi, $varname) or $prog->{$varname});
   }
-  # Convert date.
-  $val = definedVal($val);
-  if ($varname =~ /rdate|adddate|visdate/) {
-    val = convert_date($val, DATE_SQL);
+  # } else {
+  #   # val is the new val to be compared against the db val.
+  #   # It is set to the db val (null comparison) or to a new value
+  #   # from cgi.  Binary-encoded values are decoded first.
+  #   $val = (decodeCGI($cgi, $varname) or $prog->{$varname});
+  #   print STDERR "varname '$varname' val '" . $prog->{$varname} . "'\n";
+  #   print STDERR "varname '$varname' val '$val'\n";
+  # }
+  # # Convert date.
+  # $val = definedVal($val);
+  # if ($varname =~ /rdate|adddate|visdate|remdate/) {
+  #   $val = (convert_date($val, $DATE_SQL_DATE) or '');
+  # }
+
+  if ($varname =~ /date$/) {
+    $val = (convert_date($val, $DATE_SQL_DATE) or '');
   }
+
   if ($addprog) {
     $update_str .= "$comma $varname = '$val'";
     $comma = ", ";
   } else {
-    my $dbval = definedVal($prog->{$varname});	# Database val.
-    my $cmpval = $dbval;
+    # Even though dates in DB are in SQL format, convert_date converts 0000 to ''.
+    my $dbval = ($prog->{$varname} or '');
     if ($varname =~ /date$/) {
-      $dbval = $cmpval = convert_date($dbval, $DATE_SQL);
+      $dbval = (convert_date($dbval, $DATE_SQL_DATE) or '');
     }
 
-    warn("doeditprogram: val undefined, varname $varname") unless (defined($val));
+    warn("doeditprogram: val undefined, varname $varname")   unless (defined($val));
     warn("doeditprogram: dbval undefined, varname $varname") unless (defined($dbval));
 
     my $valsdiffer = ($val ne $dbval) ? 1 : 0;
@@ -104,12 +115,12 @@ my $sh;
 if ($addprog) {
   addVersionRecord($dbh, $ident, $cgi);
   $update_str = "insert into program set $update_str";
-  tt($update_str);
+  print STDERR $update_str;
   $sh = dbQuery($dbh, $update_str, 1);
 } else {
   if (length($update_str)) {
     $update_str = "update program set $update_str where ident = '$ident'";
-    tt($update_str);
+    print STDERR $update_str;
     # Submit to database.
     addVersionRecord($dbh, $ident, $cgi);
     $sh = dbQuery($dbh, $update_str);
@@ -142,7 +153,7 @@ foreach my $add (@adds) {
 
 foreach my $drop (@drops) {
   my $str = "delete from related where (prog1 = '$ident' and prog2 = '$drop') or (prog1 = '$drop' and prog2 = '$ident')";
-  tt($str);
+  print STDERR $str;
   $sh = dbQuery($dbh, $str);
 }
 
@@ -170,7 +181,7 @@ if (defined($rel_type) && defined($rel_prog2) && ($rel_prog2 >= 100)) {
   my $sh = dbQuery($dbh, $str);
   my $rel_exists = 0;
   while (my $rref = $sh->fetchrow_hashref) {
-    tt("Relationship: $ident $radutils::relationship{$rref->{'type'}} $rel_prog2");
+    # print STDERR "Relationship: $ident $radutils::relationship{$rref->{'type'}} $rel_prog2";
     # Test to see if the new relationship already exists.
     $rel_exists++;
     # ------------------
@@ -179,7 +190,7 @@ if (defined($rel_type) && defined($rel_prog2) && ($rel_prog2 >= 100)) {
     # Add this new relationship.
     my $today = today();
     $str = "insert into relationship set prog1 = '$ident', type = '$rel_type', prog2 = '$rel_prog2', date = '$today'";
-    tt($str);
+    print STDERR $str;
     my $sh = dbQuery($dbh, $str);
   }
 }
@@ -216,7 +227,7 @@ foreach my $seccap (@seccaps) {
   } else {
     # Editing an existing secondary screen capture.
     (my $existing_seccap_file = $seccap) =~ s/^seccap_//;
-    tt("selected value of selector $seccap is $selected_seccap_file, previous value was $existing_seccap_file");
+    print STDERR "selected value of selector $seccap is $selected_seccap_file, previous value was $existing_seccap_file";
     # No edits if input named after sec cap file has self-named option selected.
     if ($selected_seccap_file ne $existing_seccap_file) {
       if ($selected_seccap_file =~ /Delete/) {
@@ -278,7 +289,7 @@ sub decodeCGI {
     foreach my $val (@vals) {
       $ret += $val;
     }
-#tt("doeditprogram::decodeCGI($var): vals " . join(" ", @vals) . ", sum $ret");
+#print STDERR "doeditprogram::decodeCGI($var: vals " . join(" ", @vals) . ", sum $ret");
   } elsif ($var =~ /prer/) {
     $ret = calcPrereq($cgi);
   } else {

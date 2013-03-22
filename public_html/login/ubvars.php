@@ -18,8 +18,6 @@ $site_session = isset($_COOKIE['site_session']) ? $_COOKIE['site_session'] : '';
 # PATH_TRANSLATED environment variable to see what the path should be.
 # You can run the  phpinfo()  function to see that variable's value.
 
-
-
 // Method 1:
 // ahc note: This doesn't work since output buffering can't be used with virtual (it starts another process).
 // ob_start();
@@ -56,8 +54,8 @@ ob_end_clean();
 
   if(!(file_exists($cgi_script_full)))
   {
-  print "Error: the file specified by \$cgi_script_full does not exist ('$cgi_script_full').  You may need to edit your ubvars.php file and manually set the \$DOCROOT and/or \$cgi_script_full variables.";
-  exit;
+    error_log( "Error: the file specified by \$cgi_script_full does not exist ('$cgi_script_full').  You may need to edit your ubvars.php file and manually set the \$DOCROOT and/or \$cgi_script_full variables.");
+    exit;
   }
 
   reset($_SERVER);
@@ -97,31 +95,28 @@ ob_end_clean();
   unset($output);
   unset($output_body);
   exec($cgi_script_full, $output, $return_val);
-  if(!$output)
-  {
-  exec("perl $cgi_script_full", $output, $return_val);
+  if(!$output)  {
+    exec("perl $cgi_script_full", $output, $return_val);
   }
 // print "ubvars.php: cgi_script_full $cgi_script_full<br>\n";
 // print_r($output);
 
-  $html_headers_finished = 0;
-  $output_body = '';
-  foreach ($output as $line)
-  {
-  if($html_headers_finished)
-  {
-  $output_body .= "$line\n";
+$html_headers_finished = 0;
+$output_body = '';
+foreach ($output as $line)  {
+  if($html_headers_finished)  {
+    if (preg_grep('/sql/', array($line))) {
+      error_log("*** $line");
+    }
+    $output_body .= "$line\n";
+  }  else  {
+    if($line == '')  {
+      $html_headers_finished = 1;
+    }
   }
-  else
-  {
-  if($line == '')
-  {
-  $html_headers_finished = 1;
-  }
-  }
-  }
-  $login_status = $output_body;
-// print "<tt>login_status: $login_status</tt><br>\n";
+}
+$login_status = $output_body;
+
 
   # Now unset these so as not to confuse any CGI scripts that we call after this one:
   reset($_SERVER);

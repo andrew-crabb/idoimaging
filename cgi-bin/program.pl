@@ -427,7 +427,7 @@ while (my $revp = $rsh->fetchrow_hashref()) {
   }
   # Each revision entry creates a line in this subtable.
   $rtxt .= "<tr><td>$revp->{'version'}</td>";
-  my $mdydate = (convert_date($prog->{'reldate'}, $DATE_MDY) or '&nbsp;');
+  my $mdydate = (convert_date($revp->{'reldate'}, $DATE_MDY) or '&nbsp;');
   $rtxt .= "<td>$mdydate</td>";
   $rtxt .= "</tr>\n";
 }

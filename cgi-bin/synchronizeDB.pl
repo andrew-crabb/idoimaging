@@ -59,7 +59,8 @@ my $rdbh = DBI->connect("DBI:mysql:imaging:idoimaging.macminicolo.net","_www","P
 die("No local DB:  $DBI::errstr") unless ($ldbh);
 die("No remote DB: $DBI::errstr") unless ($rdbh);
 
-foreach my $table (qw(author format image monitor program redirect related resource version)) {
+# foreach my $table (qw(author format image monitor program redirect related resource version)) {
+foreach my $table (qw(author format image program redirect related resource version)) {
 # foreach my $table (qw(resource)) {
   # For tables monitor, and redirect, 'source' dbh is remote, and 
   # 'dest' is local.  All others are source local, dest remote.  This is because 

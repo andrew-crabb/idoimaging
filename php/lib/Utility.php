@@ -995,7 +995,7 @@ class Utility {
       printf("$titfmt\n", '|', $title, '|');
     }
 
-    if (isset($headings)) {
+    if (isset($headings) and count($headings)) {
       print $lines;
       vprintf($fmtstr, $headings);
     }
