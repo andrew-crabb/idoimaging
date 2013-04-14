@@ -175,7 +175,9 @@ foreach my $varname (qw(ident name summ descr adddate visdate rev rdate homeurl 
 
   my ($identline, $buttline) = ('', '');
   if ($varname =~ /adddate/) {
-    $val = timeNow()->{'M/D/Y'} if ($addprog and not has_len($val));
+    # DateTime->today->format_cldr("YYYY-MM-dd")
+    # $val = timeNow()->{'M/D/Y'} if ($addprog and not has_len($val));
+    $val = DateTime->today->format_cldr("M/D/Y") if ($addprog and not has_len($val));
   }
   if ($varname =~ /rdate|visdate|adddate/) {
     $val = convert_date($val, $DATE_MDY);

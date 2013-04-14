@@ -124,12 +124,12 @@ list($vers_for_users, $users_for_prog) = make_vers_for_users($versions_this_peri
 $prog_ids = array_keys($users_for_prog);
 sort($prog_ids, SORT_NUMERIC);
 
-$util->printr($vers_for_users, 'vers_for_users', true);
-$util->printr($users_for_prog, 'users_for_prog', true);
+// $util->printr($vers_for_users, 'vers_for_users', true);
+// $util->printr($users_for_prog, 'users_for_prog', true);
 
-exit;
 // Get one image per program to use in the email.
 $prog_imgs = make_images_for_programs($prog_ids);
+// $util->printr($prog_imgs, 'prog_imgs', true);
 
 // ------------------------------------------------------------
 // Create mail list and groups.  Related to users, not mail content.
@@ -145,18 +145,17 @@ list($group_names, $groupnames_for_users) = $mail->create_group_names($users_for
 
 // Create text and HTML content for program updates, also add-monitor guide.
 list($program_content, $text_str) = $maildb->content_for_programs($prog_ids, $prog_imgs, $versions_this_period);
-exit;
-// print "------------------------------\n";
+//print "------------------------------\n";
 // print "$program_content\n";
 // print "------------------------------\n";
 // print "$text_str\n";
 // print "------------------------------\n";
 
 // template_str is retrieved from MailChimp
-$template_id = $mail->select_template();
-
-$template_str = $mail->get_html_of_template($template_id);
 $mail->list_templates();
+$template_id = $mail->select_template();
+$template_str = $mail->get_html_of_template($template_id);
+
 $email_str = str_replace('__PROGRAMS_CONTENT__', $program_content, $template_str);
 
 if ($handle = fopen('/tmp/ahc_email_' . date('Ymd_His') . '.html', 'w')) {

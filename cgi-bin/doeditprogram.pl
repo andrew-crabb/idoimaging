@@ -63,22 +63,8 @@ foreach my $varname (@pkeys) {
   if (($varname eq "ident") and not $addprog) {
     $val = $cgi->param('newident');
   } else {
-#    $val = ($cgi->param($varname) or '');
     $val = (decodeCGI($cgi, $varname) or $prog->{$varname});
   }
-  # } else {
-  #   # val is the new val to be compared against the db val.
-  #   # It is set to the db val (null comparison) or to a new value
-  #   # from cgi.  Binary-encoded values are decoded first.
-  #   $val = (decodeCGI($cgi, $varname) or $prog->{$varname});
-  #   print STDERR "varname '$varname' val '" . $prog->{$varname} . "'\n";
-  #   print STDERR "varname '$varname' val '$val'\n";
-  # }
-  # # Convert date.
-  # $val = definedVal($val);
-  # if ($varname =~ /rdate|adddate|visdate|remdate/) {
-  #   $val = (convert_date($val, $DATE_SQL_DATE) or '');
-  # }
 
   if ($varname =~ /date$/) {
     $val = (convert_date($val, $DATE_SQL_DATE) or '');

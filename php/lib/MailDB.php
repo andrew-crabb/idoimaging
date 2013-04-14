@@ -20,7 +20,8 @@ class MailDB {
   const SIDEBAR_DIV        = "sidebar_content";
   // Section for generic add-monitor guide in place of program updates.
   const PROGRAM_NULL       = 'null';
-
+  const MAX_IMAGE_HEIGHT   = 100;
+  
   // Class variables
   public $util;
   public $all_subscribers;
@@ -148,14 +149,12 @@ class MailDB {
       $html_str = "*|INTERESTED:programs:program_" . self::PROGRAM_NULL . "null|*\n";
       $html_str .= "<!-- Content for program monitor guide -->\n";
       $html_str .= "<tr>\n";
-      $html_str .= "<td id='r1c1' style='background-color: #ffffff; border-left: 0px;' align='middle' valign='top'>\n";
+      $html_str .= "<td colspan='2' style='background-color: #ffffff; border-left: 0px;' align='middle' valign='top'>\n";
       $html_str .= "This is the guide for adding a monitor to a program\n";
       $html_str .= "</td>\n";
       $html_str .= "</tr>\n";
       // Row 1, col 0
       $html_str .= "*|END:INTERESTED|*\n";
-      
-      
     } else {
       $prog_name = $version['program.name'];
       extract($version, EXTR_PREFIX_ALL, 'ver');
@@ -169,13 +168,21 @@ class MailDB {
       // Program content in email is two tr's with text and image, enclosed by conditional includes.
       $html_str = "*|INTERESTED:programs:program_${prog_id}|*\n";
       $html_str .= "<!-- Content for program $prog_id ($prog_name) -->\n";
-      // Row 0, col 0
       $html_str .= "<tr>\n";
-      $html_str .= "<td id='r1c1' style='background-color: #ffffff; border-left: 0px;' align='middle' valign='top'>\n";
+
+      // Col 0: image
+      $html_str .= "<td style='background-color: #ffffff; border-left: 0px;' align='middle' valign='top'>\n";
       $html_str .= "${a_href}$img_code</a>\n";
       $html_str .= "</td>\n";
+
+      // Col 1: text
+      $html_str .= "<td style='background-color: #ffffff; border-left: 0px;' align='left' valign='top'>\n";
+      $html_str .= "<strong>${a_href}$prog_name</a></strong><br>\n";
+      $html_str .= "New version: $ver_version<br>\n";
+      $html_str .= "Released: $ver_reldate<br>\n";
+      $html_str .= "</td>\n";
+      
       $html_str .= "</tr>\n";
-      // Row 1, col 0
       $html_str .= "*|END:INTERESTED|*\n";
 
       // ------------------------------------------------------------
@@ -202,6 +209,20 @@ class MailDB {
       $prog_img = $prog_imgs[$prog_id];
       // Fields: filename path rsrcfld rsrcname width height
       extract($prog_img, EXTR_PREFIX_ALL, 'img');
+      if ($img_height > 100) {
+        $factor = 100 / $img_height;
+        print "*** scaling $img_filename by $factor from height of ($img_height, $img_width)";
+        $img_height = intval($img_height * $factor);
+        $img_width  = intval($img_width * $factor);
+        print " to ($img_height, $img_width)\n";
+      }
+      if ($img_width > 150) {
+        $factor = 150 / $img_width;
+        print "*** scaling $img_filename by $factor from width of ($img_height, $img_width)";
+        $img_height = intval($img_height * $factor);
+        $img_width  = intval($img_width * $factor);
+        print " to ($img_height, $img_width)\n";
+      }
       $image_path = $this->image_path[$img_rsrcfld];
       $imgstr = "<img src='" . self::IDI_URL . "/${image_path}/${img_path}/${img_filename}'";
       $imgstr   .= " border='0' title='' alt='$img_rsrcname image'";

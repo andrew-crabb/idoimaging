@@ -162,7 +162,7 @@ class MailChimp {
 
   function delete_existing_groups() {
     $list_id = $this->list_id;
-    print "-------------------- MailChimp::delete_existing_groups() --------------------\n";
+    print "MailChimp::delete_existing_groups() start\n";
     $interest_groupings = $this->run_api_query('listInterestGroupings', array($list_id));
     if ($this->verbose) {
       // $this->util->printr($interest_groupings, 'interest_groupings', true);
@@ -179,7 +179,7 @@ class MailChimp {
 	    if ($group_name != self::EMPTY_GROUP) {
 	      $list_params = array($list_id, $group_name, $this->programs_grouping_id);
 	      $this->run_api_query('listInterestGroupDel', $list_params);
-	      print "listInterestGroupDel($group_name, " . $this->programs_grouping_id . ")\n";
+	      // print "listInterestGroupDel($group_name, " . $this->programs_grouping_id . ")\n";
 	    }
 	  }
 	}
@@ -187,7 +187,7 @@ class MailChimp {
     } else {
       print "interest_groupings is not set\n";
     }
-    print "-------------------- MailChimp::delete_existing_groups() end --------------------\n";
+    print "MailChimp::delete_existing_groups() end\n";
   }
 
   // ------------------------------------------------------------
@@ -225,7 +225,7 @@ class MailChimp {
   // Fill in the ID of the 'programs' groupings, creating if necessary.
 
   function create_groupings() {
-    print "MailChimp::create_groupings()\n";
+    print "MailChimp::create_groupings() start\n";
 
     // Get id of 'programs' grouping, creating if necessary.
     $interest_groupings = $this->run_api_query('listInterestGroupings', array($this->list_id));
@@ -248,6 +248,7 @@ class MailChimp {
       $this->programs_grouping_id = $this->run_api_query('listInterestGroupingAdd', $params);
       print "MailChimp::create_groupings(): Creating groupings '" . self::GROUPING_PROGRAMS . "'\n";
     }
+    print "MailChimp::create_groupings() end\n";
   }
 
   // ------------------------------------------------------------
@@ -255,7 +256,6 @@ class MailChimp {
 
   function create_groups($group_names, $groupnames_for_users) {
     $list_id = $this->list_id;
-    print "-------------------- MailChimp::create_groups() begin --------------------\n";
 
     if (!$this->programs_grouping_id) {
       throw new Exception("programs_grouping_id not set");
@@ -290,12 +290,19 @@ class MailChimp {
       if (!$update_ok) {
 	throw new Exception("listUpdateMember ($user_email)");
       }
-      array_push($updates, array($user_email, $group_names_string));
+      // For printable summary.
+      $group_names_summ = '';
+      if (count($group_names_for_user) > 2) {
+	$group_names_summ = count($group_names_for_user) . " groups";
+      } else {
+	$group_names_summ = $group_names_string;
+      }
+      array_push($updates, array($user_email, $group_names_summ));
     }
     if (count($updates)) {
-      $this->util->print_array_formatted($updates, true, "Groups for users");
+      $headings = array('User', 'Groups');
+      $this->util->print_array_formatted($updates, true, "create_groups() summary", $headings);
     }
-    print "-------------------- MailChimp::create_groups() end --------------------\n";
   }
 
   // ------------------------------------------------------------
@@ -304,7 +311,7 @@ class MailChimp {
     $datetime = $this->time_now[Utility::DATES_HRRTDIR];
     $campaign_opts = array(
       'list_id'    => $this->list_id,
-      'subject'    => "IDI email $datetime",
+      'subject'    => "News from I Do Imaging",
       'from_email' => 'news@idoimaging.com',
       'from_name'  => 'I Do Imaging',
       'to_name'    => 'Test To-Name',
@@ -571,24 +578,28 @@ class MailChimp {
   }
 
   public function list_templates() {
-    print "-------------------- list_templates() begin --------------------\n";
+    // print "-------------------- list_templates() begin --------------------\n";
     $resp = $this->run_api_query('templates', array());
     // print_r($resp);
     $templates = $resp['user'];
+    $summlines = array();
     if (is_array($templates)) {
       $line_no = 0;
       foreach ($templates as $template) {
-	if ($line_no == 0) {
-	  printf("%-3s %-8s %s\n", '', 'ID', 'Name');
-	}
+	// if ($line_no == 0) {
+	// printf("%-3s %-8s %s\n", '', 'ID', 'Name');
+	// }
 	$id   = $template['id'];
 	$name = $template['name'];
-	printf("%-3d %-8d %s\n", $line_no, $id, $name);
+	// printf("%-3d %-8d %s\n", $line_no, $id, $name);
+	array_push($summlines, array($line_no, $id, $name));
 	$line_no++;
       }
     }
+    $headings = array('N', 'ID', 'Name');
+    $this->util->print_array_formatted($summlines, true, "List Templates", $headings);    
     
-    print "-------------------- list_templates() end --------------------\n";
+    // print "-------------------- list_templates() end --------------------\n";
     // $templ_content = $this->run_api_query('templateInfo', array('281581'));
     // print_r($templ_content);
   }
@@ -597,6 +608,8 @@ class MailChimp {
     // This will select the template.  Dummy for now.
     // $templates = $this->run_api_query('templates');
     // print_r($templates);
+    print "********** TEMP select_template() returning 283073 **********\n";
+
     return '283073';
   }
 

@@ -962,6 +962,16 @@ class Utility {
       }
     }
 
+    // Right-pad rightmost column if title is wider than columns.
+    $totlen = array_sum($lengths);
+    if (isset($title)) {
+      $titlen = strlen($title);
+      if ($titlen > $totlen) {
+	$diff = ($titlen - $totlen);
+	$lengths[count($lengths) - 1] += $diff;
+      }
+    }
+
     $fmtstr = ($bars and $i) ? '| ' : '';
     $space = '';
     foreach ($lengths as $length) {
