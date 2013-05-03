@@ -4,7 +4,9 @@ $apikey = '343e05a28d9d1319100dced2d2de951e-us2';
 
 // A List Id to run examples against. use lists() to view all
 // Also, login to MC account, go to List, then List Tools, and look for the List ID entry
-$listId = '8742aa4b68';
+$listId_main = '8742aa4b68';
+$listId_test = '527533e428';
+
 // A Campaign Id to run examples against. use campaigns() to view all
 $campaignId = '1d416a1af6';
 

@@ -4,10 +4,15 @@
 error_reporting(E_ALL);
 
 $curr_dir = realpath(dirname(__FILE__));
-set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
-require_once 'Utility.php';
+$include_path = get_include_path() 
+  . PATH_SEPARATOR . realpath("${curr_dir}/../lib")
+  . PATH_SEPARATOR . realpath("${curr_dir}/../contrib")
+  . PATH_SEPARATOR . realpath("${curr_dir}/../contrib/mailchimp");
+set_include_path($include_path);
 require_once 'MailChimp.php';
 require_once 'MailDB.php';
+require_once 'MCAPI.class.php';
+require_once 'Utility.php';
 
 // ------------------------------------------------------------
 // Constants
@@ -17,19 +22,9 @@ define('MYDEBUG', 1);
 
 define('EMAIL_TEMPLATE', "2col-1-2.html");
 define('DEFAULT_PERIOD', 30);
-define('AHC_ID', 5237);    // My email ID for I Do Imaging (HTML, email program)
-define('AHC_JH', 5233);    // My email ID for JHU (text).
-define('AHC_GM', 25152);   // My email id for Gmail (HTML, web browser).
-define('AHC_MM', 2056);    // My email id for MobileMe
 
-set_error_handler("my_error_handler");
+// set_error_handler("my_error_handler");
 $util = new Utility();        // General purpose utilities.
-
-// ------------------------------------------------------------
-// Initialization
-// ------------------------------------------------------------
-
-$dbh_local  = $util->host_connect(Utility::HOST_IDI_USERBASE);
 
 // ------------------------------------------------------------
 // Command line options
@@ -108,12 +103,25 @@ if ($opts{OPT_SEND}) {
   $opts{OPT_SEND} = (strtoupper(substr($response, 0, 1)) == 'Y') ? 1 : 0;
 }
 
+// ------------------------------------------------------------
+// Mail objects (delay construction as need options)
+// ------------------------------------------------------------
+
+$mail   = new MailChimp($opts{OPT_VERBOSE});      // Functions specific to MailChimp
+$maildb = new MailDB();         // Database-related mail content
+
+
+
+// Initialize database.
+$imaging_key  = $opts{OPT_LOCAL} ? Utility::HOST_LOCALHOST_IMAGING  : Utility::HOST_IDI_IMAGING;
+$userbase_key = $opts{OPT_LOCAL} ? Utility::HOST_LOCALHOST_USERBASE : Utility::HOST_IDI_USERBASE;
+$dbh_ub  = $util->host_connect_pdo($userbase_key);
+$dbh_im  = $util->host_connect_pdo($imaging_key);
+
 // For template and content, use defined file or glob pattern in default location.
-// $template_path = HTML_PATH . "/" . TEMPL_PATH;
-// $content_path  = HTML_PATH . "/" . CONTENT_PATH;
 $document_root = $util->server_details[Utility::ENV_DOCUMENT_ROOT];
-$template_path = $document_root . '/idoimaging/' . MailChimp::TEMPL_PATH;
-$content_path  = $document_root . '/idoimaging/' . MailChimp::CONTENT_PATH;
+$template_path = '/Users/ahc/idoimaging/' . MailChimp::TEMPL_PATH;
+$content_path  = '/Users/ahc/idoimaging/' . MailChimp::CONTENT_PATH;
 
 $template_file = $util->file_defined_or_glob($opts{OPT_TEMPL}, $template_path, $allopts{OPT_TEMPL}{Utility::OPTS_DFLT});
 $content_file = $util->file_defined_or_glob($opts{OPT_CONTENT}, $content_path);
@@ -127,35 +135,28 @@ print "content_file  $content_file\n";
 
 
 // ------------------------------------------------------------
-// Mail objects (delay construction as need options)
-// ------------------------------------------------------------
-
-$mail   = new MailChimp($opts{OPT_VERBOSE});      // Functions specific to MailChimp
-$maildb = new MailDB();         // Database-related mail content
-
-// ------------------------------------------------------------
 // Main Program
 // ------------------------------------------------------------
 
-list($all_users) = $maildb->get_db_data($dbh_local);
-list($nprog, $nver, $nqver) = $maildb->get_db_counts($dbh_local);
-
 // Get all new versions over this period.
-$versions_this_period = $maildb->make_versions_this_period($dbh_local, $opts{OPT_PERIOD});
+$versions_this_period = $maildb->make_versions_this_period_pdo($dbh_im, $opts{OPT_PERIOD});
+print_r($versions_this_period);
 
 // Analyze program versions in this period.
 list($vers_for_users, $prog_ids) = make_vers_for_users($versions_this_period);
-print "vers_for_users: \n";
-$util->printr($vers_for_users, 'vers_for_users');
-print "prog_ids: \n";
-$util->printr($prog_ids, 'prog_ids');
+ print "vers_for_users: \n";
+$util->printr($vers_for_users, 'vers_for_users', true);
+
+ print "prog_ids: \n";
+$util->printr($prog_ids, 'prog_ids', true);
 
 // Make hash by program id of array of users for this program.
 $users_for_progs = make_users_for_progs($vers_for_users);
-$util->printr($users_for_progs, 'users_for_progs');
+$util->printr($users_for_progs, 'users_for_progs', true);
 
 // Get one image per program to use in the email.
 $prog_imgs = make_images_for_programs($prog_ids);
+// $util->printr($prog_imgs, 'prog_imgs', true);
 
 // ------------------------------------------------------------
 // Create mail list and groups.  Related to users, not mail content.
@@ -166,9 +167,13 @@ $users_this_email = array_keys($vers_for_users);
 print "users_this_email: " . join(" ", $users_this_email) . "\n";
 
 list($group_names, $groupnames_for_users) = $mail->create_group_names($users_for_progs);
+$util->printr($group_names, 'group_names', true);
+$util->printr($groupnames_for_users, 'groupnames_for_users', true);
 
 // Create text and HTML content from template files.
 list($program_content, $text_str) = $maildb->content_for_programs($prog_ids, $prog_imgs, $versions_this_period);
+// print "\n\n$program_content\n\n";
+// print "\n\n$text_str\n\n";
 
 // Template, news paragraph, and sidebar (column 0) content.
 // $content_file = $opts{OPT_CONTENT};
@@ -186,13 +191,22 @@ if ($handle = fopen('/tmp/ahc_email.html', 'w')) {
   fwrite($handle, $html_str);
 }
 
-if (!$opts{OPT_LOCAL}) {
-  $mail->check_users_on_list($users_this_email, $all_users);
-  print "users_this_email now: " . join(" ", $users_this_email) . "\n";
+// Don't know why I had this.  If they weren't on the list why add them now?
+// $mail->check_users_on_list($users_this_email, $all_users);
+// print "users_this_email now: " . join(" ", $users_this_email) . "\n";
 
-  // Delete all existing groups, re-create for users getting this email.
-  $mail->delete_existing_groups();
-  $mail->create_groups($group_names, $groupnames_for_users, $all_users);
+// Delete all existing groups, re-create for users getting this email.
+try {
+  $mail->delete_existing_groups(); 
+  $mail->create_groupings();
+  $mail->create_groups($group_names, $groupnames_for_users);
+} catch (Exception $e) {
+  error_log("Error during group creation");
+  print $e->getMessage() . "\n";
+  echo $e->getTraceAsString() . "\n";
+  exit(1);
+}
+
 
   // ------------------------------------------------------------
   // Create email campaign.  Related to mail content, not users.
@@ -205,21 +219,15 @@ if (!$opts{OPT_LOCAL}) {
   // ------------------------------------------------------------
 
   if ($opts{OPT_SEND}) {
-    // $sent_ok = $mail->send_campaign($campaign_id);
-    print "DUMMY: sent_ok = mail->send_campaign($campaign_id)\n";
+    $sent_ok = $mail->send_campaign($campaign_id);
+    print "sent_ok = mail->send_campaign($campaign_id)\n";
     if (!$sent_ok) {
       print "ERROR: Campaign $campaign_id not sent.\n";
     }
   } else {
     print "Emails were not sent.\n";
   }
-} else {
-  $now = $util->convert_dates(time());
-  $util->printr($now, 'now');
-  $campaign_id = "1111" . $now{Utility::DATES_HRMNSC};
-  print "campaign id = $campaign_id\n";
-}
-
+exit;
 // ------------------------------------------------------------
 // Update database with email compaign, recipients, and versions.
 // ------------------------------------------------------------
@@ -228,7 +236,8 @@ $maildb->update_mail_group($campaign_id, $mail->time_now, $group_names_str);
 $maildb->update_mail_sent($campaign_id, $users_this_email);
 
 // Closing connection
-mysql_close($dbh_local);
+// mysql_close($dbh_ub);
+// mysql_close($dbh_im);
 
 // ================================================================================
 //                               FUNCTIONS
@@ -251,7 +260,7 @@ function my_error_handler($errno, $errstr) {
 // ------------------------------------------------------------
 
 function make_vers_for_users($versions_this_period) {
-  global $util, $opts, $g_ahc_emails, $dbh_local;
+  global $util, $opts, $dbh_ub, $dbh_im;
   
   $prog_ids = array();
   $vers_for_users = array();
@@ -261,31 +270,29 @@ function make_vers_for_users($versions_this_period) {
     $version = $ver['version'];
     // Newest of duplicate versions is seen first.
     if (in_array($progid, $prog_ids)) {
-      print "Skipping progid $progid, version " . $ver['version'] . "\n";
+      print "Already seen progid $progid, omit old version " . $ver['version'] . "\n";
       continue;
     }
     array_push($prog_ids, $progid);
     // Build array of userids to notify for this version.
-    $ids_for_ver = array();
-    // Iterate over each monitor record having the program for this version record.
-    $monstr = "select * from monitor where progid = '$progid'";
-    $users_this_progid = $util->query_as_hash($dbh_local, $monstr, 'userid');
-    $n_users = count($users_this_progid);
-    foreach ($users_this_progid as $monitor) {
-      $userid = $monitor['userid'];
-      array_push($ids_for_ver, $userid);
+    $monstr = "select distinct userid from monitor where progid = '$progid'";
+    $result = $util->query_issue_pdo($dbh_im, $monstr);
+    $users_this_progid = array();
+    // while ($row = mysql_fetch_assoc($result)) {
+    foreach ($result as $row) {
+      // Get the user email from the UB database.
+      $ubstr = "select username from userbase_users where id = '" . $row['userid'] . "'";
+      $ubresult = $util->query_issue_pdo($dbh_ub, $ubstr);
+      foreach ($ubresult as $ubrow) {
+	$users_this_progid[] = $ubrow['username'];
+      }
     }
-    $summaries[] = sprintf("%3d userids are monitoring program %s", $n_users, $progid);
-    
+    $n_users = count($users_this_progid);
+    $summaries[] = sprintf("%3d userids are monitoring program %s: %s", $n_users, $progid, join(", ", $users_this_progid));
+
     // Create array of version records for each user (may include duplicates).
-    foreach ($ids_for_ver as $userid) {
-      $do_add = 1;
-      if ($opts{OPT_TOME} && !in_array($userid, $g_ahc_emails)) {
-        $do_add = 0;
-      }
-      if ($do_add) {
-        $vers_for_users[$userid][] = $ver;
-      }
+    foreach ($users_this_progid as $user_email) {
+      $vers_for_users[$user_email][] = $ver;
     }
   }
 
@@ -299,7 +306,7 @@ function make_vers_for_users($versions_this_period) {
       $version = $version['version'];
       $progstr .= "$progid ($version) ";
     }
-    printf("user %5d gets these programs: %s\n", $user, $progstr);
+    printf("user %-20s gets these programs: %s\n", $user, $progstr);
   }
   print "-------------------- make_vers_for_users end   --------------------\n";
 
@@ -329,7 +336,6 @@ function make_users_for_progs( $vers_for_users ) {
     print "Program $version goes to " . count($users) . " users\n";
   }
   ksort($users_for_progs, SORT_NUMERIC);
-  $util->printr($users_for_progs, 'users_for_progs');
   print "-------------------- make_users_for_progs end   --------------------\n";
   return $users_for_progs;
 }
@@ -339,7 +345,7 @@ function make_users_for_progs( $vers_for_users ) {
 // ------------------------------------------------------------
 
 function make_images_for_programs($prog_ids) {
-  global $util, $dbh_local;
+  global $util, $dbh_im;
   
   $prog_imgs = array();
   $summaries = array();
@@ -350,7 +356,7 @@ function make_images_for_programs($prog_ids) {
     $istr .= " and path    = 'sm'";
     $istr .= " and scale   = '200'";
     $istr .= " and rsrcid  = '$progid'";
-    $images = $util->query_as_hash($dbh_local, $istr, 'ident');
+    $images = $util->query_as_hash_pdo($dbh_im, $istr, 'ident');
     if (count($images)) {
       $images_prog = array();
       $images_title = array();

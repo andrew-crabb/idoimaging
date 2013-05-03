@@ -14,24 +14,31 @@ error_reporting(E_ALL);
 // Constants
 // ------------------------------------------------------------
 
+const SECONDS_PER_DAY = 86400;
+const DFLT_REPORT_PERIOD = 30;
+
 // ------------------------------------------------------------
 // Includes
 // ------------------------------------------------------------
 
 $curr_dir = realpath(dirname(__FILE__));
-set_include_path(get_include_path() . PATH_SEPARATOR . "${curr_dir}/../lib");
+$include_path = get_include_path() 
+  . PATH_SEPARATOR . realpath("${curr_dir}/../lib")
+  . PATH_SEPARATOR . realpath("${curr_dir}/../contrib")
+  . PATH_SEPARATOR . realpath("${curr_dir}/../contrib/mailchimp");
+set_include_path($include_path);
 
-require_once 'Utility.php';
 require_once 'Library.php';
 require_once 'MailChimp.php';
-require_once 'UserBase.php';
 require_once 'MailDB.php';
+require_once 'MCAPI.class.php';
 require_once 'Radutil.php';
+require_once 'UserBase.php';
+require_once 'Utility.php';
 
 $util = new Utility();
 $rad  = new Radutil($util);
 $lib  = new Library();
-$mc   = new MailChimp();
 $ub   = new UserBase();
 
 // ------------------------------------------------------------
@@ -42,13 +49,17 @@ define('OPT_ADD'     , 'a');        # Add given address
 define('OPT_DELETE'  , 'd');        # Delete given address
 define('OPT_DEL_ALL' , 'D');        # Delete all addresses
 define('OPT_EDIT'    , 'e');        # Edit given address to this value
+define('OPT_TEST_MSG', 'g');        # Send test message to given address
 define('OPT_HELP'    , 'h');        # Display help
 define('OPT_INFO'    , 'i');        # Display given address
-define('OPT_LIST'    , 'l');        # Display list of all users
+define('OPT_LIST_MC' , 'l');        # Display most recent MC users
+define('OPT_LIST_UB' , 'u');        # Display most recent UB users
 define('OPT_MAIL'    , 'm');        # Mail address to use
-define('OPT_TEST_MSG', 't');        # Send test message to given address
+define('OPT_PERIOD'  , 'p');        # Report period if not default
+define('OPT_REPORT'  , 'r');        # Report last 50 new users
+define('OPT_NO_TEST' , 'T');        # Use live (not test) mail list
 define('OPT_WELCOME' , 'w');        # Send welcome message when adding
-define('OPT_VERBOSE' , 'v');        # 
+define('OPT_VERBOSE' , 'v');        # Verbose
 
 $allopts = array(
   OPT_ADD => array(
@@ -79,6 +90,12 @@ $allopts = array(
     Utility::OPTS_CORQ => OPT_MAIL,
     Utility::OPTS_KIND => Utility::OPTS_MODE,
   ),
+  OPT_TEST_MSG => array(
+    Utility::OPTS_NAME => 'test_msg',
+    Utility::OPTS_TYPE => Utility::OPTS_BOOL,
+    Utility::OPTS_TEXT => 'Send test message to user',
+    Utility::OPTS_KIND => Utility::OPTS_OPTN,
+  ),
   OPT_HELP => array(
     Utility::OPTS_NAME => 'help',
     Utility::OPTS_TYPE => Utility::OPTS_BOOL,
@@ -91,10 +108,16 @@ $allopts = array(
     Utility::OPTS_CORQ => OPT_MAIL,
     Utility::OPTS_KIND => Utility::OPTS_MODE,
   ),
-  OPT_LIST => array(
-    Utility::OPTS_NAME => 'list_users',
+  OPT_LIST_MC => array(
+    Utility::OPTS_NAME => 'list_users_mc',
     Utility::OPTS_TYPE => Utility::OPTS_BOOL,
-    Utility::OPTS_TEXT => 'Display list of all users',
+    Utility::OPTS_TEXT => 'Display newest MC users',
+    Utility::OPTS_KIND => Utility::OPTS_MODE,
+  ),
+  OPT_LIST_UB => array(
+    Utility::OPTS_NAME => 'list_users_ub',
+    Utility::OPTS_TYPE => Utility::OPTS_BOOL,
+    Utility::OPTS_TEXT => 'Display newest UB users',
     Utility::OPTS_KIND => Utility::OPTS_MODE,
   ),
   OPT_MAIL => array(
@@ -103,10 +126,24 @@ $allopts = array(
     Utility::OPTS_TEXT => 'Email address to use',
     Utility::OPTS_KIND => Utility::OPTS_OPTN,
   ),
-  OPT_TEST_MSG => array(
-    Utility::OPTS_NAME => 'test_msg',
+  OPT_PERIOD => array(
+    Utility::OPTS_NAME => 'period',
+    Utility::OPTS_TYPE => Utility::OPTS_VALR,
+    Utility::OPTS_TEXT => 'Report period',
+    Utility::OPTS_KIND => Utility::OPTS_OPTN,
+    Utility::OPTS_DFLT => DFLT_REPORT_PERIOD,
+  ),
+  OPT_REPORT => array(
+    Utility::OPTS_NAME => 'report',
     Utility::OPTS_TYPE => Utility::OPTS_BOOL,
-    Utility::OPTS_TEXT => 'Send test message to user',
+    Utility::OPTS_TEXT => 'Report latest new accounts',
+    Utility::OPTS_KIND => Utility::OPTS_OPTN,
+  ),
+  OPT_NO_TEST => array(
+    Utility::OPTS_NAME => 'use_live_list',
+    Utility::OPTS_TYPE => Utility::OPTS_BOOL,
+    Utility::OPTS_TEXT => 'Use live MC mail list',
+    Utility::OPTS_DFLT => false,
     Utility::OPTS_KIND => Utility::OPTS_OPTN,
   ),
   OPT_VERBOSE => array(
@@ -135,6 +172,10 @@ if ($opts[OPT_HELP] or $opts[Utility::OPTS_ERR] or ($numopts == 0)) {
 // ------------------------------------------------------------
 // Main
 // ------------------------------------------------------------
+
+// Set up MC with appropriate mail list
+$mc   = new MailChimp($opts[OPT_VERBOSE], $opts[OPT_NO_TEST]);
+
 // This should already be handled by process_opts().
 if ($opts[OPT_ADD] or $opts[OPT_DELETE] or $opts[OPT_EDIT] or $opts[OPT_INFO]) {
   $email = $opts[OPT_MAIL];
@@ -164,8 +205,14 @@ if ($opts[OPT_INFO]) {
   }
 } elseif ($opts[OPT_ADD]) {
   add_user($email, $opts[OPT_WELCOME]);
-} elseif ($opts[OPT_LIST]) {
-  list_users();
+} elseif ($opts[OPT_LIST_MC]) {
+  $mc_users = list_mc_users($opts[OPT_PERIOD]);
+  print_user_summary($mc_users);
+} elseif ($opts[OPT_LIST_UB]) {
+  $ub_users = list_ub_users($opts[OPT_PERIOD]);
+  print_user_summary($ub_users);
+} elseif ($opts[OPT_REPORT]) {
+  report_latest_users();
 }
 
 function print_user_info($email) {
@@ -173,23 +220,24 @@ function print_user_info($email) {
 
   $mc_info = $mc->get_user_info($email);
   $ub_info = $ub->get_user_info($email);
-  print "MC info:\n";
-  print_r($mc_info);
-  print "----------\n";
-  print "UB info:\n";
-  print_r($ub_info);
-  print "----------\n";
+  // print "MC info:\n";
+  // print_r($mc_info);
+  // print "----------\n";
+  // print "UB info:\n";
+  // print_r($ub_info);
+  // print "----------\n";
 
   $mc_email    = $util->elem_of($mc_info, MailChimp::EMAIL);
   $mc_id       = $util->elem_of($mc_info, MailChimp::ID);
   $mc_web_id   = $util->elem_of($mc_info, MailChimp::WEB_ID);
+  $mc_status   = $util->elem_of($mc_info, MailChimp::STATUS);
   $ub_id       = $util->elem_of($ub_info, UserBase::ID);
   $ub_username = $util->elem_of($ub_info, UserBase::USERNAME);
   $ub_email    = $util->elem_of($ub_info, UserBase::EMAIL);
   $ub_cdate    = $util->elem_of($ub_info, UserBase::CDATE);
-  $fmtstr = "%-10s %-10s %-30s %-5s %-10s %-30s %-10s\n";
-  printf($fmtstr, 'MC_ID', 'MC_WEB_ID', 'MC_EMAIL', 'UB_ID', 'UB_USERNAME', 'UB_EMAIL', 'UB_CDATE');
-  printf($fmtstr, $mc_id, $mc_web_id, $mc_email, $ub_id, $ub_username, $ub_email, $ub_cdate);
+  $fmtstr =       "%-10s   %-10s        %-30s       %-13s        %-5s     %-30s        %-10s\n";
+  printf($fmtstr, 'MC_ID', 'MC_WEB_ID', 'MC_EMAIL', 'MC_STATUS', 'UB_ID', 'UB_USERNAME', 'UB_CDATE');
+  printf($fmtstr, $mc_id , $mc_web_id , $mc_email,  $mc_status , $ub_id , $ub_username , $ub_cdate);
 }
 
 function add_mc_to_db() {
@@ -209,49 +257,81 @@ function add_mc_to_db() {
   }
 }
 
-function list_users() {
+/*
+ * Return list of most recent MC users by email addr.
+ */
+
+function list_mc_users($period = DFLT_REPORT_PERIOD) {
+  global $mc, $ub, $util, $opts;
+
+  $mc_users = $mc->list_new_users($period);
+  // Build a hash by email of users
+  $allusers = array();
+  foreach ($mc_users as $num => $mc_user) {
+    $allusers[$mc_user['email']]['mc'] = $mc_user;
+  }
+
+  $mc_emails = array_keys($allusers);
+  $where_str = join("', '", $mc_emails);
+  $where_str = "username in ('${where_str}')";
+  $ub_users = $ub->list_users('', '', $where_str, UserBase::USERNAME);
+  foreach ($ub_users as $ub_email => $ub_user) {
+    $allusers[$ub_email]['ub'] = $ub_user;
+  }
+
+  return $allusers;
+}
+
+/*
+ * Return list of most recent UB users by email addr.
+ */
+
+function list_ub_users($period = DFLT_REPORT_PERIOD) {
   global $mc, $ub, $util;
 
-  $mc_users = $mc->list_users(true, 0);
-  $ub_users = $ub->list_users();
+  $n_days = 2;
+  $where_str = "from_unixtime(cdate) > date_add(curdate(), interval - ${period} day)";
+  $ub_users = $ub->list_users('', '', $where_str, UserBase::USERNAME);
+  // print_r($ub_users);
+  $emails = array_keys($ub_users);
+  // print_r($emails);
+  $mc_details = $mc->get_user_details_by_email($emails);
+  // print_r($mc_details);
 
-  // Build a hash by MailChimp web id of UserBase users
   $allusers = array();
-  foreach ($ub_users as $ident => $ub_user) {
-    // print "Process ub_users[$ident] (" . $ub_user[UserBase::EMAIL] . ")";
-    if ($util->has_len($ub_user[UserBase::MC_IDENT])) {
-      // This UB record has an MC ident: add to allusers, remove from ub_users.
-      $mc_ident = $ub_user[UserBase::MC_IDENT];
-      // print ", it has mc_ident $mc_ident\n";
-      $allusers[$mc_ident]['UB'] = $ub_user;
-      unset($ub_users[$ident]);
-    } else {
-      // UB record has no MC ident: leave it in ub_users.
-      // print "\n";
-   }
+  foreach ($ub_users as $email => $ub_rec) {
+    $allusers[$email]['ub'] = $ub_rec;
   }
-  foreach ($mc_users as $mc_user) {
-    $mc_webid = $mc_user[MailChimp::WEB_ID];
-    $allusers[$mc_webid]['MC'] = $mc_user;
+  foreach ($mc_details as $num => $mc_rec) {
+    $allusers[$mc_rec['email']]['mc'] = $mc_rec;
   }
-  
-  // Now, any users in ub_users are not on MC
-  // And an allusers record with no UB field is not on UB.
-  $allusers_keys = array_keys($allusers);
-  foreach ($allusers_keys as $mc_ident) {
-    if (isset($allusers[$mc_ident]['MC']) and isset($allusers[$mc_ident]['UB'])) {
-      $email = $allusers[$mc_ident]['MC'][MailChimp::EMAIL];
-      print "ident $mc_ident is good: $email\n";
-    } elseif (isset($allusers[$mc_ident]['MC'])) {
-      print "ident $mc_ident is on MC but not UB\n";
-    } elseif (isset($allusers[$mc_ident]['UB'])) {
-      print "ident $mc_ident is on UB but not MC\n";
-    }
-  }
-  foreach ($ub_users as $ident => $ub_user) {
-    // $email = $ub_user[UserBase::EMAIL];
-    $email = $ub_user[UserBase::USERNAME];
-    print "UB user $ident ($email) is not on MC\n";
+  return $allusers;
+}
+
+/*
+ * Sorting function for print_user_summary
+ */
+
+function sort_by_ub_date($a, $b) {
+  $date_a = $a['ub']['cdate'];
+  $date_b = $b['ub']['cdate'];
+  return ($date_a == $date_b) ? 0 : ($date_a > $date_b) ? 1 : -1;
+}
+
+/*
+ * Given array of users by email, print summary.
+ */
+
+function print_user_summary($allusers) {
+  // print "*** print_user_summary ***\n";
+  // print_r($allusers);
+  printf("%-40s  %-20s  %s\n", 'Email', 'UB Date', 'MC Date');
+  # Sort by date of registering on UB
+  uasort($allusers, 'sort_by_ub_date');
+  foreach ($allusers as $email => $record) {
+    $ub = $record['ub'];
+    $mc_time = isset($record['mc']) ? $record['mc']['timestamp'] : 'N/A';
+    printf("%-40s  %-20s  %s\n", $email, date('Y-m-d h:i:s', $ub['cdate']), $mc_time);
   }
 }
 
@@ -297,7 +377,6 @@ function delete_all_users() {
   $ub_users = $ub->list_users();
   foreach ($ub_users as $ident => $ub_user) {
     if ($util->has_len($ub_user[UserBase::MC_IDENT])) {
-      // $ub_email = $ub_user[UserBase::EMAIL];
       $ub_email = $ub_user[UserBase::USERNAME];
       if (array_search($ub_email, $emails_to_delete) === false) {
         array_push($emails_to_delete, $ub_email);
@@ -320,6 +399,7 @@ function add_user($email, $send_welcome) {
   error_log("add_user($email)");
   $added_ok = $mc->add_user($email, false, $send_welcome);
   if ($added_ok) {
+    /*
     error_log("add_user(): Added $email OK");
     // Now update userbase with MC user id.
     $opts = array($mc->list_id, $email);
@@ -331,8 +411,9 @@ function add_user($email, $send_welcome) {
     } else {
       error_log("ERROR query new email: $email");
     }
+    */
   } else {
-    error_log("ERROR: mc->add_user($email)");
+    error_log("ERROR: user_util.php::add_user($email)");
   }
 }
 
