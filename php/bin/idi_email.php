@@ -193,7 +193,7 @@ try {
   } else {
     print "Emails were not sent.\n";
   }
-exit;
+
 // ------------------------------------------------------------
 // Update database with email compaign, recipients, and versions.
 // ------------------------------------------------------------$
