@@ -311,6 +311,7 @@ class Radutil {
   public function get_user_details() {
     $document_root = $_SERVER['DOCUMENT_ROOT'];
     $ubvars = "${document_root}/login/ubvars.php";
+
     if ($this->util->is_cmd_line) {
       // For testing from command line, return dummy details.
       $user_details = array (
@@ -340,13 +341,6 @@ class Radutil {
         self::UB_GROUP_LIST        => isset($ub_group_list)        ? $ub_group_list        : '',
       );
 
-      /*
-      print Utility::tt_debug("Radutil::get_user_details(): $ubvars");
-      print "<pre>\n";
-      print_r($user_details);
-      print "</pre>\n";
-      */
-      
       // Details derived from UserBase
       $user_details[self::USER_LOGGED_IN] = (isset($ub_userid) and strlen($ub_userid)) ? true : false;
     }

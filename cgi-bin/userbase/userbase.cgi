@@ -65,9 +65,6 @@ sub exit_with_error;
 my $qs = '';
 
 
-
-
-
 sub create_new_session_id
   {
     my $username = shift;
@@ -9366,7 +9363,11 @@ sub check_tablename_for_sql_safeness		{ die_nice("Invalid tablename: '$_[0]'") u
 
 sub get_db_connection
   {
-    eval { require DBI; require DBD::mysql; }; die_nice qq`error while trying to load the DBI module.&nbsp; You probably need to <a href="http://encodable.com/perl_modules/" target="_blank">install the Perl module</a> for it.&nbsp; The error message was: <br /><br />\n\n $0: $@\n` if $@;
+    eval {
+      require DBI;
+      require DBD::mysql;
+    }; 
+    die_nice qq`error while trying to load the DBI module.&nbsp; You probably need to <a href="http://encodable.com/perl_modules/" target="_blank">install the Perl module</a> for it.&nbsp; The error message was: <br /><br />\n\n $0: $@\n` if $@;
     if (!$PREF{dbh}   ||   $_[0] eq 'force') {
       my $dbname = $PREF{database_name};
       $dbname .= ":$PREF{database_hostname}" if $PREF{database_hostname};

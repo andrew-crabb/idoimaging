@@ -162,10 +162,10 @@ class MailChimp {
 
   function delete_existing_groups() {
     $list_id = $this->list_id;
-    print "MailChimp::delete_existing_groups()\n";
+    print "MailChimp::delete_existing_groups() start\n";
     $interest_groupings = $this->run_api_query('listInterestGroupings', array($list_id));
     if ($this->verbose) {
-      $this->util->printr($interest_groupings, 'interest_groupings', true);
+      // $this->util->printr($interest_groupings, 'interest_groupings', true);
     }
     if (isset($interest_groupings)) {
       // Iterate through groupings to find 'programs'
@@ -179,7 +179,7 @@ class MailChimp {
 	    if ($group_name != self::EMPTY_GROUP) {
 	      $list_params = array($list_id, $group_name, $this->programs_grouping_id);
 	      $this->run_api_query('listInterestGroupDel', $list_params);
-	      print "listInterestGroupDel($group_name, " . $this->programs_grouping_id . ")\n";
+	      // print "listInterestGroupDel($group_name, " . $this->programs_grouping_id . ")\n";
 	    }
 	  }
 	}
@@ -187,6 +187,7 @@ class MailChimp {
     } else {
       print "interest_groupings is not set\n";
     }
+    print "MailChimp::delete_existing_groups() end\n";
   }
 
   // ------------------------------------------------------------
@@ -206,6 +207,17 @@ class MailChimp {
         $groupnames_for_users[$user][] = $group_name;
       }
     }
+
+    // Print summary.
+    if ($this->verbose) {
+      print "-------------------- create_group_names() summary --------------------\n";
+      print count($group_names) . " groups: " . join(', ', $group_names) . "\n";
+      foreach ($groupnames_for_users as $user => $groups) {
+	printf("%-20s: %s\n", $user, join(', ', $groups));
+      }
+      print "-------------------- create_group_names() end --------------------\n";
+    }
+
     return array($group_names, $groupnames_for_users);
   }
 
@@ -213,12 +225,12 @@ class MailChimp {
   // Fill in the ID of the 'programs' groupings, creating if necessary.
 
   function create_groupings() {
-    print "MailChimp::create_groupings()\n";
+    print "MailChimp::create_groupings() start\n";
 
     // Get id of 'programs' grouping, creating if necessary.
     $interest_groupings = $this->run_api_query('listInterestGroupings', array($this->list_id));
     if ($this->verbose) {
-      $this->util->printr($interest_groupings, 'interest_groupings', true);
+      // $this->util->printr($interest_groupings, 'interest_groupings', true);
     }
 
     // Iterate through existing groupings to find 'programs'
@@ -234,7 +246,9 @@ class MailChimp {
     if (!$this->programs_grouping_id) {
       $params = array($this->list_id, self::GROUPING_PROGRAMS, 'hidden', array(self::EMPTY_GROUP));
       $this->programs_grouping_id = $this->run_api_query('listInterestGroupingAdd', $params);
+      print "MailChimp::create_groupings(): Creating groupings '" . self::GROUPING_PROGRAMS . "'\n";
     }
+    print "MailChimp::create_groupings() end\n";
   }
 
   // ------------------------------------------------------------
@@ -242,7 +256,6 @@ class MailChimp {
 
   function create_groups($group_names, $groupnames_for_users) {
     $list_id = $this->list_id;
-    print "MailChimp::create_groups()\n";
 
     if (!$this->programs_grouping_id) {
       throw new Exception("programs_grouping_id not set");
@@ -257,9 +270,9 @@ class MailChimp {
     }
     
     // Update each user on MC server with appropriate interest groups.
+    $updates = array();
     foreach ($groupnames_for_users as $user_email => $group_names_for_user) {
       $group_names_string = join(',', $group_names_for_user);
-      print "MailChimp::create_groups(): User $user_email, group_string '$group_names_string'\n";
       $merge_vars = array(
         'GROUPINGS' => array(
           array(
@@ -268,21 +281,27 @@ class MailChimp {
           ),
         ),
       );
-      // print_r($merge_vars);
       $member_params = array(
         $list_id,
 	$user_email,
         $merge_vars,
       );
-      if ($this->verbose) {
-        $this->util->printr($member_params, 'member_params', true);
-      }
       $update_ok = $this->run_api_query('listUpdateMember', $member_params);
-      if ($update_ok) {
-        print "User $user_email ($user_email) updated OK with groups $group_names_string\n";
-      } else {
+      if (!$update_ok) {
 	throw new Exception("listUpdateMember ($user_email)");
       }
+      // For printable summary.
+      $group_names_summ = '';
+      if (count($group_names_for_user) > 2) {
+	$group_names_summ = count($group_names_for_user) . " groups";
+      } else {
+	$group_names_summ = $group_names_string;
+      }
+      array_push($updates, array($user_email, $group_names_summ));
+    }
+    if (count($updates)) {
+      $headings = array('User', 'Groups');
+      $this->util->print_array_formatted($updates, true, "create_groups() summary", $headings);
     }
   }
 
@@ -292,7 +311,7 @@ class MailChimp {
     $datetime = $this->time_now[Utility::DATES_HRRTDIR];
     $campaign_opts = array(
       'list_id'    => $this->list_id,
-      'subject'    => "IDI email $datetime",
+      'subject'    => "News from I Do Imaging",
       'from_email' => 'news@idoimaging.com',
       'from_name'  => 'I Do Imaging',
       'to_name'    => 'Test To-Name',
@@ -362,7 +381,9 @@ class MailChimp {
       $this->util->printr($params, 'params');
     }
 
-    if (count($params) === 1) {
+    if (count($params) === 0) {
+      $ret = $this->api->$progname();
+    } elseif (count($params) === 1) {
       $ret = $this->api->$progname($params[0]);
     } elseif (count($params) === 2) {
       $ret = $this->api->$progname($params[0], $params[1]);
@@ -441,6 +462,12 @@ class MailChimp {
   //                    [error] => The email address passed does not exist on this list
   //                )
 
+
+  public function count_users() {
+    $opts = array($this->list_id, 'subscribed');
+    $list_members = $this->run_api_query('listMembers', $opts, $this->verbose);
+    print_r($list_members);
+  }
 
   /*
    * List users from both UB and MC
@@ -535,20 +562,60 @@ class MailChimp {
     return $ret;
   }
 
-  // ------------------------------------------------------------
-  // Send a simple email to given user.
-
-  public function send_test_email($email) {
-    $document_root = $this->util->server_details[Utility::ENV_DOCUMENT_ROOT];
-    $template_path = $document_root . '/' . self::TEMPL_PATH;
-    $html_file = $template_path . '/' . self::TEST_HTML_EMAIL;
-    $html_str = $this->util->file_contents($html_file);
-    
-    $campaign_id = $mail->create_campaign($html_str, $text_str, $group_names);
+  public function list_campaigns() {
+    $campaigns = $this->run_api_query('campaigns', array());
+    // print_r($campaigns);
+    $num_campaigns = $campaigns['total'];
+    for ($i = 0; $i < $num_campaigns; $i++) {
+      if ($i == 0) {
+	printf("%-2s %-12s %s\n", 'n', 'ID', 'Title');
+      }
+      $data = $campaigns['data'][$i];
+      $id    = $data['id'];
+      $title = $data['title'];
+      printf("%-2d %-12s %s\n", $i, $id, $title);
+    }
   }
 
-  function list_templates() {
+  public function list_templates() {
+    // print "-------------------- list_templates() begin --------------------\n";
+    $resp = $this->run_api_query('templates', array());
+    // print_r($resp);
+    $templates = $resp['user'];
+    $summlines = array();
+    if (is_array($templates)) {
+      $line_no = 0;
+      foreach ($templates as $template) {
+	// if ($line_no == 0) {
+	// printf("%-3s %-8s %s\n", '', 'ID', 'Name');
+	// }
+	$id   = $template['id'];
+	$name = $template['name'];
+	// printf("%-3d %-8d %s\n", $line_no, $id, $name);
+	array_push($summlines, array($line_no, $id, $name));
+	$line_no++;
+      }
+    }
+    $headings = array('N', 'ID', 'Name');
+    $this->util->print_array_formatted($summlines, true, "List Templates", $headings);    
+    
+    // print "-------------------- list_templates() end --------------------\n";
+    // $templ_content = $this->run_api_query('templateInfo', array('281581'));
+    // print_r($templ_content);
+  }
 
+  public function select_template() {
+    // This will select the template.  Dummy for now.
+    // $templates = $this->run_api_query('templates');
+    // print_r($templates);
+    print "********** TEMP select_template() returning 283073 **********\n";
+
+    return '283073';
+  }
+
+  public function get_html_of_template($template_id) {
+    $templ_content = $this->run_api_query('templateInfo', array($template_id));
+    return $templ_content['source'];
   }
 
 }

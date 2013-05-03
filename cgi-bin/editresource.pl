@@ -197,7 +197,7 @@ sub doEditAdd {
     $newval = '' unless (has_len($newval));
 
     if ($field =~ /date/) {
-      $newval = convert_date($newval, $DATE_SQL);
+      $newval = convert_date($newval, $DATE_SQL_DATE);
     }
 
     if (has_len($newval)) {

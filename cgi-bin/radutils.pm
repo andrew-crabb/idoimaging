@@ -1090,9 +1090,10 @@ sub addVersionRecord {
   $sql_str = "select rev, rdate from program where ident = '$progid'";
   $sh = dbQuery($dbh, $sql_str);
   my ($old_rev, $old_rdate) = $sh->fetchrow_array();
-  $old_rdate = convert_date($old_rdate, $DATE_MDY);
-  $new_rev = "" unless (has_len($new_rev));
-  $old_rev = "" unless (has_len($old_rev));
+  $old_rdate = convert_date($old_rdate, $DATE_SQL_DATE);
+  $new_rdate = convert_date($new_rdate, $DATE_SQL_DATE);
+  $new_rev   = "" unless (has_len($new_rev));
+  $old_rev   = "" unless (has_len($old_rev));
   $new_rdate = "" unless (has_len($new_rdate));
   $old_rdate = "" unless (has_len($old_rdate));
 
@@ -1101,16 +1102,25 @@ sub addVersionRecord {
   my $diffrevlen = (length($new_rev) and not length($old_rev)) ? 1 : 0;
   my $diffrdate = ($new_rdate ne $old_rdate) ? 1 : 0;
   my $diffrev = ($new_rev ne $old_rev) ? 1 : 0;
-  if ($diffrevlen) { 
+
+  if ($diffrevlen) {
+    print STDERR "radutils::addVersionRecord(revlen): length($new_rev) and not length($old_rev)\n";
+  }
+  if ($diffrdate) {
+    print STDERR "radutils::addVersionRecord(rdate): '$new_rdate' ne '$old_rdate'\n";
+  }
+  if ($diffrev) {
+    print STDERR "radutils::addVersionRecord(rev): '$new_rev' ne '$old_rev'\n";
   }
 
   if ($diffrevlen or $diffrdate or $diffrev) {
     my $today = today();
-    $new_rdate = convert_date($new_rdate, $DATE_SQL);
+    $new_rdate = convert_date($new_rdate, $DATE_SQL_DATE);
     my $update_str = "insert into version set ident = '$nextident', ";
     $update_str .= "progid = '$progid', version = '$new_rev', ";
     $update_str .= "reldate = '$new_rdate', adddate = '$today'";
-    tt("doeditprogram::addVersionRecord($diffrevlen, $diffrdate, $diffrev): $update_str\n");
+    print STDERR "radutils::addVersionRecord($diffrevlen, $diffrdate, $diffrev): $update_str\n";
+    print "$update_str<br>\n";
     dbQuery($dbh, $update_str);
   }
 }
@@ -1181,7 +1191,7 @@ sub listHashMembers {
       push(@rslt, $theval) ;
     }
   }
-# tt("radutils::listHashMembers($fld, $testval) returning " . join(",", @rslt) . "\n");
+# print STDERR "radutils::listHashMembers($fld, $testval) returning " . join(",", @rslt) . "\n";
   return @rslt;
 }
 
@@ -2334,7 +2344,7 @@ sub make_monitor_details {
     'str'   => $tip->[$TIP_TEXT],
   });
 
-#  tt("id $progid, is_mon $is_monitored, is_log $is_logged_in, incl $included, lookup = $lookup: icon '$icon', url '$url', tip0 '$tip->[$TIP_ALT]'\n");
+#  print STDERR "id $progid, is_mon $is_monitored, is_log $is_logged_in, incl $included, lookup = $lookup: icon '$icon', url '$url', tip0 '$tip->[$TIP_ALT]'\n";
 
   my %ret = (
     $MON_URL   => $addurlstr,

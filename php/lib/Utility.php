@@ -925,6 +925,102 @@ class Utility {
   // ------------------------------------------------------------
 
   /**
+   * Print summary of options.
+   */
+
+  public function print_opts($opts, $allopts) {
+    $all_lines = array();
+    foreach ($opts as $key => $val) {
+      if (strlen($val)) {
+	$desc = (isset($allopts[$key][self::OPTS_TEXT])) ? $allopts[$key][self::OPTS_TEXT] : '';
+	array_push($all_lines, array($key, $val, $desc));
+      }
+    }
+    if (count($all_lines)) {
+      print "Non zero-length options:\n";
+    }
+    $this->print_array_formatted($all_lines, true);
+  }
+
+  public static function print_array_formatted($arr, $bars = false, $title = null, $headings = null) {
+    $lengths = array();
+    $i = 0;
+    $test_arr = $arr;
+    if (isset($headings)) {
+      array_push($test_arr, $headings);
+    }
+    foreach ($test_arr as $entry) {
+      $i = 0;
+      foreach ($entry as $elem) {
+	$len = strlen($elem);
+	if (isset($lengths[$i])) {
+	  $lengths[$i] = max($lengths[$i], $len);
+	} else {
+	  $lengths[$i] = $len;
+	}
+	$i++;
+      }
+    }
+
+    // Right-pad rightmost column if title is wider than columns.
+    $totlen = array_sum($lengths);
+    if (isset($title)) {
+      $titlen = strlen($title);
+      if ($titlen > $totlen) {
+	$diff = ($titlen - $totlen);
+	$lengths[count($lengths) - 1] += $diff;
+      }
+    }
+
+    $fmtstr = ($bars and $i) ? '| ' : '';
+    $space = '';
+    foreach ($lengths as $length) {
+      $fmtstr .= "${space}%-${length}s";
+      $space = ($bars) ? ' | ' : ' ';
+    }
+    $fmtstr .= ($bars and strlen($fmtstr)) ? " | \n" : "\n";
+
+    $lines = '';
+    if ($bars and strlen($fmtstr)) {
+      $lines = '+';
+      foreach ($lengths as $length) {
+	for ($j = 0; $j < ($length + 2); $j++) {
+	  $lines .= '-';
+	}
+	$lines .= '+';
+      }
+      $lines .= "\n";
+    }
+
+    if (isset($title)) {
+      $totlen = strlen($lines) ? strlen($lines) : array_sum($lengths) + count($lengths);
+	$totlen;
+      $titlen = strlen($title);
+      // print "totlen $totlen titlen $titlen\n";
+      $spc_before = intval(($totlen - $titlen) / 2);
+      $spc_after = $totlen - $titlen - $spc_before - 1;
+      $titfmt = "%-${spc_before}s%s%${spc_after}s";
+      // print "titfmt '$titfmt'\n";
+      print $lines;
+      printf("$titfmt\n", '|', $title, '|');
+    }
+
+    if (isset($headings) and count($headings)) {
+      print $lines;
+      vprintf($fmtstr, $headings);
+    }
+
+    print $lines;
+    foreach ($arr as $entry) {
+      vprintf($fmtstr, $entry);
+    }
+    print $lines;
+
+  }
+
+  // ------------------------------------------------------------
+
+  /**
    * Get yes or no response to given prompt, return boolean.
    */
 
@@ -1186,7 +1282,7 @@ class Utility {
 
   public function query_as_hash_pdo( $dbh, $str, $keyfield ) {
     $ret = array();
-    print "query_as_hash_pdo():\n$str\n";
+    // print "query_as_hash_pdo():\n$str\n";
     try {
       $result = $dbh->query($str);
     } catch (PDOException $ex) {
