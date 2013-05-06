@@ -1538,10 +1538,9 @@ sub process_new_account()
 			# ahc
 			'', '', \@my_headers,
                       );
-<<<<<<< HEAD
 
-=======
->>>>>>> c3d80f8f9f67b6f2842eb0e6f7c11cb061a7db3f
+      # ahc this is where I had an empty conflict line.
+
       if ($payment_url) {
         enc_redirect($payment_url);
       } else {
