@@ -23,7 +23,7 @@ our $UB_EMAIL             = 'ub_email';
 
 our $USERBASE_URL = "/cgi-bin/userbase/userbase.cgi";
 our $USERBASE_PATT = 'admin=(0|1):::::member=(0|1):::::username=(.*?):::::userid=(\d*?):::::group_memberships=(.*?):::::realname=(.*?):::::email=(.*?):::::(.*)';
-
+# admin=1:::::member=1:::::username=ahc@me.com:::::userid=2056:::::group_memberships=admin,member,public:::::realname=:::::email=ahc@me.com:::::
 sub get_user_details {
   my ($verbose) = @_;
 
@@ -36,7 +36,7 @@ sub get_user_details {
     $login_check = "http://" . $ENV{'HTTP_HOST'} . "${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
     $content = get($login_check);
     if ($content =~ /^$USERBASE_PATT/) {
-
+      print STDERR "Userbase.pm::get_user_details(): Pattern match<br>\n";
       $user{$UB_IS_ADMIN} = $1;
       $user{$UB_IS_MEMBER} = $2;
       $user{$UB_USERNAME} = $3;
@@ -56,7 +56,7 @@ sub get_user_details {
     print "ub_group_memberships = $user{$UB_GROUP_MEMBERSHIPS}<br>\n";
     print "ub_realname = $user{$UB_REALNAME}<br>\n";
     print "ub_email = $user{$UB_EMAIL}<br>\n";
-    print STDERR "url = $login_check<br>\n";
+    print STDERR "Userbase.pm::get_user_details(): url = $login_check<br>\n";
 #    print "<pre>$content</pre><br>\n"
   }
   return (scalar(keys(%user))) ? \%user : undef;
