@@ -29,10 +29,12 @@ sub get_user_details {
 
   my %cookies = CGI::Cookie->fetch;
   my %user = ();
+  my $login_check = '';
+  my $content = '';
   if (defined(my $site_session = $cookies{'site_session'})) {
     my $ss_val = $site_session->value;
-    my $login_check = "http://" . $ENV{'HTTP_HOST'} . "${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
-    my $content = get($login_check);
+    $login_check = "http://" . $ENV{'HTTP_HOST'} . "${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
+    $content = get($login_check);
     if ($content =~ /^$USERBASE_PATT/) {
 
       $user{$UB_IS_ADMIN} = $1;
