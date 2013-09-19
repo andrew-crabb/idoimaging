@@ -54,6 +54,7 @@ sub get_user_details {
     print "ub_group_memberships = $user{$UB_GROUP_MEMBERSHIPS}<br>\n";
     print "ub_realname = $user{$UB_REALNAME}<br>\n";
     print "ub_email = $user{$UB_EMAIL}<br>\n";
+    print "<pre>$content</pre><br>\n"
   }
   return (scalar(keys(%user))) ? \%user : undef;
 }
