@@ -57,6 +57,7 @@ sub get_user_details {
     print "ub_realname = $user{$UB_REALNAME}<br>\n";
     print "ub_email = $user{$UB_EMAIL}<br>\n";
     print STDERR "Userbase.pm::get_user_details(): url = $login_check<br>\n";
+    print STDERR "Userbase.pm::get_user_details(): content = $content<br>\n";
 #    print "<pre>$content</pre><br>\n"
   }
   return (scalar(keys(%user))) ? \%user : undef;
