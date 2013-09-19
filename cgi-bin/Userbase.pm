@@ -33,7 +33,8 @@ sub get_user_details {
   my $content = '';
   if (defined(my $site_session = $cookies{'site_session'})) {
     my $ss_val = $site_session->value;
-    $login_check = "http://" . $ENV{'HTTP_HOST'} . "${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
+#    $login_check = "http://" . $ENV{'HTTP_HOST'} . "${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
+    $login_check = "http://localhost/${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
     $content = get($login_check);
     if ($content =~ /^$USERBASE_PATT/) {
       print STDERR "Userbase.pm::get_user_details(): Pattern match<br>\n";
