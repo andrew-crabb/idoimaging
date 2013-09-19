@@ -41,6 +41,7 @@ $addprog = (has_len($addprog)) ? $addprog : 0;
 my $det = get_user_details();
 unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
   print "<tt>Edit a program?  I don't think so.</tt><br>\n";
+  get_user_details(1);
   exit;
 }
 
