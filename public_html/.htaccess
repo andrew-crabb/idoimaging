@@ -48,6 +48,8 @@ RewriteRule add_monitor/?$           /cgi-bin/addmonitor\.pl [L]
 RewriteRule redirect/?$               /cgi-bin/redirect\.pl [L]
 RewriteRule redirect_cgibin/?$        /cgi-bin/redirect_cgibin\.pl [L]
 
+RewriteRule userbase/?$        /cgi-bin/userbase/userbase\.cgi [L]
+
 # RewriteRule add_monitor[/]*$        /cgi-bin/addmonitor\.pl        [L]  ** come back to this **
 # RewriteRule formats/([0-9]{1,3})$   /cgi-bin/formats.pl?ident=$1   [L]
 # RewriteRule formats[/]*$            /cgi-bin/formats\.pl           [L]
