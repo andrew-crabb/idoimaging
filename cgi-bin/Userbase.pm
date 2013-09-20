@@ -21,7 +21,8 @@ our $UB_GROUP_MEMBERSHIPS = 'ub_group_memberships';
 our $UB_REALNAME          = 'ub_realname';
 our $UB_EMAIL             = 'ub_email';
 
-our $USERBASE_URL = "/cgi-bin/userbase/userbase.cgi";
+# our $USERBASE_URL = "/cgi-bin/userbase/userbase.cgi";
+our $USERBASE_URL = "/userbase";
 our $USERBASE_PATT = 'admin=(0|1):::::member=(0|1):::::username=(.*?):::::userid=(\d*?):::::group_memberships=(.*?):::::realname=(.*?):::::email=(.*?):::::(.*)';
 # admin=1:::::member=1:::::username=ahc@me.com:::::userid=2056:::::group_memberships=admin,member,public:::::realname=:::::email=ahc@me.com:::::
 sub get_user_details {
