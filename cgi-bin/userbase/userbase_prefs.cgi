@@ -627,8 +627,10 @@ $PREF{num_seconds_to_sleep_on_failed_login}		= 1;
 $PREF{lock_account_after_N_failed_logins}		= 10; # null to disable.
 $PREF{failed_logins_within_N_secs_count_towards_lock}	= 600; # null to disable (then all failures count).
 $PREF{lock_expires_automatically}			= 'yes';
-$PREF{enable_ip_address_restriction}			= 'yes';
-$PREF{force_ip_address_restriction}			= 'yes';
+# ahc my edit 9/20/13 yes to no
+$PREF{enable_ip_address_restriction}			= 'no';
+$PREF{force_ip_address_restriction}			= 'no';
+#
 $PREF{disable_ip_restriction_for_AOL_users}		= 'yes';
 $PREF{enable_password_reset}				= 'yes';
 $PREF{pwreset_should_lie_about_nonexistent_accounts}	= 'yes'; # For security purposes, don't print "username not found"; just act like it was found.
