@@ -22,7 +22,7 @@ print $cgi->header();
 # If adding program, ensure logged-in user is admin.
 my $det = get_user_details();
 unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
-  print "<tt>Edit a program?  I don't think so.</tt><br>\n";
+  print "<tt>UB_IS_ADMIN is false.</tt><br>\n";
   get_user_details(1);
   exit;
 }
