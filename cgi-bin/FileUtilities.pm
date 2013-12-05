@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl -w
+#! /usr/local/bin/perl -w
 
 package FileUtilities;
 require Exporter;

@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl -w
+#! /usr/local/bin/perl -w
 
 use WWW::Google::PageRank;
 

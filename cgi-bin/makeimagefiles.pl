@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl -w
+#! /usr/local/bin/perl -w
 
 # makeimagefiles.pl
 # Parse image capture file and rename files appropriately.

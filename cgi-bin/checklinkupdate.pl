@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl -w
+#! /usr/local/bin/perl -w
 
 # Current approach 1/29/11
 # Enter the topmost date string under 'Modified' on the files/ url.

@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl
+#! /usr/local/bin/perl
 #
 # userbase.cgi
 #

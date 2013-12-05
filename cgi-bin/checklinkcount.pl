@@ -1,4 +1,4 @@
-#! /opt/local/bin/perl -w
+#! /usr/local/bin/perl -w
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
