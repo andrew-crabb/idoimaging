@@ -156,7 +156,7 @@ $PREF{custom_form_fields_maxlength}			= 150;
 # addresses separated by commas.  If you are using a field named
 # "recipient" then that will override this.
 #
-$PREF{contact_page_recipient}				= 'andy@idoimaging.com';
+$PREF{contact_page_recipient}				= 'andrew@idoimaging.com';
 
 
 

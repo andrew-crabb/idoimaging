@@ -14,7 +14,7 @@ $PREF{hide_poweredby}                              = 'yes';
 # Sending test emails (  ***  remember to turn off enable_email_test  ***  )
 $PREF{enable_email_test}			   = 'yes';
 $PREF{email_test_recipient}			= 'andycrabb@gmail.com';
-$PREF{email_test_sender}			= 'andy@idoimaging.com';
+$PREF{email_test_sender}			= 'andrew@idoimaging.com';
 $PREF{mailtest_email_format}			= 'html';
 
 # Email tags for Mandrill
@@ -193,8 +193,8 @@ $PREF{groups_allowed_to_access_protected_directory_01}	= 'admin'; # comma-separa
 # trouble with the latter format, preventing the script from sending its
 # emails.
 #
-$PREF{webmaster_email_address}				= 'andy@idoimaging.com'; # recip for admin approval
-$PREF{app_email_address}				= 'I Do Imaging <andy@idoimaging.com>'; # sender.
+$PREF{webmaster_email_address}				= 'andrew@idoimaging.com'; # recip for admin approval
+$PREF{app_email_address}				= 'I Do Imaging <andrew@idoimaging.com>'; # sender.
 # $PREF{smtp_server}					= 'smtp.mandrillapp.com:587'; #  usually 25 or 587.
 $PREF{smtp_server}					= 'smtp.mandrillapp.com:587'; #  usually 25 or 587.
 $PREF{smtp_port}					= '587'; # port is usually 25 or 587.

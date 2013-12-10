@@ -13,6 +13,7 @@ public_html/static/mostRanked.html
 public_html/static/mostWatched.html
 public_html/static/newreleases.html
 public_html/static/quicklinks.html
+public_html/static/reviews/
 /public_html/wiki_120/
 /public_html/bugzilla-4.2.4/
 /test/
@@ -27,6 +28,7 @@ project/idoimaging.sublime-project
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
 !/public_html/blog/wp-content/themes/idoimaging/
+!/public_html/img/icon/
 
 # Don't track these files
 *~
