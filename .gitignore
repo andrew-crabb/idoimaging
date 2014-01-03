@@ -36,3 +36,4 @@ project/idoimaging.sublime-project
 *.bak
 \#*
 .#*
+.DS_Store

@@ -153,7 +153,7 @@ class Content {
   
   // JavaScript files to include.
   public $JS_FILES = array(
-    "http://fast.fonts.com/jsapi/8cd49632-3a6b-429c-9409-f21c6e9f686d.js",
+//    "http://fast.fonts.com/jsapi/8cd49632-3a6b-429c-9409-f21c6e9f686d.js",
     "/cgi-bin/userbase/userbase.cgi?js",
     "/js/dw_event.js",
     "/js/dw_viewport.js",

@@ -58,7 +58,7 @@ h1   {
        font-size	    : 12pt 
      }
 h2   {
-       font-family:'Helvetica W01 Light', Arial, helvetica, sans-serif;
+       font-family: Arial, helvetica, sans-serif;
  /*       color		    : #238; */
        color                : #555;
        font-size	    : 14pt;
@@ -68,7 +68,7 @@ h2.heading {
     }
 
 h3   { 
- font-family:'Helvetica W01 Light', Arial, helvetica, sans-serif;
+ font-family: Arial, helvetica, sans-serif;
  /*       color		    : #238; */
        color                : #555;
        font-size	    : 12pt;
@@ -97,14 +97,14 @@ A.green {
 } 
 
 A.orange {
-    font-family:'Helvetica W01 Light', Arial, helvetica, sans-serif;
+    font-family: Arial, helvetica, sans-serif;
     text-decoration : none;
     color	    : #23A;
     background-color   : #E2F6EA; 
 }
 
 A.orange_u {
-    font-family:'Helvetica W01 Light', Arial, helvetica, sans-serif;
+    font-family: Arial, helvetica, sans-serif;
     text-decoration : underline;
     color	    : #23A;
     background-color   : #E2F6EA; 
