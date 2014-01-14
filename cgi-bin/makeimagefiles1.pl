@@ -88,8 +88,8 @@ my ($force, $verbose, $dummy) = @$opts{($OPT_FORCE, $OPT_VERBOSE, $OPT_DUMMY)};
 # ------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------
-my $PROGCAPDIR   = "/Users/ahc/public_html/idoimaging/img/cap/prog";    # Path for type 'prog'
-my $TITLEDIR     = "/Users/ahc/public_html/idoimaging/img/prog_title";  # Path for type 'title'
+my $PROGCAPDIR   = "/Users/ahc/idoimaging/public_html/img/cap/prog";    # Path for type 'prog'
+my $TITLEDIR     = "/Users/ahc/idoimaging/public_html/img/prog_title";  # Path for type 'title'
 
 # Image file prefix defines type of file.
 my $RSRC_PROG  = 'prog';
@@ -188,7 +188,7 @@ foreach my $infile (@g_infiles) {
     # Matches 3 fields.
     # name_ordinal.suff
     print "$infile matches pattern 2\n";
-    if (has_len($opts->{$OPT_IDENT}) and has_len($opts->{$OPT_IDENT})) {
+    if (has_len($opts->{$OPT_IDENT})) {
       @imgdet{qw(rsrcname suffix)} = ($1, $3);
       @imgdet{qw(rsrcfld rsrcid)} = @$opts{($OPT_RSRC, $OPT_IDENT)};
       my @allfiles = (@g_infiles, @g_newfiles);
