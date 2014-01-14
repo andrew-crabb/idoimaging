@@ -20,6 +20,7 @@ use lib $Bin;
 use Utility;
 use radutils;
 use FileUtilities;
+use Opts qw($OPTS_NAME $OPTS_TYPE $OPTS_TEXT $OPTS_DFLT $OPTS_STRING $OPTS_BOOL);
 
 use Image::Magick;
 use Getopt::Std;
@@ -71,13 +72,13 @@ my %allopts = (
     $OPTS_TYPE => $OPTS_BOOL,
     $OPTS_TEXT => 'Do not check DB.',
   },
-  $OPT_NOTE => {
+  $Opts::OPT_NOTE => {
     $OPTS_TEXT => $usage_note,
   },
 );
 
-my $opts = process_opts(\%allopts);
-if ($opts->{$OPT_HELP}) {
+my $opts = Opts::process_opts(\%allopts);
+if ($opts->{$Opts::OPT_HELP}) {
   usage(\%allopts);
   exit;
 }
@@ -108,7 +109,7 @@ my %image_details = (
     );
 our $g_image_details = undef;
 
-my $ICONDIR      = "/Users/ahc/public_html/idoimaging/img/icon";
+my $ICONDIR      = "/Users/ahc/idoimaging/public_html/img/icon";
 my $MAGICON      = "mag_big.png";
 my $SMALLDIR     = "sm";
 my $ORIGDIR      = "orig";
@@ -141,8 +142,8 @@ $g_image_details = $image_details{$rsrc_type};
 
 # Magnifier icon to place on small images.
 our $magimage = Image::Magick->new;
-if ($magimage->Read(filename => "${ICONDIR}/${MAGICON}")) {
-  print "ERROR: Could not read ${ICONDIR}/${MAGICON}\n";
+if (my $err = $magimage->Read(filename => "${ICONDIR}/${MAGICON}")) {
+  print "ERROR: Could not read ${ICONDIR}/${MAGICON}: $err\n";
   exit;
 }
 
