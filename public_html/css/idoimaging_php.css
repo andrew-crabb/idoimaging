@@ -24,11 +24,16 @@ body {
 #page_header_title {
     display  : block; 
     padding  : 2px 2px;
+    /*background-color: red;*/
 /*    float : top; */
 /*    position: absolute; */
 /*    left : 10; */
 /*    top : 10; */
 /*    border   : 1px solid black; */
+}
+
+#page_header_title A {
+    color: white;
 }
 
 #page_header_login {
