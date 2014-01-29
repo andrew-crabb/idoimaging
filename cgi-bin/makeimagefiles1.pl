@@ -79,7 +79,7 @@ my %allopts = (
 
 my $opts = Opts::process_opts(\%allopts);
 if ($opts->{$Opts::OPT_HELP}) {
-  usage(\%allopts);
+  Opts::usage(\%allopts);
   exit;
 }
 
