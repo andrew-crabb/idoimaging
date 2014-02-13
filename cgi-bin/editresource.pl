@@ -21,7 +21,7 @@ my $title = "I Do Imaging - Edit Resource";
 # If adding program, ensure logged-in user is admin.
 my $det = get_user_details();
 unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
-  print "<tt>Edit a program?  I don't think so.</tt><br>\n";
+  print "<tt>Edit a resource?  I don't think so.</tt><br>\n";
   exit;
 }
 
@@ -30,6 +30,7 @@ dumpParams($cgi);
 my ($ident, $doAdd, $doDelete) = getParams($cgi, (qw(ident add delete)));
 
 if (has_len($ident)) {
+  print ("<tt>has_len(ident)</tt><br>\n");
   if (has_len($doAdd)) {
     # Given ident and add: from CGI params, add new or edit existing record.
     doEditAdd($ident);
@@ -116,14 +117,18 @@ sub make_type_select {
   my @rkeys = sort {$res{$a} cmp $res{$b}} keys %res;
   my $type_select;
   if (has_len($val)) {
-    $type_select = $cgi->popup_menu(-name => 're_type',
-				    -values => \@rkeys,
-				    -default => $val,
-				    -labels => \%res) . "\n";
+    $type_select = $cgi->popup_menu(
+      -name    => 're_type',
+      -values  => \@rkeys,
+      -default => $val,
+      -labels  => \%res,
+    ) . "\n";
   } else {
-    $type_select = $cgi->popup_menu(-name => 're_type',
-				    -values => \@rkeys,
-				    -labels => \%res) . "\n";
+    $type_select = $cgi->popup_menu(
+      -name   => 're_type',
+      -values => \@rkeys,
+      -labels => \%res,
+) . "\n";
   }
   return $type_select;
 }
@@ -168,14 +173,18 @@ sub make_prog_select {
   my @pkeys = sort {$progs{$a} cmp $progs{$b}} keys %progs;
   my $prog_select;
   if (has_len($ident)) {
-    $prog_select = $cgi->popup_menu(-name => 're_program',
-				    -values => \@pkeys,
-				    -default => $ident,
-				    -labels => \%progs) . "\n";
+    $prog_select = $cgi->popup_menu(
+      -name    => 're_program',
+      -values  => \@pkeys,
+      -default => $ident,
+      -labels  => \%progs,
+    ) . "\n";
   } else {
-    $prog_select = $cgi->popup_menu(-name => 're_program',
-				    -values => \@pkeys,
-				    -labels => \%progs) . "\n";
+    $prog_select = $cgi->popup_menu(
+      -name  => 're_program',
+      -values => \@pkeys,
+      -labels => \%progs,
+    ) . "\n";
   }
   return $prog_select;
 }
@@ -185,10 +194,10 @@ sub doEditAdd {
 
   my $str = "select * from resource where ident = $ident";
   my $sh = dbQuery($dbh, $str);
-  tt($str);
+  print "<tt>$str</tt><br>\n";
   my $ref = $sh->fetchrow_hashref;
   my $doEdit = (ref($ref)) ? 1 : 0;
-#   tt("doEdit = $doEdit, ref = $ref\n");
+  print "<tt>doEdit = $doEdit, ref = $ref</tt><br>\n";
   printHashAsTable($ref) if (ref($ref));
   my ($updatestr, $comma) = ("", "");
   my @fields = qw(ident format program type url date reviewer summ descr urlstat);
@@ -198,6 +207,9 @@ sub doEditAdd {
 
     if ($field =~ /date/) {
       $newval = convert_date($newval, $DATE_SQL_DATE);
+    }
+    if ($field =~ /url/) {
+      $newval =~ s{^http://}{};
     }
 
     if (has_len($newval)) {
@@ -214,7 +226,7 @@ sub doEditAdd {
     } else {
       $updatestr = "insert into resource set $updatestr";
     }
-    tt($updatestr);
+    print "<tt>$updatestr</tt>\n";
     $dbh->do($updatestr);
   }
 }

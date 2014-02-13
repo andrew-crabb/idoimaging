@@ -1238,8 +1238,9 @@ sub dumpParams {
   }
 #  if (length($table)) {
     print "<table cellspacing='0' cellpadding='2' border='1'>\n";
-    print "<tr><th>Nparams</th><th>$nhasval</th></tr>\n";
+    print "<tr><th>Num params</th><th>$nhasval</th></tr>\n";
     print "<tr><th>Key</th><th>Value</th></tr>\n";
+    print "<tr><td>Script</td><td>" . $cgi->script_name() . "</td></tr>\n";
     print "$table\n";
     print "</table>\n";
 #  }

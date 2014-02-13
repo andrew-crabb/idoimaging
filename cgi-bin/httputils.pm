@@ -17,6 +17,9 @@ sub checkLinkStatus {
   $url = "http://$url" unless ($url =~ /^http|^ftp/);
 
   my $mech = WWW::Mechanize->new('autocheck' => 0);
+  # ahc 2/3/14
+  $mech->add_header('Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
+
   my $response = $mech->get($url);
 
   my $status = 0;
@@ -25,7 +28,6 @@ sub checkLinkStatus {
     if (defined($homestr) and length($homestr)) {
       # homestr field is defined, test for it in page contents.
       my $content = $mech->content();
-#       my $content = $response->content;
       if ($content =~ /$homestr/) {
 	$status = 1;
 # 	print("status = 1: '$homestr' contained in $url\n");
@@ -33,11 +35,11 @@ sub checkLinkStatus {
  	print("\nstatus = 0: '$homestr' not contained in $url\n");
       }
     } else {
-#       print("status = 1: no homestr defined for $url\n");      
+#       print("status = 1: no homestr defined for $url\n");
       $status = 1;
     }
   } else {
-    print("\nstatus = 0: No response to $name ($ident, $url)\n");
+    print("\nError: No response to $name ($ident, $url): status_line = " . $response->status_line . "\n");
   }
   return $status;
 }

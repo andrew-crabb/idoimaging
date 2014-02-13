@@ -1,0 +1,11 @@
+--2014-02-03 12:40:38--  http://www3.imperial.ac.uk/bioinfsupport/resources/software/mridb
+Resolving www3.imperial.ac.uk (www3.imperial.ac.uk)... 155.198.58.132, 2001:630:12:600:2::101
+Connecting to www3.imperial.ac.uk (www3.imperial.ac.uk)|155.198.58.132|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 16071 (16K) [text/html]
+Saving to: ‘mridb’
+
+     0K .......... .....                                      100% 54.9K=0.3s
+
+2014-02-03 12:40:40 (54.9 KB/s) - ‘mridb’ saved [16071/16071]
+

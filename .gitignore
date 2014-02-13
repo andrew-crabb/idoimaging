@@ -9,16 +9,18 @@
 /public_html/img/
 /public_html/login/images/
 /public_html/programs_src/
-public_html/static/mostRanked.html
-public_html/static/mostWatched.html
-public_html/static/newreleases.html
-public_html/static/quicklinks.html
-public_html/static/reviews/
+/public_html/static/mostRanked.html
+/public_html/static/mostWatched.html
+/public_html/static/newreleases.html
+/public_html/static/quicklinks.html
+/public_html/static/reviews/
 /public_html/wiki_120/
 /public_html/bugzilla-4.2.4/
 /test/
 /unused/
 /static/
+/public_html/doc/
+# /public_html/tiki-12.0/
 
 # Don't track files in these directories
 /public_html/login/appdata/*
@@ -29,6 +31,7 @@ project/idoimaging.sublime-project
 !/public_html/login/appdata/.gitignore
 !/public_html/blog/wp-content/themes/idoimaging/
 !/public_html/img/icon/
+# !/public_html/tiki-12.0/styles/
 
 # Don't track these files
 *~
