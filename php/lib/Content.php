@@ -391,11 +391,7 @@ EOD;
       $ad_cont = "&nbsp;";
     } else {
       // Temp SIIM advert gets shown 1 page out of 8.
-      if (rand(0,8) == 0) {
-        $ad_file = getenv('DOCUMENT_ROOT') . '/advertise_siim.html';
-      } else {
-        $ad_file = getenv('DOCUMENT_ROOT') . '/' . self::ADVERTISING_FILE;
-      }
+              $ad_file = getenv('DOCUMENT_ROOT') . '/' . self::ADVERTISING_FILE;
       $ad_cont = $this->util->file_contents($ad_file);
     }
     print "<div ident='advertising_top'>\n";

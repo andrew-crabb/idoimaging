@@ -108,7 +108,6 @@ while (my ($ident, $name, $revurl, $revstr) = $sh->fetchrow_array()) {
   next unless (length($revurl));
   # This also allows URLs to be stored as https://
   $revurl = "http://${revurl}" unless ($revurl =~ /^http/);
-#   $revurl .= "/files" if (($revurl =~ /sourceforge/) and ($revurl !~ /\/files/));
   my $response = $mech->get($revurl);
   unless ($response->is_success()) {
     my $msg = $response->{'_msg'};

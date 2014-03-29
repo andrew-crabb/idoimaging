@@ -1,12 +1,16 @@
 #! /usr/local/bin/perl -w
+
+use strict;
+no strict 'refs';
+
+use CGI;
 use DBI;
 use FindBin qw($Bin);
 use lib $Bin;
 use Utility;
 use radutils;
+
 use WWW::Google::PageRank;
-# use LWP::Simple;
-# use Net::Google;
 
 $|++;
 # Search object.
@@ -16,6 +20,7 @@ $|++;
 my @arr;
 my $dbh = hostConnect('');
 my ($query, $sh, $ref);
+
 
 if (scalar(@ARGV)) {
   # URLs from command line.
