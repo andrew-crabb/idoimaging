@@ -8,7 +8,7 @@ use CGI;
 use CGI::Carp;
 use DBI;
 use Getopt::Std;
-use Opts qw($OPTS_NAME $OPTS_TYPE $OPTS_TEXT $OPTS_DFLT $OPTS_STRING $OPTS_BOOL);
+use Opts;
 
 use FindBin qw($Bin);
 use lib $Bin;
