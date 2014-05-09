@@ -8,13 +8,13 @@ use CGI;
 use CGI::Carp;
 use DBI;
 use Getopt::Std;
-use Opts;
 
 use FindBin qw($Bin);
 use lib $Bin;
 use Utility;
 use radutils;
 use httputils;
+use Opts qw($OPTS_NAME $OPTS_TYPE $OPTS_TEXT $OPTS_DFLT $OPTS_STRING $OPTS_BOOL);
 
 $| = 1;
 
