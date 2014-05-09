@@ -15,6 +15,7 @@ our        @EXPORT = qw($OPTS_CONF  $OPTS_CORQ  $OPTS_DFLT  $OPTS_MODE  $OPTS_NA
 @EXPORT = (@EXPORT,  qw($OPT_VERBOSE $OPT_DUMMY $OPT_HELP $OPT_FORCE $OPT_NOTE));
 
 use Getopt::Long;
+use File::Basename;
 
 use Utility;
 

@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+
+
+
+<title>MRIdb</title>
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+
+<meta name="keywords" content=", imperial, college, london, university, Bioinfsupport, MRIdb" />
+<meta name="description" content="Software Name
+" />
+<meta name="title" content="MRIdb" />
+<meta name="author" content="LJB02" />
+
+
+
+<div id="hidelabel">The iframe on this page is empty and contains no content<a href="/portal/page/portallive/BE954E48C3878B59E040C69B473939BD#maincontent" tabindex="1">Skip to content</a></div>
+
+
+
+<input type="hidden" name="color_code_val" id="color_code_val" value="colorslavea" />
+<link href="/2007templates/css/colorslavea.css" rel="stylesheet" type="text/css" />
+
+
+ <base href="http://www3.imperial.ac.uk/portal/pls/portallive/" />
+
+
+<link rel="stylesheet" type="text/css" href="http://www3.imperial.ac.uk/portal/pls/portallive/PORTALLIVE.wwv_setting.render_custom_css?p_bg_color=FFFFFF&amp;p_is_bidi=0&amp;p_version=10.1.4.2.0.197" />
+
+
+		  
+		<link rel="stylesheet" type="text/css" href="/2007templates/css/site.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="/2007templates/css/content.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="/2007templates/css/old.css" media="all" /> 
+		<link rel="stylesheet" type="text/css" href="/2007templates/css/print.css" media="print" />	
+		<script src="http://www.google.com/jsapi"></script>	 
+		<link rel="stylesheet" type="text/css" href="/2007templates/css/pwp_prod.css" media="all" />		
+		<script type="text/javascript" src="/2007templates/js/jquery.js"></script>
+		<script type="text/javascript" src="/2007templates/js/global.js"></script>
+        <script language="vbscript" src="/2007templates/js/flashvideo.vbs"></script>
+        <script type="text/javascript" src="/2007templates/js/cufon-yui.js"></script>
+		<script type="text/javascript" src="/2007templates/js/MetaBook-Roman_400_open.font.js"></script>
+        <!--[if IE]>                           
+                  <script type="text/javascript" src="/2007templates/js/MetaBook-Roman_400_open-ie.js"></script>
+        <![endif]-->
+
+		<!--[if IE]>
+			<link rel="stylesheet" type="text/css" href="/2007templates/css/ie_only.css" media="screen" />
+			<link rel="stylesheet" type="text/css" href="/2007templates/css/pwp_prod_ie_only.css" media="all" />	
+		<![endif]-->
+		<!--[if IE 6]>
+			<link rel="stylesheet" type="text/css" href="/2007templates/css/ie6_only.css" media="screen" />
+			<script type="text/javascript" src="/2007templates/js/ie6Helpers.js"></script>
+		<![endif]-->  
+
+<script type="text/javascript"> 
+var _gaq = _gaq || []; 
+var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js'; 
+_gaq.push(['_require', 'inpage_linkid', pluginUrl]); 
+_gaq.push(['_setAccount', 'UA-2035562-1']); 
+_gaq.push(['_setDomainName', 'imperial.ac.uk']); 
+_gaq.push(['_setAllowLinker', true]); 
+_gaq.push(['_addIgnoredRef', 'imperial.ac.uk']); 
+_gaq.push(['_setAllowAnchor', true]); 
+_gaq.push(['_trackPageview']); 
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();
+	
+// enable the APNIC IPProtoTest and feed google analytics events  
+
+if ('http:' == document.location.protocol) {   var ipproto_user = '894942';   
+(function() {    var iga = document.createElement('script'); 
+iga.type = 'text/javascript'; 
+iga.async = true;     
+iga.src = 'http://labs.apnic.net/ipprototest.js';    var is = document.getElementsByTagName('script')[0]; is.parentNode.insertBefore(iga, is);   
+
+ })(); 
+ 
+ }
+ 
+</script>
+            </head>
+	<body>
+		
+
+
+<!-- OPEN PAGE AREA -->
+		<div id="page-area">
+<!-- OPEN HEADER -->
+<div id="header"> 
+
+
+<a href="/" id="logo" tabindex="2" accesskey="0"><img src="/2007templates/images/logo_imperial_college_london.png" width="168" height="44" alt="Imperial College London" /></a>
+<ul id="main-nav">
+ <li id="mn-home"><a href="/">Return to the Imperial homepage</a></li>
+ <li id="mn-research"><a href="/research" tabindex="3" accesskey="7">Research</a></li>
+ <li id="mn-courses"><a href="/courses" tabindex="4">Courses</a></li>
+ <li id="mn-faculties-departments"><a href="/a_to_z" tabindex="5">Faculties &amp; Departments</a></li>
+ <li id="mn-life"><a href="/campus_life" tabindex="6">Campus<br />Life</a></li>
+ <li id="mn-news"><a href="/news" tabindex="7">News</a></li>
+ <li id="mn-events"><a href="/events" tabindex="8">Events</a></li>
+ <li id="mn-services"><a href="/admin_services" tabindex="9">Admin &amp; Services</a></li>
+ <li id="mn-about"><a href="/aboutimperial" tabindex="10" accesskey="8">About Imperial</a></li>
+ </ul>
+
+
+
+<div id="header-bar">
+<div id="search-area">
+
+<form id="search" action="http://www.imperial.ac.uk/search/results" method="post"><div id="search-inner-wrapper"><input type="text" name="searchbox" id="searchQuery" value="" class="clearDefault" /><input type="image" value="search" src="/2007templates/images/submit_search.png" alt="Search" id="searchSubmit" /></div><input type="hidden" name="sr" value="0" /><input type="hidden" name="secure" value="1" /><div><a href="http://www.imperial.ac.uk/collegedirectory" id="search-people" title="Search for People">People</a></div></form>
+
+
+
+</div>
+<div id="audience-nav">
+
+
+<p>For:</p>
+ <ul>
+ <li id="au-prospective-students"><a href="/prospectivestudents" tabindex="11" accesskey="1">Prospective Students</a></li>
+ <li id="au-students"><a href="/students" tabindex="12" accesskey="2">Students</a></li>
+ <li id="au-alumni"><a href="/alumni" tabindex="13" accesskey="3">Alumni</a></li>
+ <li id="au-staff"><a href="/staff" tabindex="14" accesskey="4">Staff</a></li>
+ <li id="au-business"><a href="/business" tabindex="15" accesskey="5">Business</a></li>
+ <li id="au-media"><a href="/media" tabindex="16" accesskey="6">Media</a></li>
+ </ul>
+
+
+</div>
+<div class="clear"><span>&nbsp;</span></div>
+</div>
+</div>
+<!-- CLOSE HEADER -->
+<!-- OPEN SUB HEADER -->
+<div id="sub-header">
+
+<p class="bannerTitle"> Bioinformatics Support Service</p>
+<ul id="sub-nav">
+<li class="first"><a href="/bioinfsupport">Home</a></li>
+<li><a href="/bioinfsupport/about">About</a></li>
+<li><a href="/bioinfsupport/resources">Resources</a></li>
+<li><a href="/bioinfsupport/projects">Projects</a></li>
+<li><a href="/bioinfsupport/publications">Publications</a></li>
+<li><a href="/bioinfsupport/people">People</a></li>
+<li><a href="/bioinfsupport/training">Training</a></li>
+<li><a href="/bioinfsupport/help">Help</a></li>
+<li><a href="/bioinfsupport/contactus">Contact Us</a></li>
+</ul>
+			
+
+</div>
+<!-- CLOSE SUB HEADER -->
+<!-- OPEN CONTENT AREA -->
+			<div id="content-area-wrapper"><div id="ca-left"><div id="ca-right">
+				<div id="ca-top-left"><div id="ca-top-right"><div id="ca-bot-left"><div id="ca-bot-right">
+					<div id="content-area">
+
+
+<iframe id="portalIFrame" title="" frameborder="0" width="0" height="0" src="/images/pobtrans.gif"></iframe><script type="text/javascript" src="http://www3.imperial.ac.uk/portal/pls/portallive/PORTALLIVE.wwsbr_javascript.page_js?p_language=us&amp;p_version=10.1.4.2.0.197">
+<!-- Comment out script for old browsers
+//-->
+</SCRIPT>
+<TABLE  border="0" cellspacing="0" cellpadding="0" width="100%"  summary="">
+<TR>
+<td valign="top" style="width:600px">
+<TABLE  width="100%" id="rg588879"  border="0" cellpadding="0" cellspacing="0" summary=""><TR ALIGN="LEFT">
+<td valign="top" style="padding:0px 0px 0px 0px;width:100%;">
+<div id="main-content"><a name="maincontent"></a><div class="generic-content-block">
+
+<span class="inplacedisplayid4siteid0"><h1>MRIdb: Medical imaging database</h1> <p>MRIdb is an end-to-end data management system for MRI, combining the DCM4CHEE DICOM server with a bespoke front-end packaged into an easily deployable virtual machine. It interfaces directly with MRI scanners and handles image storage, retrieval and export. It provides role-based access control, patient-study assignment, and extensive auditing. MRIdb is the result of an ongoing collaboration between the BSS and the Imaging Sciences Department of Imperial College.</p> <h2>Key features</h2> <div class="callout right"> <h2>Downloads</h2> <div class="callout-content" style="padding: 0.5em 1.3em;"> <ul> <li><a href="https://github.com/mwoodbri/MRIdb" title="Source">Source</a></li> <li><a href="http://cisbic.bioinformatics.ic.ac.uk/guardian?url=http%3A%2F%2Fcisbic.bioinformatics.ic.ac.uk%2Ffiles%2Fmridb%2Fmridb.tar.bz2" title="Binary">Binary</a>&nbsp;+ <a href="http://cisbic.bioinformatics.ic.ac.uk/files/mridb/mridb-deps.tar" title="Dependencies">Dependencies</a></li> <li><a href="http://cisbic.bioinformatics.ic.ac.uk/guardian?url=http%3A%2F%2Fcisbic.bioinformatics.ic.ac.uk%2Ffiles%2Fmridb%2FMRIdb.ova" title="Virtual Machine">Virtual Machine</a></li> <li><a href="https://docs.google.com/document/d/1uEtuTJrwzqbc4VjdyX-h2Z-X4e8mfPE4gcEofocrVsM/pub" title="Documentation">Documentation</a></li> </ul> </div> </div> <ul> <li>Audience: Researchers and clinicians</li> <li>Dendencies: Linux (server), web browser (client)</li> <li>Funding: Various</li> <li>Licence: GPLv3</li> <li>Contact:&nbsp;<a href="mailto:m.woodbridge@imperial.ac.uk" target="_blank" title="m.woodbridge@imperial.ac.uk link opens in a new window">m.woodbridge@imperial.ac.uk</a></li> <li>Citation:&nbsp;Woodbridge, M., Fagiolo, G., and O&rsquo;Regan, D.P. (2013). MRIdb: Medical Image Management for Biobank Research. Journal of Digital Imaging.&nbsp;<a href="http://dx.doi.org/10.1007/s10278-013-9604-9" title="doi:10.1007/s10278-013-9604-9">doi:10.1007/s10278-013-9604-9</a></li> </ul> <h2>Screenshot</h2> <p><img class="full-width" src="/icimages?p_imgid=152117" alt="MRIdb screenshot" title="MRIdb screenshot" /></p> <ul> </ul></SPAN>
+</div></div>
+
+</TD></TR>
+</TABLE><TABLE  width="100%" id="rg588889"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE><TABLE  width="100%" id="rg588883"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE></TD>
+<td valign="top" style="width:245px">
+<TABLE  width="100%" id="rg588881"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE><TABLE  width="100%" id="rg832380"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE><TABLE  width="100%" id="rg588888"  border="0" cellpadding="0" cellspacing="0" summary=""><TR ALIGN="LEFT">
+<td valign="top" style="padding:0px 0px 0px 0px;width:100%;"><div id="sub-content">
+<ul id="breadcrumb">
+<li>
+<a href="/bioinfsupport">Back to Bioinfsupport</a>
+</li>
+<li>
+<a href="/bioinfsupport/resources">Back to Resources</a>
+</li>
+<li>
+<a href="/bioinfsupport/resources/software">Back to Software</a>
+</li>
+</ul>
+<div id="section-nav" class="expandable">
+<ul></ul>
+</div>
+</div>
+<BR>
+</TD></TR>
+</TABLE><TABLE  width="100%" id="rg588890"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE><TABLE  width="100%" id="rg588887"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE><TABLE  width="100%" id="rg588886"  border="0" cellpadding="0" cellspacing="0" summary=""><tr><td></td></tr></TABLE></TD>
+</TR>
+</TABLE>
+<!-- show footer template = 1748009928 -->
+	
+
+<div id="toolbar">
+	<ul id="actions">
+		<li id="action-print"><a href="#" class="print-link">Print</a></li>
+		<li id="action-email"><a href="#">Email to a Friend</a></li>
+
+<li id="action-report"><a href="#" class="reportOC">Report incorrect content</a></li>
+	</ul>
+	<div id="emailFriendForm" class="hidden">
+
+		<h2>Email to a Friend</h2>
+		<form method="post" action="http://www.imperial.ac.uk/emailafriend.asp">					 
+		
+			<h3>Page URL:</h3>
+			<p id="emailHref"></p>
+
+
+			<fieldset>
+
+				<div id="your-info">
+					<h3>Your Information:</h3>
+
+					<label for="yourName">Your Name</label>
+					<input type="text" name="yourName" id="yourName" value="Your Name" class="clearDefault" />
+
+					<label for="yourEmail">Your Email</label>
+					<input type="text" name="yourEmail" id="yourEmail" class="emailAddress clearDefault" value="Your Email Address" />
+
+				</div>
+				<div id="friend-info">
+					<h3>Friend&rsquo;s Information:</h3>
+
+					<label for="friendsName">Friend&rsquo;s Name</label>
+					<input type="text" name="friendsName" id="friendsName" class="clearDefault" value="Friend&rsquo;s Name" />
+					
+					<label for="friendsEmail">Friend&rsquo;s Email</label>
+	  				<input type="text" name="friendsEmail" id="friendsEmail" class="emailAddress clearDefault" value="Friend&rsquo;s Email" />
+		
+				</div>
+				<div class="clear"><span>&nbsp;</span></div>
+
+			</fieldset>
+		
+			<div class="form-actions">
+
+				<a href="#" class="close">Close</a>&nbsp;&nbsp;<input type="image" src="/2007templates/images/submit_send_email.gif" value="Send Email to Friend" name="emailFriendSubmit" id="emailFriendSubmit" />
+					
+</div> 
+<input type="hidden" name="emailHref" value="emailHref" />
+		</form>
+
+	</div>
+
+
+
+
+<dl class="socialBoMa">
+<a target="_blank" rel="nofollow" title="Share this on Delicious" href="http://www2.imperial.ac.uk/imedia/share/delicious?title=MRIdb"><img src="/2007templates/images/icon_delicious.gif" alt="Share this on Delicious" /></a>
+<a target="_blank" rel="nofollow" title="Tweet this" href="http://www2.imperial.ac.uk/imedia/share/twitter?title=MRIdb"><img src="/2007templates/images/twitter.gif" alt="Tweet this" /></a>
+<a target="_blank" rel="nofollow" title="Digg this" href="http://www2.imperial.ac.uk/imedia/share/digg?title=MRIdb"><img src="/2007templates/images/icon_digg.png" alt="Digg this" /></a>
+<a target="_blank" rel="nofollow" title="Stumble this" href="http://www2.imperial.ac.uk/imedia/share/stumble?title=MRIdb"><img src="/2007templates/images/icon_stumbleupon.gif" alt="Stumble this" /></a>
+<a target="_blank" rel="nofollow" title="Share this on Facebook" href="http://www2.imperial.ac.uk/imedia/share/facebook?title=MRIdb"><img src="/2007templates/images/facebook.gif" alt="Share this on Facebook" /></a>
+</dl>
+
+
+	<div class="clear"><span>&nbsp;</span></div>
+</div>
+
+	<div class="clear"><span>&nbsp;</span></div>
+					</div>
+				</div></div></div></div>
+			</div></div></div>	
+<!-- CLOSE CONTENT AREA -->
+<!-- OPEN FOOTER -->
+<div id="footer">
+
+<script src="/2007templates/js/menu_footer.js" type="text/javascript"></script>
+<ul id="footer-nav">
+<li><a href="/pls/portallive/PORTALLIVE.wwsec_app_priv.login?p_requested_url=http://www3.imperial.ac.uk/portal/page/portallive/BE954E48C3878B59E040C69B473939BD&amp;p_cancel_url=%2Fpls%2Fportallive%2FPORTALLIVE.home" >Login</a></li>
+ 
+ 
+ 
+</ul>
+
+
+<div id="address">
+
+<p><strong>Main campus address:</strong><br />
+Imperial College London, South Kensington Campus, London SW7 2AZ, tel: +44 (0)20 7589 5111<br /><a href="/campusinfo">Campus maps and information</a> | <a href="/aboutthissite">About this site</a> | <a href="/aboutthissite/useofcookies">This site uses cookies</a></p>
+
+</div>
+<div id="copyright">
+
+
+<p>&copy; Copyright 2014 Imperial College London</p>
+
+</div>
+<div class="clear"><span>&nbsp;</span></div>
+</div>
+<!-- CLOSE FOOTER -->
+		</div>
+<!-- CLOSE PAGE AREA -->
+	
+<link rel="stylesheet" type="text/css" href="/2007templates/css/fontfix.css" media="screen" />	 
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+			Cufon.replace('#sub-header .bannerTitle');
+			Cufon.replace('#sub-header p');			
+})			
+</script>  
+
+	</body>
+</html>
+<!-- Page Metadata Generated On: 31-JAN-2014:09:09:37  Time Taken: 80 msecs -->

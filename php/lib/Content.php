@@ -390,12 +390,8 @@ EOD;
     if ($have_logged_out or $is_dev_machine) {
       $ad_cont = "&nbsp;";
     } else {
-      // Temp SIIM advert gets shown 1 page out of 8.
-      if (rand(0,10) == 0) {
-        $ad_file = getenv('DOCUMENT_ROOT') . '/advertise_siim.html';
-      } else {
-        $ad_file = getenv('DOCUMENT_ROOT') . '/' . self::ADVERTISING_FILE;
-      }
+          // Temp SIIM advert gets shown 1 page out of 8.
+    	            $ad_file = getenv('DOCUMENT_ROOT') . '/' . self::ADVERTISING_FILE;
       $ad_cont = $this->util->file_contents($ad_file);
     }
     print "<div ident='advertising_top'>\n";
