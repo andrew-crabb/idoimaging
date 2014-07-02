@@ -452,6 +452,8 @@ our $RES_LNK = 5;
 our $RES_IMG = 6;
 our $RES_BLO = 7;
 our $RES_REV = 8;
+our $RES_DEM = 9;
+our $RES_NOT = 10;
 
 our %resourcetype = (
   $RES_DOC => 'Document',
@@ -462,6 +464,8 @@ our %resourcetype = (
   $RES_IMG => 'Image',
   $RES_BLO => 'Blog Entry',
   $RES_REV => 'Review',
+  $RES_DEM => 'Live Demo',
+  $RES_NOT => 'Wiki Technical Notes',
     );
 
 # 'Relationships' table.  Prog1 REL Prog2
