@@ -72,7 +72,7 @@ my $sourceforgestring = 'class="folder level2 open (hidden|)">\s+<td class="tree
 my $mech = WWW::Mechanize->new('autocheck' => 0);
 my $timeout = $mech->timeout();
 print "timeout $timeout\n";
-$mech->timeout(5);
+$mech->timeout(20);
  $timeout = $mech->timeout();
 print "timeout $timeout\n";
 
