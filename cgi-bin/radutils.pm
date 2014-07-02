@@ -320,6 +320,7 @@ our $LANG_CSHARP = 2**10;
 our $LANG_PYTHON = 2**11;
 our $LANG_RUBY   = 2**12;
 our $LANG_PHP    = 2**13;
+our $LANG_JSCRIPT = 2**14;
 
 our %cat_lang = (
   $LANG_C      => ['C'],
@@ -335,6 +336,7 @@ our %cat_lang = (
   $LANG_PYTHON => ['Python'],
   $LANG_RUBY   => ['Ruby'],
   $LANG_PHP    => ['PHP'],
+  $LANG_JSCRIPT => ['JavaScript'],
     );
 
 # ------------------------------------------------------------
