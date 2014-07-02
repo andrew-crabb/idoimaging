@@ -86,7 +86,8 @@ while (my $recp = $sh->fetchrow_hashref) {
 $str  = "select * from resource";
 $str .= " where program = $ident";
 $str .= " and ((type = $RES_BLO)";
-$str .= " or (type = $RES_REV))";
+$str .= " or (type = $RES_REV)";
+$str .= " or (type = $RES_DEM))";
 $sh = dbQuery($dbh, $str, $verbose);
 # Create hash by date of resource pointers.
 my %prog_res = ();

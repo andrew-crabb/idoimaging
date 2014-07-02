@@ -675,9 +675,11 @@ sub makeRsrcIcon {
   # ------------------------------------------------------------
 
   my $rstr  = "select * from resource";
-  $rstr .= " where ((type = $RES_BLO)";
-  $rstr .= " or (type = $RES_REV))";
-  $rstr .= " and program = '$ident'";
+  $rstr .= " where (";
+  $rstr .= "    (type = $RES_BLO)";
+  $rstr .= " or (type = $RES_REV)";
+  $rstr .= " or (type = $RES_DEM)";
+  $rstr .= " ) and program = '$ident'";
   $rstr .= " order by date desc";
   my $rsh = dbQuery($dbh, $rstr);
 
