@@ -7,6 +7,9 @@
 /php/contrib/
 /public_html/blog/
 /public_html/img/
+/public_html/demo/
+public_html/demo/
+/public_html/turku2014/
 /public_html/login/images/
 /public_html/programs_src/
 /public_html/static/mostRanked.html
@@ -34,6 +37,7 @@ public_html/static/mostLinked.html
 /public_html/login/appdata/*
 project/idoimaging.sublime-workspace
 project/idoimaging.sublime-project
+/public_html/wiki
 
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
