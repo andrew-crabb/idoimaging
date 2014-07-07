@@ -151,8 +151,10 @@ class Radutil {
   const NAV_HOME      = 0;
   const NAV_SEARCH    = 1;
   const NAV_PROGRAMS  = 2;
-  const NAV_FORMATS   = 3;
-  const NAV_RESOURCES = 4;
+#  const NAV_FORMATS   = 3;
+#  const NAV_RESOURCES = 4;
+  const NAV_DEMO   = 3;
+  const NAV_WIKI   = 4;
   const NAV_BLOG      = 5;
   const NAV_ABOUT     = 6;
 
@@ -160,8 +162,10 @@ class Radutil {
     self::NAV_HOME      => array('Home'      , 'home'      ),
     self::NAV_SEARCH    => array('Search'    , 'finder'    ),
     self::NAV_PROGRAMS  => array('Programs'  , 'programs'  ),
-    self::NAV_FORMATS   => array('Formats'   , 'formats'   ),
-    self::NAV_RESOURCES => array('Resources' , 'resources' ),
+#    self::NAV_FORMATS   => array('Formats'   , 'formats'   ),
+#    self::NAV_RESOURCES => array('Resources' , 'resources' ),
+    self::NAV_DEMO      => array('Demos'      , 'demos'   ),
+    self::NAV_WIKI      => array('Wiki'       , 'wiki'   ),
     self::NAV_BLOG      => array('Blog'      , 'blog'      ),
     self::NAV_ABOUT     => array('About'     , 'about'     ),
 				);

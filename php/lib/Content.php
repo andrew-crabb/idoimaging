@@ -26,6 +26,7 @@ class Content {
   const CGIBIN        = '/cgi-bin';
   // Defined in REWRITE, executed as CGI programs without page headers.
   const ABOUT         = 'about';
+  const DEMO          = 'demo';
   const ADD_MONITOR   = 'add_monitor';
   const ADMIN         = 'admin';
   const ANALYTICS     = 'analytics';
@@ -72,6 +73,7 @@ class Content {
   const REWRITE_DB_FLD  = 4;
   public $REWRITE = array(
     self::ABOUT         => array(Radutil::NAV_ABOUT     , 'about.php'      , 'About'    , ''       , ''    ),
+    self::DEMO          => array(Radutil::NAV_DEMO      , 'demo/index.html', 'Demo'     , ''       , ''    ),
     self::ADD_MONITOR   => array(Radutil::NAV_PROGRAMS  , 'addmonitor.pl'  , 'Monitor'  , ''       , ''    ),
     self::ANALYTICS     => array(''                     , 'analytics.html' , ''         , ''       , ''    ),
     'bloga'             => array(Radutil::NAV_BLOG      , 'bloga.php'       , 'Blog'     , ''       , ''    ),
@@ -79,7 +81,7 @@ class Content {
     self::FINDER        => array(Radutil::NAV_SEARCH    , 'finder.pl'      , 'Search'   , ''       , ''    ),
     self::FINDER_NH     => array(''                     , 'finder.pl'      , 'Search'   , ''       , ''    ),
     self::FOOTER        => array(''                     , 'footer.php'     , ''         , ''       , ''    ),
-    self::FORMATS       => array(Radutil::NAV_FORMATS   , 'formats.pl'     , 'Formats'  , 'format' , 'name'),
+#    self::FORMATS       => array(Radutil::NAV_FORMATS   , 'formats.pl'     , 'Formats'  , 'format' , 'name'),
     self::LIST_VERSIONS => array(Radutil::NAV_PROGRAMS  , 'listVersions.pl', 'Versions' , ''       , ''    ),
     self::MOST_LINKED   => array(''                     , 'mostLinked.pl'  , ''         , ''       , ''    ),
     self::MOST_RANKED   => array(''                     , 'mostRanked.pl'  , ''         , ''       , ''    ),
@@ -90,7 +92,7 @@ class Content {
     self::PROGRAMS      => array(Radutil::NAV_PROGRAMS  , 'programs.pl'    , 'Programs' , ''       , ''    ),
     self::QUICKLINKS    => array(''                     , 'quicklinks.pl'  , ''         , ''       , ''    ),
     self::REDIRECT      => array(''                     , 'redirect.pl'    , ''         , ''       , ''    ),
-    self::RESOURCES     => array(Radutil::NAV_RESOURCES , 'resources.pl'   , 'Resources', ''       , ''    ),
+#    self::RESOURCES     => array(Radutil::NAV_RESOURCES , 'resources.pl'   , 'Resources', ''       , ''    ),
     self::SEARCH        => array(Radutil::NAV_SEARCH    , 'search.pl'      , 'Search'   , ''       , ''    ),
     self::STATIC_CONT   => array(''                     , 'static_cont.php', 'Static'   , ''       , ''    ),
     self::STATUS        => array(''                     , 'status_new.pl'  , ''         , ''       , ''    ),
@@ -127,24 +129,24 @@ class Content {
   const ADMIN_URL  = 1;
 
   public $ADMIN_PROGS = array(
-    self::ADDPROG	=> array('Add Program'    , 'edit_program?add=1'),
-    self::EDITPROG	=> array('Edit Program'   , 'programs?edit=1'),
-    self::EDITREL	=> array('Relationships'  , ''),
-    self::ADDAUTH	=> array('Add Author'     , 'edit_author?add=1'),
-    self::EDITAUTH	=> array('Edit Author'    , 'edit_author'),
-    self::ADDRESO	=> array('Add Resource'   , 'edit_resource?add=1'),
-    self::EDITRESO	=> array('Edit Resource'  , 'edit_resource'),
-    self::ADDREV	=> array('Add Review'     , ''),
-    self::EDITREV	=> array('Edit Review'    , ''),
-    self::ADDDATA	=> array('Add Test Data'  , ''),
-    self::EDITDATA	=> array('Edit Test Data' , ''),
-    self::LISTDEAD	=> array('List Dead Sites', ''),
-    self::SYNCDB	=> array('Synch Databases' , 'synchronize_DB'),
-    self::SYNCDBR	=> array('Synch DB Reverse', 'synchronize_DB?reverse=1&verbose=1'),
-    self::COMP_DB       => array('Compare DB'      , 'synchronize_DB?compare=1'),
-    self::RANKING	=> array('Rankings'       , ''),
-    self::EMAILS	=> array('Emails'         , ''),
-    self::UPDATES	=> array('Update Check'   , ''),
+    self::ADDPROG	 => array('Add Program'    , 'edit_program?add=1'),
+    self::EDITPROG => array('Edit Program'   , 'programs?edit=1'),
+    self::EDITREL	 => array('Relationships'  , ''),
+    self::ADDAUTH	 => array('Add Author'     , 'edit_author?add=1'),
+    self::EDITAUTH => array('Edit Author'    , 'edit_author'),
+    self::ADDRESO	 => array('Add Resource'   , 'edit_resource?add=1'),
+    self::EDITRESO => array('Edit Resource'  , 'edit_resource'),
+    self::ADDREV	 => array('Add Review'     , ''),
+    self::EDITREV	 => array('Edit Review'    , ''),
+    self::ADDDATA	 => array('Add Test Data'  , ''),
+    self::EDITDATA => array('Edit Test Data' , ''),
+    self::LISTDEAD => array('List Dead Sites', ''),
+    self::SYNCDB	 => array('Synch Databases' , 'synchronize_DB'),
+    self::SYNCDBR	 => array('Synch DB Reverse', 'synchronize_DB?reverse=1&verbose=1'),
+    self::COMP_DB  => array('Compare DB'      , 'synchronize_DB?compare=1'),
+    self::RANKING	 => array('Rankings'       , ''),
+    self::EMAILS	 => array('Emails'         , ''),
+    self::UPDATES	 => array('Update Check'   , ''),
   );
 
   // ------------------------------------------------------------

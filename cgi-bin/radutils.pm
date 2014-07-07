@@ -490,10 +490,13 @@ our $NAV_HOME      = 0;
 our $NAV_SEARCH    = 1;
 our $NAV_PROGRAMS  = 2;
 # our $NAV_PEOPLE    = 3;
-our $NAV_FORMATS   = 3;
-our $NAV_RESOURCES = 4;
+# our $NAV_FORMATS   = 3;
+# our $NAV_RESOURCES = 4;
+our $NAV_DEMO      = 3;
+our $NAV_WIKI      = 4;
 our $NAV_BLOG      = 5;
 our $NAV_ABOUT     = 6;
+
 
 # Strings for top-level URLs.  These must match with .htaccess
 our $STR_REDIRECT      = 'redirect';            # redirect.pl
@@ -521,8 +524,10 @@ our %nav = (
   $NAV_HOME      => ['Home'     , 'index.php' ],
   $NAV_SEARCH    => ['Search'   , $STR_FINDER   ],
   $NAV_PROGRAMS  => ['Programs' , $STR_PROGRAMS ],
-  $NAV_FORMATS   => ['Formats'  , $STR_FORMATS  ],
-  $NAV_RESOURCES => ['Resources', $STR_RESOURCES],
+#  $NAV_FORMATS   => ['Formats'  , $STR_FORMATS  ],
+#  $NAV_RESOURCES => ['Resources', $STR_RESOURCES],
+  $NAV_DEMO      => ['Demos'    , 'demo/index.html'],
+  $NAV_WIKI      => ['Wiki'     , 'http://www.idoimaging.com/wiki'],
   $NAV_BLOG      => ['Blog'     , 'http://www.idoimaging.com/blog/'],
   $NAV_ABOUT     => ['About'    , 'about.php' ],
     );
