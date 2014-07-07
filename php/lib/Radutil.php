@@ -164,7 +164,7 @@ class Radutil {
     self::NAV_PROGRAMS  => array('Programs'  , 'programs'  ),
 #    self::NAV_FORMATS   => array('Formats'   , 'formats'   ),
 #    self::NAV_RESOURCES => array('Resources' , 'resources' ),
-    self::NAV_DEMO      => array('Demos'      , 'demos'   ),
+    self::NAV_DEMO      => array('Demo'      , 'demo'   ),
     self::NAV_WIKI      => array('Wiki'       , 'wiki'   ),
     self::NAV_BLOG      => array('Blog'      , 'blog'      ),
     self::NAV_ABOUT     => array('About'     , 'about'     ),
