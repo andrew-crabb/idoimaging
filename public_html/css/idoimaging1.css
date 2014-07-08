@@ -141,6 +141,10 @@ th   {
        color              : #000;
      }
 
+th.th_prog {
+  background-color: #E0E8DD;
+}
+
 
 *.noborderright {
 	  border-right: hidden;
