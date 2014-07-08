@@ -204,7 +204,7 @@ EOD;
   }
 
   public function error_handler($type, $msg, $file, $line, $context) {
-    print "<tt>ERROR type $type: $msg in $file line $line</tt><br>\n";
+    print "<tt>ERROR type $type: $msg in $file line $line</tt><br />\n";
   }
 
   // ------------------------------------------------------------
@@ -537,7 +537,7 @@ EOD;
     foreach ($this->ADMIN_PROGS as $key => $vals) {
       $admin_desc = $vals[self::ADMIN_DESC];
       $admin_url  = $vals[self::ADMIN_URL];
-      print "<a href=$admin_url>$admin_desc</a><br>\n";
+      print "<a href=$admin_url>$admin_desc</a><br />\n";
     }
   }
 

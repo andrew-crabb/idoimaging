@@ -178,7 +178,7 @@ class Utility {
   /**
    * Return array of standard environment variables
    *
-   * The environment variables returned are:<br>
+   * The environment variables returned are:<br />
    * <kbd>HOSTNAME SERVER_NAME DOCUMENT_ROOT HOST USER HOME PWD</kbd>
    *
    * @param bool $verbose Print extra information
@@ -575,7 +575,7 @@ class Utility {
       ob_start();
     }
     $is_http = isset($_SERVER['HTTP_HOST']);
-    $eol = ($is_http) ? "<br>\n" : "\n";
+    $eol = ($is_http) ? "<br />\n" : "\n";
     print "------------------------------------------------------------$eol";
     $backtrace = debug_backtrace();
     if (count($backtrace) < 2) {
@@ -616,7 +616,7 @@ class Utility {
 
   public static function print_r_html($object) {
     $output = '';
-    $newline = "<br>";
+    $newline = "<br />";
     foreach($object as $key => $value) {
       if (is_array($value) || is_object($value)) {
 	$value = "Array()" . $newline . "(<ul>" . self::print_r_html($value) . "</ul>)" . $newline;

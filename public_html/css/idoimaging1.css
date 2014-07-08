@@ -43,6 +43,16 @@ img.title {
 	  padding          : 1em;
 }
 
+img.img32 {
+  height: 32px;
+  width: 32px;
+}
+
+img.img16 {
+  height: 16px;
+  width: 16px;
+}
+
 tt   {
 	color               : #238;
 	}
@@ -59,7 +69,6 @@ h1   {
      }
 h2   {
        font-family: Arial, helvetica, sans-serif;
- /*       color		    : #238; */
        color                : #555;
        font-size	    : 14pt;
      }
@@ -141,10 +150,6 @@ th   {
        color              : #000;
      }
 
-th.th_prog {
-  background-color: #E0E8DD;
-}
-
 
 *.noborderright {
 	  border-right: hidden;
@@ -208,7 +213,6 @@ TD.r_advert {
 	    }
 
 TD.title {
-/*	 background-color   : #92B129; */
 	 background-color   : #FFF;
 	 font-family        : sans-serif;
 	 font-size          : 14pt
@@ -225,19 +229,8 @@ TD a {
        font-family	    : sans-serif;
        font-size	    : 10pt; 
        color                : #23A;
-/*       background-color     : #F0F8ED; */
        text-decoration      : none;
 }
-
-TD.white a  {
-/*	 background-color     : #FFF; */
-/*	 color                : #23A; */
-     }
-
-TD.light_bg a {
-/*      background-color      : #FFF; */
-}
-
 
 TD.sidebar   {
 	 background-color     : #F0FAF0;
@@ -248,14 +241,42 @@ TD.sidebar a  {
      }
 
 TD.title {
-/*	 background-color     : #92B129; */
 	 background-color     : #FFF;
 	 font-size            : 10pt;
      }
 TD.title a {
-/*	 background-color     : #92B129; */
 	 background-color     : #FFF;
      }
+
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+  }
+
+table.border1 {
+  border: 1px solid black;
+  border-spacing: 0px;
+}
+
+.pad10 {
+  padding: 10px;
+}
+
+.pad5 {
+  padding: 5px;
+}
+
+/* --- demo program table --- */
+
+table.demo_prog {
+  background-color: #F0F0FF;
+}
+
+th.demo_prog {
+  background-color: #E0E8DD;
+}
+
+
 
 input.blue {
 /*       background-color     : #EBE9F3; */
