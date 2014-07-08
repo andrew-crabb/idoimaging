@@ -37,7 +37,6 @@ public_html/static/mostLinked.html
 /public_html/login/appdata/*
 project/idoimaging.sublime-workspace
 project/idoimaging.sublime-project
-/public_html/wiki
 
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
