@@ -1,0 +1,16 @@
+$font-stack:    Helvetica, sans-serif;
+$background-color: white;
+$text-color: #666666;
+
+// CCCCCC 003366 FFFFFF CCCC99
+// http://www.colorcombos.com/color-schemes/12/ColorCombo12.html
+
+body {
+  font: 100% $font-stack;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+P {
+  font: 100% $font-stack;
+}

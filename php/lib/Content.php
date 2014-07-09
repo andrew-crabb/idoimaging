@@ -73,7 +73,7 @@ class Content {
   const REWRITE_DB_FLD  = 4;
   public $REWRITE = array(
     self::ABOUT         => array(Radutil::NAV_ABOUT     , 'about.php'      , 'About'    , ''       , ''    ),
-    self::DEMO          => array(Radutil::NAV_DEMO      , 'demo/index.html', 'Demo'     , ''       , ''    ),
+    self::DEMO          => array(Radutil::NAV_DEMO      , 'demo/demo.php', 'Demo'     , ''       , ''    ),
     self::ADD_MONITOR   => array(Radutil::NAV_PROGRAMS  , 'addmonitor.pl'  , 'Monitor'  , ''       , ''    ),
     self::ANALYTICS     => array(''                     , 'analytics.html' , ''         , ''       , ''    ),
     'bloga'             => array(Radutil::NAV_BLOG      , 'bloga.php'       , 'Blog'     , ''       , ''    ),

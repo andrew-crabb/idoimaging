@@ -38,6 +38,7 @@ public_html/static/mostLinked.html
 project/idoimaging.sublime-workspace
 project/idoimaging.sublime-project
 /public_html/wiki
+css/.sass-cache
 
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
