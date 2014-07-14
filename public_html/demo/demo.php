@@ -6,6 +6,13 @@
   </head>
   <body>
     <?php
+    $urls = array(
+      424 => array(
+          'demo' => 'http://chafey.github.io/cornerstoneDemo',
+          'home' => 'https://github.com/chafey/cornerstone',
+        ),
+      );
+
     function idi_prog($progid) {
     echo "target='_blank' href='http://idoimaging.com/program/" . $progid . "'";
     }
@@ -16,7 +23,7 @@
     echo "target='_blank' href='http://idoimaging.com/redirect?field=homeurl&amp;table=program&amp;ident=" . $progid . "'";
     }
     function idi_demo($progid) {
-    echo "target='_blank' href='http://idoimaging.com/demo/program_" . $progid . "'";
+    echo "target='_blank' href='http://idoimaging.com/demo/program/" . $progid . "'";
     }
     function idi_blog($blogid) {
     echo "target='_blank' href='http://idoimaging.com/blog/?p=" . $blogid . "'";
@@ -41,7 +48,7 @@
           <td class="pad10" width="33%">
             Runs on: <br />
             <?php icon('computer'); ?>&nbsp;&nbsp;
-            <?php icon('portable'); ?><br />
+            <?php icon('mobile'); ?><br />
             Javascript/Browser<br />
             Viewer launches directly<br />
             Host: I Do Imaging website
@@ -57,6 +64,7 @@
             <p>I Do Imaging <a <?php idi_wiki(423); ?> > Wiki notes </a> </p>
           </td>
         </tr>
+
         <!-- DWV -->
         <tr>
           <th class="pad5 demo_prog" colspan="3">DWV: DICOM Web Viewer</th>
@@ -65,7 +73,7 @@
           <td class="pad10" width="33%">
             Runs on: <br />
             <?php icon('computer'); ?>&nbsp;&nbsp;
-            <?php icon('portable'); ?><br />
+            <?php icon('mobile'); ?><br />
             HTML5/Browser<br />
             Viewer launches directly<br />
             Host: I Do Imaging PACS
@@ -91,19 +99,21 @@
         <td class="pad10" width="33%">
           Runs on: <br />
             <?php icon('computer'); ?>&nbsp;&nbsp;
-            <?php icon('portable'); ?><br />
+            <?php icon('mobile'); ?><br />
           HTML5/Browser<br />
           Viewer launches directly<br />
           Host: Cornerstone
         </td>
         <td class="pad10" align="center">
           <a target="_blank" href="http://chafey.github.io/cornerstoneDemo/">
-            <img alt="" src="img/cornerstone_0.jpg" border="0"height="220" width="226">
+            <img alt="" src="img/cornerstone_0_250.jpg" border="0"height="220" width="226">
           </a>
           <br />
         </td>
         <td class="pad10" width="33%">
           <a href="https://github.com/chafey/cornerstone">Cornerstone Home</a>
+          <p><a <?php idi_prog(424); ?> > I Do Imaging listing </a></p>
+
           <br />
       </tr>
       <!-- iOviyam2 -->
@@ -114,7 +124,7 @@
         <td class="pad10" width="33%">
           Runs on:<br />
             <?php icon('computer'); ?>&nbsp;&nbsp;
-            <?php icon('portable'); ?><br />
+            <?php icon('mobile'); ?><br />
           HTML5/Browser<br />
           Links to PACS<br />
           Log in as 'guest' / 'guest'<br />
@@ -165,7 +175,7 @@
         <td class="pad10" width="33%">
           Runs on: <br />
             <?php icon('computer'); ?> (your data)
-            <?php icon('portable'); ?> (their data)<br />
+            <?php icon('mobile'); ?> (their data)<br />
           WebGL/HTML5<br />
           Drop local files on browser window<br />
           <br />
