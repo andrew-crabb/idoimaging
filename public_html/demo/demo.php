@@ -219,9 +219,9 @@
             <img alt="" src="img/brainbrowser_0_250.jpg" border="0" height="250" width="233">
           </a><br />
         </td>
+        <td class="pad10" width="33%">
           <p><a <?php idi_redr(427); ?> > BrainBrowser Home </a></p>
           <p><a <?php idi_prog(427); ?> > I Do Imaging listing </a></p>
-
         </td>
       </tr>
     </tbody>
