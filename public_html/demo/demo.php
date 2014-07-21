@@ -34,6 +34,15 @@
     ?>
     <table class="demo_prog center border1" width="650">
       <tbody>
+        <!-- Introduction -->
+        <tr><td colspan="3">
+        Below are links to live demonstrations of free and open source medical imaging applications.  Some are DICOM viewers hosted on the 
+        <a target="_blank" href="http://idoimaging.com/wiki/tiki-index.php?page=I+Do+Imaging+PACS">I Do Imaging PACS</a>,
+        some are hosted on the project's home page.  Data in DICOM and other formats is available on the 
+        <a target="_blank" href="http://idoimaging.com/wiki/tiki-index.php?page=Sample+Data">I Do Imaging Sample Data</a> page.
+        <br />
+        <br />
+        </td></tr>
         <!-- Headings -->
         <tr>
           <th class="pad5" width="33%"> Program </th>
@@ -190,7 +199,8 @@
           
         </td>
         <td class="pad10" width="33%">
-          <a href="http://slicedrop.com">SliceDrop home
+          <p><a <?php idi_redr(426); ?> > Slice:Drop Home </a></p>
+          <p><a <?php idi_prog(426); ?> > I Do Imaging listing </a></p>
           </a><br />
         </td>
       </tr>
@@ -209,7 +219,9 @@
             <img alt="" src="img/brainbrowser_0_250.jpg" border="0" height="250" width="233">
           </a><br />
         </td>
-        <td class="pad10" width="33%"> BrainBrowser home<br />
+          <p><a <?php idi_redr(427); ?> > BrainBrowser Home </a></p>
+          <p><a <?php idi_prog(427); ?> > I Do Imaging listing </a></p>
+
         </td>
       </tr>
     </tbody>
