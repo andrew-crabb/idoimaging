@@ -188,7 +188,8 @@
           WebGL/HTML5<br />
           Drop local files on browser window<br />
           <br />
-          <a href="mri_brain.zip">Sample MRI files in zip format</a><br />
+          <a href="http://data.idoimaging.com/data/dicom/1010_brain_mr/1010_brain_mr_04_lee.zip">
+          Sample MRI DICOM files in zip format</a><br />
           (Download, unzip, drag and drop files onto SliceDrop window)<br />
           Host: SliceDrop site
         </td>
