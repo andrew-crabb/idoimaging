@@ -2038,8 +2038,8 @@ sub printPageIntro {
   # Row 2: Page-top advertising.
   print comment(" Main table row for page-top advertising ");
   # Choice of 2 files.
-  # my $adfile = (int(rand(2))) ? "advertising.html" : "advertising1.html";
-  my $adfile = "advertising.html";
+  my $adfile = (int(rand(2))) ? "advertising.html" : "advertising_textandgraphic.html";
+  # my $adfile = "advertising.html";
   my @adcontents = fileContents($adfile);
   # Suppress advertising on local computer...
   my $adcontents = join("\n", @adcontents);
