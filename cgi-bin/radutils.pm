@@ -3,7 +3,7 @@
 package radutils;
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(authName sortHashVal truncateHashVals selectedVals listPrereq hostConnect formatList nextIdent comment dbRecord linkCountIcon fmtAuthorName dbQuery nextIndex addVersionRecord loggedInIdent monitoredPrograms validDate relatedPrograms truncateString getEnv listHashMembers makeDir dumpParams printTitle printStartHTML urlIcon listParts relatedProgramsTable programsHavingSpeciality sortedcomb makeTableBinary makeemailicon valToSQL valToTDedit valToTDsumm sortedHeadingRow getParams definedVal isNonZero makeProgramLink getSecondaryScreenCaptures printRowWhite printRowWhiteCtr createAdvertTable printPageIntro makeIfaceCell printToolTips addCvars make_cvars_text conditionString getCaptureImages randomSubset allProgNames makeRsrcIcon write_file timeNowHash make_monitor_details is_admin_or_cli);
+@EXPORT = qw(authName sortHashVal truncateHashVals selectedVals listPrereq hostConnect formatList nextIdent comment dbRecord linkCountIcon fmtAuthorName dbQuery nextIndex addVersionRecord loggedInIdent monitoredPrograms validDate relatedPrograms truncateString getEnv listHashMembers makeDir dumpParams printTitle urlIcon listParts relatedProgramsTable programsHavingSpeciality sortedcomb makeTableBinary makeemailicon valToSQL valToTDedit valToTDsumm sortedHeadingRow getParams definedVal isNonZero makeProgramLink getSecondaryScreenCaptures printRowWhite printRowWhiteCtr createAdvertTable printPageIntro makeIfaceCell printToolTips addCvars make_cvars_text conditionString getCaptureImages randomSubset allProgNames makeRsrcIcon write_file timeNowHash make_monitor_details is_admin_or_cli);
 @EXPORT = (@EXPORT, (qw(%resourcetype %formats %db_program_fields %relationships)));
 @EXPORT = (@EXPORT, (qw($DB_INT $DB_CHR $DB_BEN $DB_DAT $DB_FLT)));
 @EXPORT = (@EXPORT, (qw($KEY_CGI $KEY_CGI $KEY_IDENT $KEY_URLSTAT $KEY_TABLE $KEY_FIELD $KEY_URL $KEY_TIP0 $KEY_TIP1 $KEY_TIPNA)));
@@ -871,12 +871,14 @@ sub listPrereq {
 # Return db handle
 
 sub hostConnect {
-  my ($db_name) = @_;
-  $db_name = "imaging" unless (has_len($db_name));
+  my ($db_name, $db_host) = @_;
+  $db_name //= "imaging";
+  $db_host //= "localhost";
+  print "db_name $db_name, db_host $db_host\n";
 
   # Database init.
   my %attr = (RaiseError => 1);
-  my $dsn = "DBI:mysql:$db_name:localhost";
+  my $dsn = "DBI:mysql:$db_name:$db_host";
   my $dbh = DBI->connect($dsn,'_www','PETimage', \%attr);
   (has_len($dbh)) or die "Can't get database connection";
 

@@ -25,7 +25,7 @@ my $sh = dbQuery($dbh, $str);
 my ($progname) = $sh->fetchrow_array();
 
 print $cgi->header();
-printStartHTML($cgi);
+
 printTitle($cgi);
 print "<tr><td align='center'>\n";
 print $cgi->h1("Remove program: $progname ($ident)") . "\n";
