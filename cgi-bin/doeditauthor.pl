@@ -22,7 +22,7 @@ print $cgi->header();
 dumpParams($cgi);
 
 my ($ident, $add, $process) = getParams($cgi, (qw(ident add process)));
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 
 # If adding program, ensure logged-in user is admin.
 my $det = get_user_details();

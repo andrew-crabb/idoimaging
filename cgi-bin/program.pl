@@ -39,7 +39,7 @@ my %g_tipstrs = ();
 # my $ident = $cgi->param('ident');
 print $cgi->header();
 my ($ident) = getParams($cgi, (qw(ident)));
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 my $verbose = 0;
 
 # Get ident of logged-in user.

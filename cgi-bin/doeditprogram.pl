@@ -37,7 +37,7 @@ unless (has_len($ident) or $addprog) {
   print "ident $ident, addprog $addprog<br>\n";
 }
 
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 
 my $prog;	# Ptr to hash of program details.
 if (not $addprog) {

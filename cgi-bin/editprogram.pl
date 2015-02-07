@@ -45,7 +45,7 @@ unless ($det and $det->{$Userbase::UB_IS_ADMIN}) {
   exit;
 }
 
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 my $title = "Edit Program";
 
 dumpParams($cgi);

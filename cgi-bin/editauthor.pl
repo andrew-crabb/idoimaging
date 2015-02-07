@@ -33,7 +33,7 @@ exit unless (is_admin_or_cli());
 
 dumpParams($cgi);
 my ($ident, $add, $process) = getParams($cgi, (qw(ident add process)));
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 
 my $title = "I Do Imaging - Edit Author";
 printRowWhiteCtr($cgi->h1($title));
