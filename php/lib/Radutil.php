@@ -5,7 +5,7 @@ class Radutil {
   // ============================================================
   // Userbase
   // ============================================================
-  const IDOIMAGING = '/Users/ahc/Dropbox/idoimaging';
+  const IDOIMAGING = '/home/ahc/idoimaging';
   const USERBASE  = '/cgi-bin/userbase/userbase.cgi';
 
   // Fields returned by ubvars.
