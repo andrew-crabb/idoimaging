@@ -27,7 +27,7 @@ print $cgi->header();
 my ($step0, $step1, $step2) = getParams($cgi, (qw(step0 step1 step2)));
 $step0 = 1 unless(has_len($step0) or has_len($step1) or has_len($step2));
 
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 my $title = "Edit Attributes";
 
 printStartHTML($cgi, $title);

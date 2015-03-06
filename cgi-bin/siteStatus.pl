@@ -19,7 +19,6 @@ my $title = "idoimaging.com - Site Status";
 printStartHTML($cgi, $title);
 printTitle($cgi);
 
-dumpParams($cgi);
 print $cgi->h1($title) . "\n";
 
 our ($listdead) = getParams($cgi, (qw(listdead)));

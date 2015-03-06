@@ -15,7 +15,7 @@ use bigint;
 my $cgi = new CGI;
 print $cgi->header();
 my ($prog_id) = getParams($cgi, (qw(prog_id)));
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 my $verbose = 0;
 
 my $str = "select * from demo";

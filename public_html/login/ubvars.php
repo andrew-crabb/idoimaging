@@ -9,7 +9,7 @@
 # file for an example.
 
 
-$IDOIMAGING = '/Users/ahc/Dropbox/idoimaging';
+$IDOIMAGING = '/home/ahc/idoimaging';
 
 $DOCROOT = isset($DOCUMENT_ROOT) ? $DOCUMENT_ROOT : $_SERVER['DOCUMENT_ROOT'];
 $site_session = isset($_COOKIE['site_session']) ? $_COOKIE['site_session'] : '';
@@ -49,7 +49,8 @@ ob_end_clean();
 
   # Method 3:
   # Change only these first 2 lines, to match the path & name of your CGI script:
-  $cgi_script_full  = "$IDOIMAGING/cgi-bin/userbase/userbase.cgi";
+#   $cgi_script_full  = "$IDOIMAGING/cgi-bin/userbase/userbase.cgi";
+  $cgi_script_full  = "/data/idoimaging/cgi-bin/userbase/userbase.cgi";
   $cgi_script_local = "/cgi-bin/userbase/userbase.cgi";
 
   if(!(file_exists($cgi_script_full)))

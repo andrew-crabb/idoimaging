@@ -18,7 +18,7 @@ $|++;
 # my $google = Net::Google->new(key=>$key);
 
 my @arr;
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 my ($query, $sh, $ref);
 
 

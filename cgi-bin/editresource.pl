@@ -15,7 +15,7 @@ my $cgi = new CGI;
 print $cgi->header();
 
 
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 my $title = "I Do Imaging - Edit Resource";
 
 # If adding program, ensure logged-in user is admin.

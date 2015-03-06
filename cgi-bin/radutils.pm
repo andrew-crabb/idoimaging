@@ -874,7 +874,7 @@ sub hostConnect {
   my ($db_name, $db_host) = @_;
   $db_name //= "imaging";
   $db_host //= "idoimaging.com";
-  print "db_name $db_name, db_host $db_host\n";
+  print STDERR "radutils::hostConnect(db_name $db_name, db_host $db_host)\n";
 
   # Database init.
   my %attr = (RaiseError => 1);

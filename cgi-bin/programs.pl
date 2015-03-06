@@ -38,7 +38,7 @@ our %g_tipstrs = ();
 print $cgi->header();
 
 
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 
 my ($progids, $included) = (undef, 0);
 if (defined($progids = $ENV{'progids'})) {

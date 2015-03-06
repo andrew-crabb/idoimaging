@@ -9,6 +9,8 @@
 /public_html/img/
 /public_html/turku2014/
 /public_html/login/images/
+/public_html/mediawiki-1.20/
+/public_html/mediawiki-1.23/
 /public_html/programs_src/
 /public_html/static/mostRanked.html
 /public_html/static/mostWatched.html
@@ -17,6 +19,7 @@
 /public_html/static/quicklinks.html
 /public_html/static/reviews/
 /public_html/tiki-12.0
+/public_html/tiki-13.1/
 /public_html/wordpress
 /public_html/wiki_120/
 /public_html/bugzilla-4.2.4/
@@ -40,7 +43,7 @@ project/idoimaging.sublime-project
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
 !/public_html/blog/wp-content/themes/idoimaging/
-!/public_html/img/icon/
+# !/public_html/img/icon/
 # !/public_html/tiki-12.0/styles/
 
 # Don't track these files

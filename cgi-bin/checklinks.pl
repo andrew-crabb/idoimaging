@@ -68,7 +68,7 @@ if ($opts->{$Opts::OPT_HELP} or not ($opts->{$OPT_PROGRAM} or $opts->{$OPT_RESOU
   exit;
 }
 
-my $dbh = hostConnect('');
+my $dbh = hostConnect();
 
 our %tables = (
   'program'  => [['homeurl', 'srcurl'], ['urlstat', 'srcstat']],

@@ -29,7 +29,7 @@ $PREF{ahc_default_password}                        = 'Pass';
 $PREF{ahc_user_home}                            = '/user_home';
 
 # Program to add user to MailChimp
-$PREF{mailchimp_util}                              = '/Users/ahc/idoimaging/php/bin/user_util.php';
+$PREF{mailchimp_util}                              = '/home/ahc/idoimaging/php/bin/user_util.php';
 
 $PREF{fixed_username_field_for_CSV_import}         = 'username';
 $PREF{fixed_password_field_for_CSV_import}         = 'password';
@@ -125,7 +125,7 @@ $PREF{app_base_folder}					= '/login';
 # ahc
 # $PREF{datadir}					= 'encdata';
 # $PREF{datadir_is_in_docroot}				= 'no';
-$PREF{datadir}						= '/Users/ahc/idoimaging/cgi-bin/userbase/encdata';
+$PREF{datadir}						= '/data/idoimaging/cgi-bin/userbase/encdata';
 $PREF{datadir_is_in_docroot}				= 'no';
 
 
