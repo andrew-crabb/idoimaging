@@ -186,9 +186,9 @@ class Radutil {
   // ------------------------------------------------------------
   const DB_LOCAL    = 'db_local';
   const DB_LOCAL_UB = 'db_local_ub';
-  const DB_MMC_UB   = 'db_mmc_ub';
-  const DB_MMC      = 'db_mmc';
-  const DB_SERVER   = 'db_server';
+  const DB_IDI_UB   = 'db_idi_ub';
+  const DB_IDI      = 'db_idi';
+
   const DB_HOST     = 'db_host';
   const DB_USER     = 'db_user';
   const DB_PASS     = 'db_pass';
@@ -207,23 +207,17 @@ class Radutil {
       self::DB_PASS     => 'PETimage',
       self::DB_DATABASE => 'userbase',
     ),
-    self::DB_MMC => array(
-      self::DB_HOST     => 'idoimaging.macminicolo.net',
+    self::DB_IDI => array(
+      self::DB_HOST     => 'idoimaging.com',
       self::DB_USER     => '_www',
       self::DB_PASS     => 'PETimage',
       self::DB_DATABASE => 'imaging',
     ),
-    self::DB_MMC_UB => array(
-      self::DB_HOST     => 'idoimaging.macminicolo.net',
+    self::DB_IDI_UB => array(
+      self::DB_HOST     => 'idoimaging.com',
       self::DB_USER     => '_www',
       self::DB_PASS     => 'PETimage',
       self::DB_DATABASE => 'userbase',
-    ),
-    self::DB_SERVER => array(
-      self::DB_HOST     => 'db95a.pair.com',
-      self::DB_USER     => 'acrabb',
-      self::DB_PASS     => 'NEW2this',
-      self::DB_DATABASE => 'acrabb_imaging',
     ),
   );
 
@@ -258,7 +252,7 @@ class Radutil {
 
   // ------------------------------------------------------------
 
-  public function host_connect( $host = self::DB_LOCAL, $verbose = 0 ) {
+  public function host_connect( $host = self::DB_IDI, $verbose = 0 ) {
     $db_data = $this->DB_DATA[$host];
     $which_host = $this->which_host();
 

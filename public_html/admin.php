@@ -28,8 +28,8 @@ require($_SERVER['DOCUMENT_ROOT'] . "/login/ublock.php");
     <div class='container'>
       <?php
 	// Note the online DB connection is for Userbase, for not for content.
-	$dbh_im = $rad->host_connect(Radutil::DB_MMC);
-	$dbh_ub = $rad->host_connect(Radutil::DB_MMC_UB);
+	$dbh_im = $rad->host_connect(Radutil::DB_IDI);
+	$dbh_ub = $rad->host_connect(Radutil::DB_IDI_UB);
 	$ub_details = $rad->get_user_details();
 
 	// Title image and login block

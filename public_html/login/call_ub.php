@@ -6,6 +6,8 @@ $DOCROOT = $DOCUMENT_ROOT ? $DOCUMENT_ROOT : $_SERVER['DOCUMENT_ROOT'];
 # PATH_TRANSLATED environment variable to see what the path should be.
 # You can run the  phpinfo()  function to see that variable's value.
 
+print "XXX DOCROOT is $DOCROOT\n";
+
 $DOCROOT = preg_replace("/(.+)\/$/", '$1', $DOCROOT); # remove any trailing slash.
 
 # Change only the following 2 lines, to match the path & name of your CGI script.
@@ -18,7 +20,7 @@ $cgi_script_local = "/cgi-bin/userbase/userbase.cgi";
   
 if(!(file_exists($cgi_script_full)))
   {
-    print "Error: the file specified by \$cgi_script_full does not exist ('$cgi_script_full').  You may need to edit your call_ub.php file and manually set the \$DOCROOT and/or \$cgi_script_full variables.  (\$DOCROOT is currently '$DOCROOT'.)";
+    print "Error: the file specified by \$cgi_script_full does not exist ('$cgi_script_full').  You may need to edit this call_ub.php file and manually set the \$DOCROOT and/or \$cgi_script_full variables.  (\$DOCROOT is currently '$DOCROOT'.)";
     exit;
   }
 

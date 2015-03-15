@@ -58,19 +58,24 @@
 					Runs on: <br />
 					<?php icon('computer'); ?>&nbsp;&nbsp;<?php icon('mobile'); ?><br />
 					HTML5/Browser<br />
-					Viewer launches directly<br />
-					Host: I Do Imaging website<br />
+					Launches into image server<br />
+					Host: I Do Imaging<br />
 					Version: 0.8.6 (2/12/15)<br />
 				</td>
 				<td class="pad10" width="34%">
-					<a <?php idi_demo(423); ?> >
-						<img alt="" src="img/Papaya_Viewer_1_250.jpg" border="0" height="194" width="250">
+					<a href='http://idoimaging.com:8042' target='blank' >
+						<img alt="" src="img/orthanc_1_400.jpg" border="0" width="250">
 					</a>
 				</td>
 				<td class="pad10" width="33%">
-					<p><a <?php idi_redr(423); ?> > Papaya Home </a> </p>
-					<p>I Do Imaging <a <?php idi_prog(423); ?> > Listing </a> </p>
-					<p>I Do Imaging <a <?php idi_wiki(423); ?> > Wiki notes </a> </p>
+					<p><a <?php idi_redr(409); ?> > Orthanc Home </a> </p>
+					<p>I Do Imaging <a <?php idi_prog(409); ?> > Listing </a> </p>
+					<p>I Do Imaging <a <?php idi_wiki(409); ?> > Wiki notes </a> </p>
+				</td>
+			</tr>
+			<tr>
+				<td class="pad10" colspan="3">
+					More words about Orthanc Server go here.  It's a long line that goes across the entire browser.
 				</td>
 			</tr>
 			<!-- Papaya -->
@@ -83,7 +88,7 @@
 					<?php icon('computer'); ?>&nbsp;&nbsp;<?php icon('mobile'); ?><br />
 					Javascript/Browser<br />
 					Viewer launches directly<br />
-					Host: I Do Imaging website<br />
+					Host: I Do Imaging<br />
 					Version: 0.6.5 (07/03/14)<br />
 				</td>
 				<td class="pad10" width="34%">
@@ -112,7 +117,7 @@
 				</td>
 				<td class="pad10" align="center">
 					<a target="_blank"
-					href="http://data.idoimaging.com:8080/dwv/viewers/mobile/index.html?type=manifest&amp;input=http%3A%2F%2Fdata.idoimaging.com%3A8080%2Fweasis-pacs-connector%2Fmanifest%3FseriesUID%3D1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.203.0">
+					href="http://idoimaging.com:8080/dwv/viewers/mobile/index.html?type=manifest&amp;input=http%3A%2F%2Fidoimaging.com%3A8080%2Fweasis-pacs-connector%2Fmanifest%3FseriesUID%3D1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.203.0">
 					<img alt="DWV" src="img/dwv_0.jpg" border="0" height="177" width="150">
 				</a> <br />
 			</td>
@@ -163,7 +168,7 @@
 					Host: I Do Imaging PACS
 				</td>
 				<td class="pad10" align="center">
-					<a target="_blank" href="http://data.idoimaging.com:8080/oviyam2/"> 
+					<a target="_blank" href="http://idoimaging.com:8080/oviyam2/"> 
 						<img alt="" src="img/iOviyam0.jpg" border="0" height="300"width="169">
 					</a>
 				</td>
@@ -188,7 +193,7 @@
 				</td>
 				<td class="pad10" align="center">
 					<a target="_blank"
-					href="http://data.idoimaging.com:8080/weasis-pacs-connector/viewer.jnlp?seriesUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.7.0">
+					href="http://idoimaging.com:8080/weasis-pacs-connector/viewer.jnlp?seriesUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.7.0">
 					<img alt="" src="img/weasis_brain_mr_0.jpg" border="0" height="229" width="250">
 				</a><br />
 			</td>
@@ -211,7 +216,7 @@
 				WebGL/HTML5<br />
 				Drop local files on browser window<br />
 				<br />
-				<a href="http://data.idoimaging.com/data/dicom/1010_brain_mr/1010_brain_mr_04_lee.zip">
+				<a href="http://idoimaging.com/data/dicom/1010_brain_mr/1010_brain_mr_04_lee.zip">
 					Sample MRI DICOM files in zip format</a><br />
 					(Download, unzip, drag and drop files onto SliceDrop window)<br />
 					Host: SliceDrop site

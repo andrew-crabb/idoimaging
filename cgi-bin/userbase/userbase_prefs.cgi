@@ -125,8 +125,10 @@ $PREF{app_base_folder}					= '/login';
 # ahc
 # $PREF{datadir}					= 'encdata';
 # $PREF{datadir_is_in_docroot}				= 'no';
-$PREF{datadir}						= '/data/idoimaging/cgi-bin/userbase/encdata';
-$PREF{datadir_is_in_docroot}				= 'no';
+# $PREF{datadir}						= '/data/idoimaging/cgi-bin/userbase/encdata';
+# $PREF{datadir_is_in_docroot}				= 'no';
+$PREF{datadir}					= '/login/encdata';
+$PREF{datadir_is_in_docroot}	= 'yes';
 
 
 ############################################################################

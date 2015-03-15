@@ -23,9 +23,9 @@ class UserBase {
     $this->util = new Utility();
     $this->rad  = new Radutil($this->util);
     // Changed this 10/30/12 to always use the server UB database.
-    // $db_det = ($this->rad->which_host() == Radutil::SITE_DEVEL) ? Radutil::DB_MMC_UB : Radutil::DB_LOCAL_UB;
+    // $db_det = ($this->rad->which_host() == Radutil::SITE_DEVEL) ? Radutil::DB_IDI_UB : Radutil::DB_LOCAL_UB;
     // Changed 2/6/13 to always use localhost - don't need to syn mc_userid into local UB DB.
-    // $db_det = Radutil::DB_MMC_UB;
+    // $db_det = Radutil::DB_IDI_UB;
     $db_det = Radutil::DB_LOCAL_UB;
     $this->dbh = $this->rad->host_connect($db_det);
   }
