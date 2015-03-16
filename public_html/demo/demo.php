@@ -75,7 +75,8 @@
 			</tr>
 			<tr>
 				<td class="pad10" colspan="3">
-					More words about Orthanc Server go here.  It's a long line that goes across the entire browser.
+					Click on the above image to browse through the sample datasets on Orthanc server.  Two in-browser viewers are available 
+					at the Series level: <a <?php idi_prog(451); ?> >Orthanc Web Viewer</a> and <a <?php idi_prog(417); ?> >DWV</a>
 				</td>
 			</tr>
 			<!-- Papaya -->
