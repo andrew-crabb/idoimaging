@@ -723,8 +723,6 @@ sub makeRsrcIcon {
     $iconstr .= "&nbsp;<img border='0' class='showTip $tipclass' src='$iconfile' title='' alt='Resource' />" if ($has_nondemo);
     $iconstr .= "&nbsp;<img border='0' class='showTip $tipclass' src='$demoicon' title='' alt='Demo'     />" if ($has_demo);
 
-    }
-
     my %ret = (
       'iconstr'  => $iconstr,
       'icon_cvars' => \%tip_cvars,
