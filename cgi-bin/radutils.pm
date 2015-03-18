@@ -694,7 +694,7 @@ sub makeRsrcIcon {
 
   # Create hash by date of resource pointers.
   my %prog_res = ();
-  my $has_demo = 0;
+  my ($has_demo, $has_nondemo) = (0, 0);
   while (my $resp = $rsh->fetchrow_hashref) {
     my $resdate = convert_date($resp->{'date'}, $DATE_MDY);
     my $url = $resp->{'url'};
@@ -703,7 +703,8 @@ sub makeRsrcIcon {
     my $urlstr = "<a target='new' href='http://${url}'>$resourcetype{$resp->{'type'}}</a>";
     $tipstr .= "${tipdiv}$urlstr, dated $resdate";
     $tipdiv = "<br />";
-    $has_demo = 1 if ($resp->{'type'} eq $RES_DEM);
+    $has_demo    = 1 if  ($resp->{'type'} eq $RES_DEM);
+    $has_nondemo = 1 if !($resp->{'type'} eq $RES_DEM);
   }
 
   if (has_len($tipstr)) {
@@ -718,9 +719,10 @@ sub makeRsrcIcon {
         );
     my $iconfile = "/img/icon/pencil.png";
     my $demoicon = "/img/icon/cursor.png";
-    my $iconstr = "&nbsp;<img border='0' class='showTip $tipclass' src='$iconfile' title='' alt='Resource' />";
-    if ($has_demo) {
-      $iconstr .= "&nbsp;<img border='0' class='showTip $tipclass' src='$demoicon' title='' alt='Demo' />";
+    my $iconstr = '';
+    $iconstr .= "&nbsp;<img border='0' class='showTip $tipclass' src='$iconfile' title='' alt='Resource' />" if ($has_nondemo);
+    $iconstr .= "&nbsp;<img border='0' class='showTip $tipclass' src='$demoicon' title='' alt='Demo'     />" if ($has_demo);
+
     }
 
     my %ret = (
