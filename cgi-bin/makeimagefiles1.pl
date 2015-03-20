@@ -88,8 +88,8 @@ my ($force, $verbose, $dummy) = @$opts{($OPT_FORCE, $OPT_VERBOSE, $OPT_DUMMY)};
 # ------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------
-my $PROGCAPDIR   = "/Users/ahc/idoimaging/public_html/img/cap/prog";    # Path for type 'prog'
-my $TITLEDIR     = "/Users/ahc/idoimaging/public_html/img/prog_title";  # Path for type 'title'
+my $PROGCAPDIR   = "/home/ahc/idoimaging/public_html/img/cap/prog";    # Path for type 'prog'
+my $TITLEDIR     = "/home/ahc/idoimaging/public_html/img/prog_title";  # Path for type 'title'
 
 # Image file prefix defines type of file.
 my $RSRC_PROG  = 'prog';
@@ -109,7 +109,7 @@ my %image_details = (
     );
 our $g_image_details = undef;
 
-my $ICONDIR      = "/Users/ahc/idoimaging/public_html/img/icon";
+my $ICONDIR      = "/home/ahc/idoimaging/public_html/img/icon";
 my $MAGICON      = "mag_big.png";
 my $SMALLDIR     = "sm";
 my $ORIGDIR      = "orig";

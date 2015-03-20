@@ -152,6 +152,7 @@ sub checklink {
   my ($href, $statfld, $table, $urlfld) = @_;
   my %element = %$href;
   my ($pname, $ident, $currstat) = @element{qw(name ident $statfld)};
+  print "Program: $pname\n";
   $currstat = 0 unless (has_len($currstat) and $currstat);
   my $url = $element{$urlfld};
 
