@@ -325,6 +325,8 @@ our $LANG_PYTHON = 2**11;
 our $LANG_RUBY   = 2**12;
 our $LANG_PHP    = 2**13;
 our $LANG_JSCRIPT = 2**14;
+our $LANG_R       = 2**15;
+our $LANG_LUA     = 2**16;
 
 our %cat_lang = (
   $LANG_C      => ['C'],
@@ -341,6 +343,8 @@ our %cat_lang = (
   $LANG_RUBY   => ['Ruby'],
   $LANG_PHP    => ['PHP'],
   $LANG_JSCRIPT => ['JavaScript'],
+  $LANG_R       => ['R'],
+  $LANG_LUA     => ['Lua'],
     );
 
 # ------------------------------------------------------------
@@ -408,8 +412,8 @@ our %cat_category = (
   $CATE_NEUR => ['Neuro'],
   $CATE_CARD => ['Cardiac'],
   $CATE_MODE => ['Model'],
-  $CATE_REG  => ['Reg.'],
-  $CATE_SEG  => ['Seg.'],
+  $CATE_REG  => ['Register'],
+  $CATE_SEG  => ['Segment'],
   $CATE_PARA => ['Param'],
   $CATE_SURF => ['Surf/Vol'],
   $CATE_MEG  => ['MEG'],
