@@ -327,6 +327,7 @@ our $LANG_PHP     = 2**13;
 our $LANG_JSCRIPT = 2**14;
 our $LANG_R       = 2**15;
 our $LANG_LUA     = 2**16;
+our $LANG_JULIA   = 2**17;
 
 our %cat_lang = (
   $LANG_C      	=> ['C'],
@@ -345,6 +346,7 @@ our %cat_lang = (
   $LANG_JSCRIPT => ['JavaScript'],
   $LANG_R       => ['R'],
   $LANG_LUA     => ['Lua'],
+  $LANG_JULIA   => ['Julia'],
     );
 
 # ------------------------------------------------------------
