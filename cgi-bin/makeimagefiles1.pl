@@ -33,12 +33,11 @@ my $DB_TABLES = 'db_tables';
 my %dbs = (
   $DB_IMAGING => {
     $DB_DATABASE => 'imaging',
-    # $DB_TABLES => [qw(author format image monitor program redirect related resource version)],
-    $DB_TABLES => [qw(author format image monitor program related resource version)],
+    $DB_TABLES   => [qw(author format image monitor program related resource version)],
   },
   $DB_TEST => {
     $DB_DATABASE => 'test',
-    $DB_TABLES => [qw(dfile imagefile recon scan)],
+    $DB_TABLES   => [qw(dfile imagefile recon scan)],
   }
 );
 
