@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 # checklinks.pl
 # Check each URL listed in program table; update urlstat for this entry.
 

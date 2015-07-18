@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # Creates table of top N results for 3 platforms in categories:
 # DICOM viewer (3), format converter (3), PACS client (2).

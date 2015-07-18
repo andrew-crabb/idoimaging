@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # Run cgi programs and store their output in 'static' directory to be read by Content::print_static_file_for()
 

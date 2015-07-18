@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 # Process an add/edit, or show table to edit one record, or list all records for editing.
 # case ident  add  process
 # 0    0      0    0       Show list, set ident for each element.

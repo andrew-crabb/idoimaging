@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # newReleases.pl
 # Write table with new programs and versions.

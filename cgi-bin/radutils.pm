@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 package radutils;
 require Exporter;
@@ -887,7 +888,7 @@ sub listPrereq {
 sub hostConnect {
   my ($db_name, $db_host) = @_;
   $db_name //= "imaging";
-  $db_host //= "idoimaging.com";
+  $db_host //= "localhost";
   print STDERR "radutils::hostConnect(db_name $db_name, db_host $db_host)\n";
 
   # Database init.

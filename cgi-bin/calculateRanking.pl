@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # calculateRanking.pl
 # Calculate a metric describing the popularity of this program.
