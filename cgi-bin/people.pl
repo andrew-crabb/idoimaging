@@ -27,7 +27,9 @@ my ($dbh) = hostConnect();
 # Ident of specified author, and sort order.
 our ($order, $page, $ident);
 foreach my $var (qw(order ident page)) {
-  $$var = (has_len($cgi->param($var))) ? $cgi->param($var) : "";
+  my $varval = $cgi->param($var);
+  $$var = (has_len($varval)) ? $varval : "";
+#  $$var = (has_len($cgi->param($var))) ? $cgi->param($var) : "";
 }
 $order = 'name_last' unless (has_len($order));
 
@@ -154,7 +156,7 @@ print "<table cellpadding='2' cellspacing='0' width='600' bgcolor='#CCCCFF' bord
 # Print column headings to sort by.
 print "<tr>\n";
 
-foreach $title qw(name_last email home) {
+foreach $title (qw(name_last email home)) {
   my $a_str;
   if ($title =~ /name_last/) {
     my $url = "/${STR_PEOPLE}?order=$title";

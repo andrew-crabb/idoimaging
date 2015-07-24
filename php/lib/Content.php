@@ -243,7 +243,7 @@ EOD;
     $query_string = $this->util->get_server_var(Utility::QUERY_STRING);
     
     // Line 0: Query string.
-    print $this->util->tt_debug("query_string '$query_string'", $this->debug);
+    // error_log("query_string '$query_string'");
     
     // $this->debug = true;
     // Line 1 : User details.
@@ -252,11 +252,11 @@ EOD;
       // User is logged in.
       $ub_userid     = $ub_details[Radutil::UB_USERID];
       $ub_username   = $ub_details[Radutil::UB_USERNAME];
-      print $this->util->tt_debug("'${ub_username}' Logged in", $this->debug);
+      // error_log("'${ub_username}' Logged in");
       $logged_in = true;
     } else {
       // Not logged in.
-      print $this->util->tt_debug("Logged out", $this->debug);
+      // error_log("Logged out");
     }
 
     // HTML.
@@ -328,9 +328,9 @@ EOD;
     $userbase_opts .= (strlen($query_string)) ? $sep . $query_string : "";
     // $this->debug = 1;
     // -------------------- Debug content 
-    print Utility::comment("Login for state begin");
-    print Utility::tt_debug("State '$state', Page '$page_part', Cont '$ub_cont', qs '$query_string'", $this->debug);
-    print Utility::tt_debug("Opts: '$userbase_opts'", $this->debug);
+    // print Utility::comment("Login for state begin");
+    // error_log("State '$state', Page '$page_part', Cont '$ub_cont', qs '$query_string'");
+    // error_log("Opts: '$userbase_opts'");
     
     // -------------------- UserBase content
     // Print custom header message, if any, for this user and state.
@@ -422,8 +422,8 @@ EOD;
     $new_target = $this->REWRITE[$targ_str][self::REWRITE_TO];
     $do_exec = (strpos($new_target, '.pl') !== false);
     $path = ($do_exec) ? '' : self::CGIBIN;
-    // print Utility::tt_debug("virt_or_exec(): query_string '$query_string', target '$target'");
-    // print Utility::tt_debug("virt_or_exec(): targ_str '$targ_str', new_targ '$new_target'");
+    // error_log("virt_or_exec(): query_string '$query_string', target '$target'");
+    // error_log("virt_or_exec(): targ_str '$targ_str', new_targ '$new_target'");
 
     if ($this->util->is_cmd_line) {
       if ($do_exec) {
@@ -431,12 +431,12 @@ EOD;
         $cl_query_string = str_replace('&', ' ', $query_string);
         $cmd_str = "SERVER_NAME=$server_name; export SERVER_NAME;";
         $cmd_str .= Radutil::CLI_DOCUMENT_ROOT . "/.." . self::CGIBIN . "/${new_target} $cl_query_string";
-	// print Utility::tt_debug("Content::virtual_or_exec(): Case 0 (CL, run): $cmd_str");
+	// error_log("Content::virtual_or_exec(): Case 0 (CL, run): $cmd_str");
 	$ret = `$cmd_str`;
       } else {
 	// Case 1: Include a file from command line.
 	$inc_file = Radutil::CLI_DOCUMENT_ROOT . '/' . $new_target;
-	// print Utility::tt_debug("Content::virtual_or_exec(): Case 1 (CL, inc): $inc_file");
+	// error_log("Content::virtual_or_exec(): Case 1 (CL, inc): $inc_file");
 	$contents = $this->util->file_contents($inc_file);
 	$ret = $contents;
       }
@@ -444,13 +444,14 @@ EOD;
     } else {
       // Apache environment.
       if ($do_exec) {
-	// print Utility::tt_debug("Content::virtual_or_exec(): Case 2 (HTTP, virtual): $new_target");
+	// error_log("Content::virtual_or_exec(): Case 2 (HTTP, virtual): $new_target");
         if (strlen($userid)) {
           apache_setenv('logged_in_user', $userid);
         }
 	virtual(self::CGIBIN . "/${new_target}");
       } else {
-	// print Utility::tt_debug("Content::virtual_or_exec(): Case 3 (HTTP, include): $new_target");
+	// error_log("Content::virtual_or_exec(): Case 3 (HTTP, include): $new_target");
+	// error_log("Content::virtual_or_exec(): Case 3 (HTTP, include): $new_target");
 	include($new_target);
       }
     }
@@ -467,7 +468,7 @@ EOD;
       }
     }
     }
-    // print Utility::tt_debug("Content::menu_item_for_redirect($redirect_url, $redirect_target) returning $menu_item");
+    // error_log("Content::menu_item_for_redirect($redirect_url, $redirect_target) returning $menu_item");
     return $menu_item;
   }
 

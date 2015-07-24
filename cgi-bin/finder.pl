@@ -70,7 +70,7 @@ print "<tr id='search_r0' valign='top'>\n";
 print "<td id='search_r0c0' width='$radutils::TABLEWIDTH' colspan='2' class='white' align='center'>\n";
 
 # Begin form for software classifications search.
-print $cgi->startform(
+print $cgi->start_form(
   -action => "/${STR_PROGRAMS}",
    -method => 'GET',
   -id     => $PROGRAM_FORM,
@@ -114,7 +114,7 @@ foreach my $categ (qw(func category readfmt writfmt plat lang)) {
   # If an array of radutils hash keys is available, use it.  Else sort values.
   my (@vals, %labels);
   my $keyarray = "radutils::cat_${categ}";
-  if (defined(@{$keyarray})) {
+  if (@{$keyarray}) {
     @vals = ('', @{$keyarray});
     my %category = %$keyarray;
     foreach my $val (@vals) {
@@ -153,7 +153,7 @@ print "</tr>\n";
 # ============================================================
 print comment("End of table 'Software Classification'.");
 print "</table>\n";
-print $cgi->endform() . "\n";
+print $cgi->end_form() . "\n";
 
 # ------------------------------------------------------------
 # End of Table 'Search': Row 0: Software Classification
@@ -201,14 +201,14 @@ print "</tr>\n";
 print comment("Table 'Software Description': Row 2: Search box.", 1);
 print "<tr>\n";
 print "<td height='30' valign='top' align='center' >";
-print $cgi->startform(
+print $cgi->start_form(
     -action => "/${STR_SEARCH}",
     -method => 'GET',
     );
 print "<input class='blue' type='text' name='search' size='22' maxlength='100' />\n";
 print "&nbsp;&nbsp;";
 print $cgi->submit(-name => 'Search') . "\n";
-print $cgi->endform() . "\n";
+print $cgi->end_form() . "\n";
 print "</td>\n";
 print "</tr>\n";
 
