@@ -1,0 +1,7 @@
+.idea/
+.project
+.DS_Store
+build.xml
+release.xml
+/build/
+/tests/build/**/
