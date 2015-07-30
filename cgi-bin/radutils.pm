@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 package radutils;
 require Exporter;
@@ -887,8 +888,8 @@ sub listPrereq {
 sub hostConnect {
   my ($db_name, $db_host) = @_;
   $db_name //= "imaging";
-  $db_host //= "idoimaging.com";
-  print STDERR "radutils::hostConnect(db_name $db_name, db_host $db_host)\n";
+  $db_host //= "localhost";
+
 
   # Database init.
   my %attr = (RaiseError => 1);
@@ -1433,7 +1434,14 @@ sub relatedProgramsTable {
   my ($related, $dbh, $tipstrs, $leadspace) = @_;
   my %related = %$related;
 
-  my @related = sort {"\U$related{$a}->{'name'}" cmp "\U$related{$b}->{'name'}"} keys(%related);
+  my @related = sort {
+    my $aval = $related{$a}->{'name'} // '';
+    my $bval = $related{$b}->{'name'} // '';
+    # "\U$related{$a}->{'name'}" cmp "\U$related{$b}->{'name'}"
+    "\U$aval" cmp "\U$bval";
+  } keys(%related);
+
+#  my @related = sort {"\U$related{$a}->{'name'}" cmp "\U$related{$b}->{'name'}"} keys(%related);
   my $relrows = "";
   foreach my $relid (@related) {
     my $relhash = $related{$relid};

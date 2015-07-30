@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # mostLinked.pl
 # Generates a table listing which programs have been linked to the most.

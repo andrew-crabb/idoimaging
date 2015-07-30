@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 use DBI;
 use CGI;
@@ -261,7 +262,8 @@ my ($finderstr, $finderstr_noorder) = ("", "");
 my ($ord_ampersand, $noord_ampersand) = ("", "");
 # Make up condition string, if needed, for finder.
 foreach my $var (qw(order func readfmt writfmt plat lang edit category showcap)) {
-  if (has_len($cgi->param($var))) {
+  my $varval = $cgi->param($var);
+  if (has_len($varval)) {
     $finderstr .= "${ord_ampersand}$var=$$var";
     $ord_ampersand = "\&";
     # finderstr_noorder does not include the 'order' CGI parameter.

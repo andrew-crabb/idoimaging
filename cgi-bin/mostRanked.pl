@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # mostRanked.pl
 # Generates a table listing which programs have highest ranking.

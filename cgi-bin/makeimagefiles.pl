@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # makeimagefiles.pl
 # Parse image capture file and rename files appropriately.

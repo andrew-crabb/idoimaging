@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # rmprogram.pl
 # Delete a program from the idoimaging.com database listings.

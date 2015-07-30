@@ -1,4 +1,5 @@
-#! /usr/local/bin/perl -w
+#! /usr/bin/env perl
+use warnings;
 
 # Synchronize database between local and server.
 # Note that Compare would work better if I added a timestamp field to each table.
