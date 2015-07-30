@@ -450,7 +450,7 @@ EOD;
         }
 	virtual(self::CGIBIN . "/${new_target}");
       } else {
-	// print Utility::tt_debug("Content::virtual_or_exec(): Case 3 (HTTP, include): $new_target");
+	 print Utility::tt_debug("Content::virtual_or_exec(): Case 3 (HTTP, include): $new_target");
 	include($new_target);
       }
     }
