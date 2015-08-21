@@ -6,7 +6,8 @@
 /php/notused/
 /php/contrib/
 /public_html/blog/
-/public_html/demo/
+/public_html/demo/program
+/public_html/demo/img
 /public_html/img/
 /public_html/turku2014/
 /public_html/login/images/
@@ -46,7 +47,7 @@ project/idoimaging.sublime-project
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
 !/public_html/blog/wp-content/themes/idoimaging/
-!/public_html/img/icon/*
+
 # !/public_html/tiki-12.0/styles/
 
 # Don't track these files

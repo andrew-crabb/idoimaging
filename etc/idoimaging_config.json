@@ -1,0 +1,66 @@
+{
+  "ip_numbers": [
+    {
+      "description": "JHSPH",
+      "ip"         : "162.129.0.0",
+      "mask"       : "16"
+    },
+    {
+      "description": "Verizon 1",
+      "ip"         : "172.56.3.0",
+      "mask"       : "24"
+    },
+    {
+      "description": "Verizon 2",
+      "ip"         : "173.67.51.0",
+      "mask"       : "24"
+    },
+    {
+      "description": "Verizon 3",
+      "ip"         : "96.234.244.0",
+      "mask"       : "24"
+    }
+  ],
+  "services": [
+    {
+      "description": "HTTP",
+      "port"       : "80",
+      "access"     : "public"
+    },
+    {
+      "description": "SSH",
+      "port"       : "22",
+      "access"     : "private"
+    },
+    {
+      "description": "DCM4CHEE",
+      "port"       : "11020",
+      "access"     : "public"
+    },
+    {
+      "description": "Orthanc DICOM",
+      "port"       : "11170",
+      "access"     : "public"
+    },
+    {
+      "description": "Orthanc HTTP",
+      "port"       : "8042",
+      "access"     : "public"
+    },
+    {
+      "description": "MYSQL",
+      "port"       : "3306",
+      "access"     : "private"
+    },
+    {
+      "description": "JBoss",
+      "port"       : "8080",
+      "access"     : "private"
+    },
+    {
+      "description": "Supervisor",
+      "port"       : "9001",
+      "access"     : "private"
+    }
+  ]
+}
