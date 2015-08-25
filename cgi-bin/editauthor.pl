@@ -78,7 +78,7 @@ if (($ident and not $add) or ($add and not $ident)) {
     push(@lines, [$vname, $fldstr]);
   }
 
-  print $cgi->startform(-action => ${STR_DO_EDIT_AUTH}) . "\n";
+  print $cgi->start_form(-action => ${STR_DO_EDIT_AUTH}) . "\n";
   print $cgi->hidden(-name => 'process', -value => 1) . "\n";
   print $cgi->hidden(-name => 'ident', -value => $ident) . "\n";
   print $cgi->hidden(-name => 'add', -value => 1) . "\n" if ($add);
