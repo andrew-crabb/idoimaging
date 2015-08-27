@@ -47,6 +47,7 @@ project/idoimaging.sublime-project
 # Do track these exceptions
 !/public_html/login/appdata/.gitignore
 !/public_html/blog/wp-content/themes/idoimaging/
+!/public_html/img/icon/
 
 # !/public_html/tiki-12.0/styles/
 
