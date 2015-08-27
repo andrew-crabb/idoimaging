@@ -38,7 +38,7 @@ sub get_user_details {
 #    $login_check = "http://localhost/${USERBASE_URL}?action=chklogin&ubsessioncode=$ss_val";
     $content = get($login_check);
     if ($content =~ /^$USERBASE_PATT/) {
-#       print STDERR "Userbase.pm::get_user_details(): Pattern match<br>\n";
+      print STDERR "Userbase.pm::get_user_details(): Pattern match<br>\n";
       $user{$UB_IS_ADMIN} = $1;
       $user{$UB_IS_MEMBER} = $2;
       $user{$UB_USERNAME} = $3;
