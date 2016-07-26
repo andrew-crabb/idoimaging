@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.3.8)
     aws-sdk (2.0.38)
       aws-sdk-resources (= 2.0.38)
     aws-sdk-core (2.0.38)
@@ -10,15 +11,23 @@ GEM
     aws-sdk-resources (2.0.38)
       aws-sdk-core (= 2.0.38)
     builder (3.2.2)
+    faraday (0.9.1)
+      multipart-post (>= 1.2, < 3)
     jmespath (1.0.2)
       multi_json (~> 1.0)
     multi_json (1.11.0)
+    multipart-post (2.0.0)
+    netrc (0.10.3)
+    octokit (4.1.0)
+      sawyer (~> 0.6.0, >= 0.5.3)
+    sawyer (0.6.0)
+      addressable (~> 2.3.5)
+      faraday (~> 0.8, < 0.10)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   aws-sdk (~> 2)
-
-BUNDLED WITH
-   1.10.6
+  netrc
+  octokit (~> 4.0)

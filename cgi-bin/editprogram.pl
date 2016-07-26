@@ -269,7 +269,7 @@ print comment("Begin 2nd table (holding structured fields) in r0c0");
 # Row 0: Short-answer numerical options.
 my @scategs = (qw(installer obtain audience rank_activity rank_appear rank_doc rank_scope rank_overall));
 # Row 1: Long-answer numerical options.
-my @lcategs = (qw(plat interface category readfmt writfmt func lang feature prer));
+my @lcategs = (qw(plat_all interface category readfmt writfmt func lang feature prer));
 
 foreach my $categ_type(\@scategs, \@lcategs) {
   my @categs = @$categ_type;

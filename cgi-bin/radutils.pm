@@ -302,11 +302,16 @@ our %cat_formats = (
 our $PLAT_WIN = 2**0;
 our $PLAT_MAC = 2**1;
 our $PLAT_LIN = 2**2;
-our @cat_plat = ($PLAT_WIN, $PLAT_MAC, $PLAT_LIN);
+our $PLAT_VRT = 2**3;
+our $PLAT_MOB = 2**4;
+our @cat_plat     = ($PLAT_WIN, $PLAT_MAC, $PLAT_LIN);
+our @cat_plat_all = ($PLAT_WIN, $PLAT_MAC, $PLAT_LIN, $PLAT_VRT, $PLAT_MOB);
 our %cat_plat = (
   $PLAT_WIN => ['Windows'  , 'win'],
   $PLAT_MAC => ['Macintosh', 'mac'],
   $PLAT_LIN => ['Linux'    , 'linux'],
+  $PLAT_VRT => ['Virtual'  , 'virtual'],
+  $PLAT_MOB => ['Mobile'   , 'mobile'],
     );
 
 # ------------------------------------------------------------
