@@ -51,13 +51,13 @@ my $pr = WWW::Google::PageRank->new;
 foreach my $rslt (@arr) {
   my ($ident, $homeurl, $name, $oldcnt, $counturl) = @$rslt;
   $homeurl = $counturl if (has_len($counturl));
-
   $homeurl = "http://${homeurl}" unless ($homeurl =~ /http/);
 
   my $ret = $pr->get($homeurl);
+  print "get($homeurl) = $ret\n";
   $ret = 0 unless (has_len($ret));
   my $sqlstr = "update program set linkcnt = $ret where ident = '$ident'";
   print "update program set linkcnt = $ret where ident = '$ident'\n";
-  my $sqlsh = dbQuery($dbh, $sqlstr);
-  $sqlsh->finish();
+#  my $sqlsh = dbQuery($dbh, $sqlstr);
+#   $sqlsh->finish();
 }
