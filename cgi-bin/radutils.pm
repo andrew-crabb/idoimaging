@@ -313,6 +313,13 @@ our %cat_plat = (
   $PLAT_VRT => ['Virtual'  , 'virtual'],
   $PLAT_MOB => ['Mobile'   , 'mobile'],
     );
+our %cat_plat_all = (
+  $PLAT_WIN => ['Windows'  , 'win'],
+  $PLAT_MAC => ['Macintosh', 'mac'],
+  $PLAT_LIN => ['Linux'    , 'linux'],
+  $PLAT_VRT => ['Virtual'  , 'virtual'],
+  $PLAT_MOB => ['Mobile'   , 'mobile'],
+    );
 
 # ------------------------------------------------------------
 # Category: Language
