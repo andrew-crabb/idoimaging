@@ -60,7 +60,7 @@
 					HTML5/Browser<br />
 					Launches into image server<br />
 					Host: I Do Imaging<br />
-					Version: 0.8.6 (2/12/15)<br />
+					Version: 1.1.0 (6/27/16)<br />
 				</td>
 				<td class="pad10" width="34%">
 					<a href='http://idoimaging.com:8042' target='blank' >
@@ -68,7 +68,7 @@
 					</a>
 				</td>
 				<td class="pad10" width="33%">
-					<p><a <?php idi_redr(409); ?> > Orthanc Home </a> </p>
+					<p><a <?php idi_redr(409);              ?> > Orthanc Home </a> </p>
 					<p>I Do Imaging <a <?php idi_prog(409); ?> > Listing </a> </p>
 					<p>I Do Imaging <a <?php idi_wiki(409); ?> > Wiki notes </a> </p>
 				</td>
@@ -76,7 +76,7 @@
 			<tr>
 				<td class="pad10" colspan="3">
 					Click on the above image to browse through the sample datasets on Orthanc server.  Two in-browser viewers are available 
-					at the Series level: <a <?php idi_prog(451); ?> >Orthanc Web Viewer</a> and <a <?php idi_prog(417); ?> >DWV</a>
+					at the Series level: <a <?php idi_prog(451); ?> >Orthanc Web Viewer v. 2.2 (06/2016)</a> and <a <?php idi_prog(417); ?> >DWV Orthanc Plugin v. 0.13.0 (07/2016)</a>
 				</td>
 			</tr>
 			<!-- Papaya -->
