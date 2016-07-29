@@ -90,7 +90,7 @@
 					Javascript/Browser<br />
 					Viewer launches directly<br />
 					Host: I Do Imaging<br />
-					Version: 0.6.5 (07/03/14)<br />
+					Version: 1406 (07/12/16)<br />
 				</td>
 				<td class="pad10" width="34%">
 					<a <?php idi_demo(423); ?> >

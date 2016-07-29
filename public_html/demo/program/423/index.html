@@ -9,17 +9,23 @@
     	<meta name="apple-mobile-web-app-capable" content="yes">
     	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    	<link rel="stylesheet" type="text/css" href="papaya.css?version=0.6.5&build=695" />
-    	<script type="text/javascript" src="papaya.js?version=0.6.5&build=695"></script>
+    	<link rel="stylesheet" type="text/css" href="papaya.css?build=1406" />
+    	<script type="text/javascript" src="papaya.js?build=1406">
+	</script>
     
     	<title>Papaya Viewer</title>
     
     	<script type="text/javascript">
-    	 	var params = [];
-    	</script>
+	  var params = [];
+	  params["images"]   = ["data/brain_mri_1.nii.gz"];
+	  params["surfaces"] = ["data/sample_image.surf.gii"];
+	</script>
+
 	</head>
 
 	<body>
+		
 		<div class="papaya" data-params="params"></div>
+		
 	</body>
 </html>
