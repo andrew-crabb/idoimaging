@@ -103,32 +103,6 @@
 					<p>I Do Imaging <a <?php idi_wiki(423); ?> > Wiki notes </a> </p>
 				</td>
 			</tr>
-			<!-- DWV -->
-			<tr>
-				<th class="pad5 demo_prog" colspan="3">DWV: DICOM Web Viewer</th>
-			</tr>
-			<tr>
-				<td class="pad10" width="33%">
-					Runs on: <br />
-					<?php icon('computer'); ?>&nbsp;&nbsp;<?php icon('mobile'); ?><br />
-					HTML5/Browser<br />
-					Viewer launches directly<br />
-					Host: I Do Imaging PACS
-					Version: 0.8.0 (11/20/14)<br />
-				</td>
-				<td class="pad10" align="center">
-					<a target="_blank"
-					href="http://idoimaging.com:8080/dwv/viewers/mobile/index.html?type=manifest&amp;input=http%3A%2F%2Fidoimaging.com%3A8080%2Fweasis-pacs-connector%2Fmanifest%3FseriesUID%3D1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.203.0">
-					<img alt="DWV" src="img/dwv_0.jpg" border="0" height="177" width="150">
-				</a> <br />
-			</td>
-			<td class="pad10" width="33%">
-				<p><a <?php idi_redr(417); ?> > DWV Home </a></p>
-				<p><a <?php idi_prog(417); ?> > I Do Imaging listing </a></p>
-				<p><a <?php idi_blog(401); ?> > I Do Imaging blog entry </a></p>
-				<p><a <?php idi_wiki(417); ?> > I Do Imaging wiki notes </a></p>
-			</td>
-		</tr>
 		<!-- Cornerstone -->
 		<tr>
 			<th class="pad5 demo_prog" colspan="3">Cornerstone web imaging</th>
@@ -154,57 +128,6 @@
 
 				<br />
 			</tr>
-			<!-- iOviyam2 -->
-			<tr>
-				<th class="pad5 demo_prog" colspan="3">iOviyam2</th>
-			</tr>
-			<tr>
-				<td class="pad10" width="33%">
-					Runs on:<br />
-					<?php icon('computer'); ?>&nbsp;&nbsp;
-					<?php icon('mobile'); ?><br />
-					HTML5/Browser<br />
-					Links to PACS<br />
-					Log in as 'guest' / 'guest'<br />
-					Host: I Do Imaging PACS
-				</td>
-				<td class="pad10" align="center">
-					<a target="_blank" href="http://idoimaging.com:8080/oviyam2/"> 
-						<img alt="" src="img/iOviyam0.jpg" border="0" height="300"width="169">
-					</a>
-				</td>
-				<td class="pad10" width="33%">
-					<p><a <?php idi_redr(412); ?> > iOviyam2 Home </a></p>
-					<p><a <?php idi_prog(412); ?> > I Do Imaging listing </a></p>
-					<p><a <?php idi_blog(401); ?> > I Do Imaging blog entry </a></p>            
-					<p><a <?php idi_wiki(412); ?> > I Do Imaging wiki notes </a></p>
-				</td>
-			</tr>
-			<!-- Weasis -->
-			<tr>
-				<th class="pad5 demo_prog" colspan="3">Weasis</th>
-			</tr>
-			<tr>
-				<td class="pad10" width="33%">
-					Runs on: <br />
-					<?php icon('computer'); ?><br />
-					Java downloaded app<br />
-					Links to PACS<br />
-					Host: I Do Imaging PACS
-				</td>
-				<td class="pad10" align="center">
-					<a target="_blank"
-					href="http://idoimaging.com:8080/weasis-pacs-connector/viewer.jnlp?seriesUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.7.0">
-					<img alt="" src="img/weasis_brain_mr_0.jpg" border="0" height="229" width="250">
-				</a><br />
-			</td>
-			<td class="pad10" width="33%">
-				<p><a <?php idi_redr(403); ?> > Weasis Home </a></p>
-				<p><a <?php idi_prog(403); ?> > I Do Imaging listing </a></p>
-				<p><a <?php idi_blog(348); ?> > I Do Imaging blog entry </a></p>            
-				<p><a <?php idi_wiki(403); ?> > I Do Imaging wiki notes </a></p>
-			</td>
-		</tr>
 		<!-- SliceDrop -->
 		<tr>
 			<th class="pad5 demo_prog" colspan="3">Slice::Drop</th>
@@ -252,6 +175,83 @@
 			<td class="pad10" width="33%">
 				<p><a <?php idi_redr(427); ?> > BrainBrowser Home </a></p>
 				<p><a <?php idi_prog(427); ?> > I Do Imaging listing </a></p>
+			</td>
+		</tr>
+			<!-- iOviyam2 -->
+			<tr>
+				<th class="pad5 demo_prog" colspan="3">iOviyam2</th>
+			</tr>
+			<tr>
+				<td class="pad10" width="33%">
+					Runs on:<br />
+					<?php icon('computer'); ?>&nbsp;&nbsp;
+					<?php icon('mobile'); ?><br />
+					HTML5/Browser<br />
+					Links to PACS<br />
+					Log in as 'guest' / 'guest'<br />
+					Host: I Do Imaging PACS
+				</td>
+				<td class="pad10" align="center">
+					<a target="_blank" href="http://idoimaging.com:8080/oviyam2/"> 
+						<img alt="" src="img/iOviyam0.jpg" border="0" height="300"width="169">
+					</a>
+				</td>
+				<td class="pad10" width="33%">
+					<p><a <?php idi_redr(412); ?> > iOviyam2 Home </a></p>
+					<p><a <?php idi_prog(412); ?> > I Do Imaging listing </a></p>
+					<p><a <?php idi_blog(401); ?> > I Do Imaging blog entry </a></p>            
+					<p><a <?php idi_wiki(412); ?> > I Do Imaging wiki notes </a></p>
+				</td>
+			</tr>
+			<!-- DWV -->
+			<tr>
+				<th class="pad5 demo_prog" colspan="3">DWV: DICOM Web Viewer</th>
+			</tr>
+			<tr>
+				<td class="pad10" width="33%">
+					Runs on: <br />
+					<?php icon('computer'); ?>&nbsp;&nbsp;<?php icon('mobile'); ?><br />
+					HTML5/Browser<br />
+					Viewer launches directly<br />
+					Host: I Do Imaging PACS
+					Version: 0.8.0 (11/20/14)<br />
+				</td>
+				<td class="pad10" align="center">
+					<a target="_blank"
+					href="http://idoimaging.com:8080/dwv/viewers/mobile/index.html?type=manifest&amp;input=http%3A%2F%2Fidoimaging.com%3A8080%2Fweasis-pacs-connector%2Fmanifest%3FseriesUID%3D1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.203.0">
+					<img alt="DWV" src="img/dwv_0.jpg" border="0" height="177" width="150">
+				</a> <br />
+			</td>
+			<td class="pad10" width="33%">
+				<p><a <?php idi_redr(417); ?> > DWV Home </a></p>
+				<p><a <?php idi_prog(417); ?> > I Do Imaging listing </a></p>
+				<p><a <?php idi_blog(401); ?> > I Do Imaging blog entry </a></p>
+				<p><a <?php idi_wiki(417); ?> > I Do Imaging wiki notes </a></p>
+			</td>
+		</tr>
+			<!-- Weasis -->
+			<tr>
+				<th class="pad5 demo_prog" colspan="3">Weasis</th>
+			</tr>
+			<tr>
+				<td class="pad10" width="33%">
+					Runs on: <br />
+					<?php icon('computer'); ?><br />
+					Java downloaded app<br />
+					Links to PACS<br />
+					Host: I Do Imaging PACS
+				</td>
+				<td class="pad10" align="center">
+					<a target="_blank"
+					href="http://idoimaging.com:8080/weasis-pacs-connector/viewer.jnlp?seriesUID=1.3.6.1.4.1.5962.99.1.1647423216.1757746261.1397511827184.7.0">
+					<img alt="" src="img/weasis_brain_mr_0.jpg" border="0" height="229" width="250">
+				</a><br />
+			</td>
+			<td class="pad10" width="33%">
+				<p><a <?php idi_redr(403); ?> > Weasis Home </a></p>
+				<p><a <?php idi_prog(403); ?> > I Do Imaging listing </a></p>
+				<p><a <?php idi_blog(348); ?> > I Do Imaging blog entry </a></p>            
+				<p><a <?php idi_wiki(403); ?> > I Do Imaging wiki notes </a></p>
 			</td>
 		</tr>
 	</tbody>
