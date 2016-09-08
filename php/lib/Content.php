@@ -232,7 +232,7 @@ EOD;
     print self::PAGE_HEADER_TITLE . "\n";
 
     // Login section.
-    $this->print_login_box($ub_details);
+    // $this->print_login_box($ub_details);
     
     print "</div>  <!-- page_header -->\n";
 }
